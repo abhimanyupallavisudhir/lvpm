@@ -1,0 +1,468 @@
+{
+  "t0": "2026-07-01T00:00:00Z",
+  "clusters": {
+    "world_cup": {
+      "n": 12,
+      "yes": 4,
+      "label": "Favourites dominate the knockouts (chalk vs. upsets)",
+      "scores": {
+        "co-movement": -0.0052074079536073015,
+        "LLM latent": -0.01823286379054956,
+        "LLM label": 0.04121870608410205,
+        "LLM pairwise": 0.3739136050515195,
+        "hindsight": 0.007926974114320195
+      },
+      "mean_abs_rho": {
+        "co-movement": 0.13965164692012455,
+        "LLM latent": 0.02874862233710938,
+        "LLM label": 0.023180134968991534,
+        "LLM pairwise": 0.046570350419256466,
+        "hindsight": 0.06489983712130519
+      },
+      "independent_logloss": 4.297932202841098
+    },
+    "world_politics": {
+      "n": 8,
+      "yes": 4,
+      "label": "Anti-incumbent / populist-right momentum and political turbulence",
+      "scores": {
+        "co-movement": -0.05140509008307248,
+        "LLM latent": -0.009414380054645344,
+        "LLM label": -0.020148095298204938,
+        "LLM pairwise": 0.007718253223288896,
+        "hindsight": -0.036351937915279464
+      },
+      "mean_abs_rho": {
+        "co-movement": 0.09698708277504431,
+        "LLM latent": 0.026059746245467228,
+        "LLM label": 0.02192521861074982,
+        "LLM pairwise": 0.0023070684019360363,
+        "hindsight": 0.05033593350402022
+      },
+      "independent_logloss": 1.6674222093747493
+    },
+    "iran_israel": {
+      "n": 12,
+      "yes": 2,
+      "label": "Iran-US/Israel de-escalation and diplomatic resolution",
+      "scores": {
+        "co-movement": -0.040870838448297864,
+        "LLM latent": 0.006188260459670802,
+        "LLM label": 0.0017999435195301672,
+        "LLM pairwise": 0.17325996712268332,
+        "hindsight": 0.09479147193196824
+      },
+      "mean_abs_rho": {
+        "co-movement": 0.14093814372427368,
+        "LLM latent": 0.09834542587201739,
+        "LLM label": 0.08141852691440259,
+        "LLM pairwise": 0.1860934212679464,
+        "hindsight": 0.10947064816319063
+      },
+      "independent_logloss": 1.9155048518769275
+    },
+    "bank_q2_earnings": {
+      "n": 6,
+      "yes": 3,
+      "label": "Capital markets / macro strength in Q2",
+      "scores": {
+        "co-movement": -0.17236842536172725,
+        "LLM latent": 0.7678481324852435,
+        "LLM label": 0.7306979730666621,
+        "LLM pairwise": 1.0657808192305014,
+        "hindsight": 0.11206106661754411
+      },
+      "mean_abs_rho": {
+        "co-movement": 0.10333126438546257,
+        "LLM latent": 0.11208116236237305,
+        "LLM label": 0.1031815878168963,
+        "LLM pairwise": 0.16163465007300057,
+        "hindsight": 0.1175846634168432
+      },
+      "independent_logloss": 3.626637956718777
+    },
+    "russia_ukraine_battlefield": {
+      "n": 12,
+      "yes": 3,
+      "label": "Russian offensive momentum (July 2026)",
+      "scores": {
+        "co-movement": -1.0751350627480738,
+        "LLM latent": -0.277813428960175,
+        "LLM label": -0.21856763988746497,
+        "LLM pairwise": -0.17668487499671404,
+        "hindsight": -0.782062778282719
+      },
+      "mean_abs_rho": {
+        "co-movement": 0.10947042215452299,
+        "LLM latent": 0.08457342646959497,
+        "LLM label": 0.07099416374832765,
+        "LLM pairwise": 0.12932389735461736,
+        "hindsight": 0.12944289131925643
+      },
+      "independent_logloss": 7.690175311582785
+    },
+    "ai_and_tech": {
+      "n": 11,
+      "yes": 7,
+      "label": "AI release velocity",
+      "scores": {
+        "co-movement": 0.015042772651052694,
+        "LLM latent": -0.1935606779799519,
+        "LLM label": -0.2051261101417312,
+        "LLM pairwise": -0.09798455981441112,
+        "hindsight": -0.2257451625572129
+      },
+      "mean_abs_rho": {
+        "co-movement": 0.0811569114296265,
+        "LLM latent": 0.06117973805981871,
+        "LLM label": 0.06043131863197358,
+        "LLM pairwise": 0.08147133148979126,
+        "hindsight": 0.035487297355824114
+      },
+      "independent_logloss": 4.5132445036124835
+    },
+    "us_politics": {
+      "n": 12,
+      "yes": 4,
+      "label": "Trump administration assertiveness/success",
+      "scores": {
+        "co-movement": 0.23139713538754858,
+        "LLM latent": 0.13225105417226857,
+        "LLM label": 0.10614288903857982,
+        "LLM pairwise": 0.1159167043339755,
+        "hindsight": 0.23649876159579453
+      },
+      "mean_abs_rho": {
+        "co-movement": 0.17833503614388915,
+        "LLM latent": 0.024989338747372854,
+        "LLM label": 0.019949976388719513,
+        "LLM pairwise": 0.012490051282067666,
+        "hindsight": 0.07025234502822007
+      },
+      "independent_logloss": 6.145132527171586
+    },
+    "russia_ukraine_diplomacy": {
+      "n": 9,
+      "yes": 1,
+      "label": "Peace-process momentum",
+      "scores": {
+        "co-movement": 0.014983947173912049,
+        "LLM latent": 0.03629697276416732,
+        "LLM label": 0.02022050212611215,
+        "LLM pairwise": 0.26011169156810443,
+        "hindsight": 0.045559113160742126
+      },
+      "mean_abs_rho": {
+        "co-movement": 0.11840315455446669,
+        "LLM latent": 0.18287707229334457,
+        "LLM label": 0.1552088341175369,
+        "LLM pairwise": 0.5746676265137605,
+        "hindsight": 0.08206624320165733
+      },
+      "independent_logloss": 0.8601422204442881
+    }
+  },
+  "summary": {
+    "co-movement": {
+      "total": -1.0835629693822653,
+      "per_cluster_mean": -0.13544537117278316,
+      "boot95": [
+        -0.4292756200026631,
+        0.057064910427307686
+      ],
+      "clusters_positive": 3,
+      "cov_slope": -0.19283846971062707,
+      "cov_slope_se": 0.5023656063374479
+    },
+    "LLM latent": {
+      "total": 0.4435630690960284,
+      "per_cluster_mean": 0.05544538363700355,
+      "boot95": [
+        -0.1175843344091436,
+        0.2868077418736935
+      ],
+      "clusters_positive": 4,
+      "cov_slope": 3.234252282440403,
+      "cov_slope_se": 2.570719265939369
+    },
+    "LLM label": {
+      "total": 0.45623816850758514,
+      "per_cluster_mean": 0.05702977106344814,
+      "boot95": [
+        -0.10189945191599646,
+        0.27217962354048403
+      ],
+      "clusters_positive": 5,
+      "cov_slope": 4.016142045836722,
+      "cov_slope_se": 2.8345792847569338
+    },
+    "LLM pairwise": {
+      "total": 1.7220316057189478,
+      "per_cluster_mean": 0.21525395071486847,
+      "boot95": [
+        -0.007228365678253024,
+        0.4919889908424412
+      ],
+      "clusters_positive": 6,
+      "cov_slope": 1.237245326133001,
+      "cov_slope_se": 0.8249002807175486
+    },
+    "hindsight": {
+      "total": -0.5473224913348421,
+      "per_cluster_mean": -0.06841531141685527,
+      "boot95": [
+        -0.3051489822043655,
+        0.09897196037910656
+      ],
+      "clusters_positive": 5,
+      "cov_slope": 0.008272555922657838,
+      "cov_slope_se": 0.6344793309675215
+    }
+  },
+  "agreement": {
+    "world_cup": {
+      "latent_vs_label_loading_corr": 0.9753721295591502,
+      "latent_vs_label_sign_agreement": 1.0,
+      "latent_vs_pairwise_rho_corr": 0.30571220259799164,
+      "comovement_vs_hindsight_rho_corr": -0.03562833430171227,
+      "loadings_A": [
+        -0.025,
+        0.157,
+        0.383,
+        -0.436,
+        -0.051,
+        0.0,
+        0.155,
+        0.366,
+        -0.071,
+        -0.075,
+        -0.2,
+        -0.178
+      ],
+      "loadings_C": [
+        -0.025,
+        0.157,
+        0.339,
+        -0.424,
+        -0.0,
+        0.0,
+        0.077,
+        0.321,
+        -0.0,
+        -0.037,
+        -0.248,
+        -0.276
+      ]
+    },
+    "world_politics": {
+      "latent_vs_label_loading_corr": 0.8963268168658439,
+      "latent_vs_label_sign_agreement": 1.0,
+      "latent_vs_pairwise_rho_corr": 0.3825207258094503,
+      "comovement_vs_hindsight_rho_corr": 0.1824499511652488,
+      "loadings_A": [
+        0.277,
+        0.19,
+        -0.072,
+        0.25,
+        -0.082,
+        0.251,
+        -0.08,
+        0.113
+      ],
+      "loadings_C": [
+        0.277,
+        0.19,
+        -0.072,
+        0.25,
+        -0.082,
+        0.062,
+        -0.107,
+        0.169
+      ]
+    },
+    "iran_israel": {
+      "latent_vs_label_loading_corr": 0.9884611000273686,
+      "latent_vs_label_sign_agreement": 1.0,
+      "latent_vs_pairwise_rho_corr": 0.8006866466589406,
+      "comovement_vs_hindsight_rho_corr": -0.11710857561006933,
+      "loadings_A": [
+        0.487,
+        0.445,
+        -0.386,
+        -0.407,
+        0.225,
+        0.197,
+        0.261,
+        0.319,
+        0.261,
+        0.316,
+        0.461,
+        0.026
+      ],
+      "loadings_C": [
+        0.487,
+        0.445,
+        -0.238,
+        -0.351,
+        0.225,
+        0.131,
+        0.261,
+        0.319,
+        0.261,
+        0.246,
+        0.466,
+        0.026
+      ]
+    },
+    "bank_q2_earnings": {
+      "latent_vs_label_loading_corr": 0.9992528670699344,
+      "latent_vs_label_sign_agreement": 1.0,
+      "latent_vs_pairwise_rho_corr": 0.9299367053138364,
+      "comovement_vs_hindsight_rho_corr": -0.01498326919881861,
+      "loadings_A": [
+        0.514,
+        0.508,
+        0.505,
+        -0.272,
+        -0.0,
+        -0.272
+      ],
+      "loadings_C": [
+        0.474,
+        0.448,
+        0.466,
+        -0.295,
+        -0.0,
+        -0.295
+      ]
+    },
+    "russia_ukraine_battlefield": {
+      "latent_vs_label_loading_corr": 0.8350449087850207,
+      "latent_vs_label_sign_agreement": 1.0,
+      "latent_vs_pairwise_rho_corr": 0.2742516718346941,
+      "comovement_vs_hindsight_rho_corr": -0.0027565336668335196,
+      "loadings_A": [
+        0.444,
+        0.18,
+        0.424,
+        0.288,
+        0.276,
+        0.265,
+        0.247,
+        0.252,
+        0.228,
+        0.299,
+        0.29,
+        0.308
+      ],
+      "loadings_C": [
+        0.36,
+        0.119,
+        0.324,
+        0.277,
+        0.266,
+        0.242,
+        0.283,
+        0.237,
+        0.27,
+        0.272,
+        0.272,
+        0.281
+      ]
+    },
+    "ai_and_tech": {
+      "latent_vs_label_loading_corr": 0.9592838713705201,
+      "latent_vs_label_sign_agreement": 0.9,
+      "latent_vs_pairwise_rho_corr": 0.47181162689154105,
+      "comovement_vs_hindsight_rho_corr": -0.31243922236558946,
+      "loadings_A": [
+        0.354,
+        0.158,
+        0.228,
+        0.37,
+        0.075,
+        0.342,
+        0.298,
+        0.292,
+        0.31,
+        0.294,
+        0.025
+      ],
+      "loadings_C": [
+        0.368,
+        0.079,
+        0.321,
+        0.37,
+        -0.0,
+        0.35,
+        0.298,
+        0.303,
+        0.321,
+        0.339,
+        -0.0
+      ]
+    },
+    "us_politics": {
+      "latent_vs_label_loading_corr": 0.8827147605609588,
+      "latent_vs_label_sign_agreement": 1.0,
+      "latent_vs_pairwise_rho_corr": 0.27697234200496207,
+      "comovement_vs_hindsight_rho_corr": 0.04270442897292254,
+      "loadings_A": [
+        0.338,
+        0.0,
+        0.118,
+        -0.211,
+        -0.207,
+        0.224,
+        -0.0,
+        -0.0,
+        0.409,
+        -0.0,
+        0.228,
+        -0.224
+      ],
+      "loadings_C": [
+        0.292,
+        0.0,
+        0.235,
+        -0.324,
+        -0.261,
+        0.11,
+        -0.04,
+        -0.0,
+        0.107,
+        -0.0,
+        0.152,
+        -0.224
+      ]
+    },
+    "russia_ukraine_diplomacy": {
+      "latent_vs_label_loading_corr": 0.8368271312682058,
+      "latent_vs_label_sign_agreement": 1.0,
+      "latent_vs_pairwise_rho_corr": 0.19158978055603063,
+      "comovement_vs_hindsight_rho_corr": -0.2070412130535056,
+      "loadings_A": [
+        0.488,
+        0.471,
+        0.374,
+        0.403,
+        0.404,
+        0.393,
+        0.439,
+        0.393,
+        0.486
+      ],
+      "loadings_C": [
+        0.484,
+        0.416,
+        0.309,
+        0.345,
+        0.368,
+        0.387,
+        0.345,
+        0.387,
+        0.513
+      ]
+    }
+  }
+}
