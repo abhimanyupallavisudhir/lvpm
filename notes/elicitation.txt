@@ -1,0 +1,21 @@
+[1] max E[S_tau] vs -min L_tau - tau*sum H(Y_i), |X| in {2,3}, tau in {.5,.8,.95}: max discrepancy 4.5e-12 bits
+    same identity for a two-level latent DAG, tau in {.6,.9}: max discrepancy 5.3e-11 bits
+[2] Expected tempered score of each report (bits, relative to the best report per column)
+                              S_1.0      S_0.999    S_0.99     S_0.9      
+    true 2-state latent       +0.00000   -0.00016   -0.00174   -0.02258   
+    optimum at tau=0.999      -0.00000   +0.00000   -0.00018   -0.00696   
+    optimum at tau=0.99       -0.00007   -0.00005   +0.00000   -0.00466   
+    optimum at tau=0.9        -0.00578   -0.00564   -0.00459   +0.00000   
+    true 2-state latent        I(X;Y) 0.3851  log-score regret on P(Y) -0.0e+00
+    optimum at tau=0.999       I(X;Y) 0.2285  log-score regret on P(Y) 7.6e-07
+    optimum at tau=0.99        I(X;Y) 0.2019  log-score regret on P(Y) 7.3e-05
+    optimum at tau=0.9         I(X;Y) 0.0859  log-score regret on P(Y) 5.8e-03
+[3] Hierarchical DAG (X -> Z1,Z2,Z3 -> two indicators each), tempered EM at tau=1, 20 starts
+    20/20 reach the best score; their max |param - truth| (up to relabelling): 1.3e-07
+    tau=0.95: I(H;Y) 1.3317 (truth 1.4597),  log-score regret on P(Y) 0.0025
+    tau=0.8: I(H;Y) 0.8056 (truth 1.4597),  log-score regret on P(Y) 0.0759
+[4] IRT market, Gaussian P(Y): range of P(Y > 1) (Gaussian value 0.156) over all latent distributions
+    giving the identical indicator joint, i.e. identical payouts to every trader:
+     3 indicators: [0.040, 0.317]
+     6 indicators: [0.078, 0.253]
+    10 indicators: [0.087, 0.237]

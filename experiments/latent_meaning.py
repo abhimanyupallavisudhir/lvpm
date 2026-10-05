@@ -11,7 +11,6 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.colors import LinearSegmentedColormap
 
 from lvpm.latent_bottleneck import (bottleneck_curve, em, entropy, log_loss,
                                     model_joint, posterior, stats)
@@ -21,8 +20,6 @@ FIG.mkdir(parents=True, exist_ok=True)
 
 SURFACE, INK, INK2, GRID = "#fcfcfb", "#0b0b0b", "#52514e", "#e4e3df"
 BLUE, ORANGE = "#2a78d6", "#eb6834"
-SEQ = LinearSegmentedColormap.from_list(
-    "blue", ["#cde2fb", "#86b6ef", "#3987e5", "#256abf", "#184f95", "#0d366b"])
 plt.rcParams.update({
     "figure.facecolor": SURFACE, "axes.facecolor": SURFACE, "savefig.facecolor": SURFACE,
     "axes.edgecolor": GRID, "axes.labelcolor": INK2, "xtick.color": INK2,
@@ -175,38 +172,6 @@ def views():
     truth = np.concatenate([PI, A[:, 1], B[:, 1], C[:, 1]])
     print(f"    EM from 200 random starts: {len(good)} reach the optimum; max |param - truth| among them: "
           f"{max(np.abs(x - truth).max() for x in good):.1e}")
-
-    # Figure: the same fiber, coloured two ways.
-    fig, axes = plt.subplots(1, 2, figsize=(10.2, 4.6), sharey=True)
-    for ax, val, title, lab in (
-            (axes[0], rates, "Two views: all of these score identically",
-             "information cost  I(X; Y1,Y2)  [bits]"),
-            (axes[1], np.log10(np.maximum(excess3, 1e-7)), "Add a third view: one survives",
-             "log10 best log-score regret on P(Y1,Y2,Y3)  [bits]")):
-        img = np.full(ok.shape, np.nan)
-        img[ok] = val
-        cmap = SEQ if ax is axes[0] else SEQ.reversed()
-        im = ax.imshow(img.T, origin="lower", extent=[0, 1, 0, 1], cmap=cmap, aspect="equal")
-        cb = fig.colorbar(im, ax=ax, fraction=0.046, pad=0.03)
-        cb.outline.set_visible(False)
-        cb.set_label(lab, color=INK2, fontsize=8.5)
-        cb.ax.tick_params(labelsize=8)
-        ax.plot(0.2, 0.85, "o", ms=9, color=ORANGE, mec=SURFACE, mew=2)
-        ax.annotate("true X", (0.2, 0.85), (0.212, 0.858), fontsize=9, color=INK)
-        ax.plot(0, 1, "s", ms=8, color=INK2, mec=SURFACE, mew=2, clip_on=False)
-        ax.annotate("X = Y1", (0, 1), (0.012, 0.99), fontsize=9, color=INK, va="top")
-        ax.set_xlim(0, 0.32)
-        ax.set_ylim(0.72, 1.0)
-        ax.set_title(title)
-        ax.set_xlabel("P(Y1=1 | X=0)")
-        ax.spines[["left", "bottom"]].set_visible(False)
-    axes[0].plot(g[idx[w, 0]], g[idx[w, 1]], "D", ms=8, color=BLUE, mec=SURFACE, mew=2)
-    axes[0].annotate("Wyner-minimal", (g[idx[w, 0]], g[idx[w, 1]]),
-                     (g[idx[w, 0]] + 0.012, g[idx[w, 1]] - 0.012), fontsize=9, color=INK)
-    axes[0].set_ylabel("P(Y1=1 | X=1)")
-    fig.tight_layout()
-    fig.savefig(FIG / "views_fiber.png", dpi=180)
-    plt.close(fig)
 
 
 # ------------------------------------------- 4. scoring an instance's latent

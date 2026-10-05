@@ -1,266 +1,322 @@
 # What gives a latent belief meaning?
 
-A probability for an observable statement gets its meaning from a proper scoring
-rule applied to the outcome. A belief about a latent $X$ never meets an outcome.
-So what makes one latent $X$ for observables $Y_1, Y_2$ better than another?
+A probability for an observable gets its meaning from a proper scoring rule
+applied to the outcome. A belief about a latent variable never meets an
+outcome. So what makes one latent structure for observables $Y_1,\dots,Y_n$
+better than another, and how can latent beliefs be elicited or traded?
 
-## Short answer
+## Summary
 
-1. **A scoring rule only sees the observable marginal.** A latent model
-   $(P(X), P(Y_1|X), P(Y_2|X))$ is scored only through
-   $m(y)=\sum_x P(x)\prod_i P(y_i|x)$. Relabelings of $X$, and with two views a
-   whole continuum of non-isomorphic latents, score identically. That includes
-   $X=Y_1$.
-2. **Fit is a scoring rule on the job a latent does: screening off.** If $X$ is
-   coupled to $Y$, the log-score regret of the conditional-independence (CI)
-   model built from it is exactly the dependence $X$ leaves unexplained:
-   $\mathrm{TC}(Y|X)=\sum_i H(Y_i|X)-H(Y|X)$. With two views this is
-   $I(Y_1;Y_2|X)$.
-3. **Choosing among the fits is your information-bottleneck intuition, with the
-   Markov chain reversed.** The right objective is the *latent bottleneck*
-   $$\min_{p(x|y)}\; I(X;Y_1,\dots,Y_n)\;-\;\tau\sum_i I(X;Y_i),\qquad \tau\in[0,1).$$
-   Its $\tau\to1$ limit is **Wyner's common information**. Restricting it to $X$
-   computed from $Y_1$ ($X - Y_1 - Y_2$) gives exactly the **information
-   bottleneck**. At $\tau=1$ it is CorEx and maximum likelihood. It is solved by
-   tempered EM.
-4. **That choice is a convention, not something scoring forces.** With two
-   views, the minimal-information latent is typically not the true one (10 of
-   10 random models), and nothing observable can tell them apart.
-5. **Real meaning comes from triangulation.** With three or more conditionally
-   independent views, the *fewest-states* latent is generically unique up to
-   relabeling (Kruskal). Its parameters become functions of $P(Y)$, and the log
-   score of the implied joint is strictly proper for them. The
-   *least-information* (Wyner) latent can still differ when the views barely
-   identify $X$. Adding views made the two notions of parsimony agree in every
-   case tested. With
-   infinitely many views, $X$ becomes a function of the observables (de
-   Finetti), and no convention is needed at all.
-6. **A belief about one unit's latent value** is scored through a held-out view
-   it predicts. This is strictly proper exactly when the rows of that view's
-   likelihood $P(Y_p|X)$ are linearly independent.
+- **A latent means what it does to predictions of observables.** A scoring rule
+  can reward nothing else. Latent beliefs are pinned down exactly as far as the
+  observable distribution pins them down (§1, §5).
+- **Two quantities grade a latent.** *Unexplained dependence*: how far the
+  observables are from being independent given the latent. *Information cost*:
+  how much the latent knows about the observables. Total correlation alone
+  accepts $X=Y$. The cost term is what rules that out (§2).
+- **The latent bottleneck** trades the two off. The information bottleneck is
+  the special case where the latent must be computable from one observable
+  (§3).
+- **What you get from it (§4):**
+  - **An algorithm.** Tempered EM fits any latent DAG to $P(Y)$.
+  - **An elicitation rule.** The *tempered log score*
+    $S_\tau(\theta;y)=\log\sum_h \prod_{v\in H}p_\theta(v|\mathrm{pa}_v)\prod_{v\in Y}p_\theta(v|\mathrm{pa}_v)^{\tau}$
+    is a scoring rule on one realized outcome. Its expected value is maximized
+    exactly by the bottleneck-optimal latent model. At $\tau=1$ it is the
+    ordinary log score.
+- **The LVPM proposal** (log market scoring rule on the implied joint) is the
+  $\tau=1$ case (§6). It is incentive-compatible, and it prices latent
+  parameters exactly when the market's model family identifies them. It does
+  not price free-form latent distributions, factor rotations, or extra latent
+  classes. $S_\tau$ is a drop-in fix for the last one.
 
-Each claim below is checked numerically in
-[`experiments/latent_meaning.py`](../experiments/latent_meaning.py), with output
-in [`results.txt`](results.txt), and in
-[`experiments/wyner_vs_true.py`](../experiments/wyner_vs_true.py), with output in
+Code: [`lvpm/dag.py`](../lvpm/dag.py) and
+[`lvpm/latent_bottleneck.py`](../lvpm/latent_bottleneck.py). Every number below
+is reproduced by `experiments/*.py`, with outputs in
+[`elicitation.txt`](elicitation.txt), [`results.txt`](results.txt) and
 [`wyner_vs_true.txt`](wyner_vs_true.txt).
 
 ---
 
-## 1. Scoring sees only the fiber
+## 1. Setup: scoring sees only the implied distribution of $Y$
 
-Fix the observable joint $p(y_1,y_2)$. The models that reproduce it exactly
-form a *fiber*. Every point on the fiber gets the same expected score under any
-proper scoring rule, because the rule only evaluates $m(y)$.
+A latent structure is a DAG $G$ over hidden nodes $H$ and observed nodes $Y$. A
+latent model $\theta$ is one conditional table $p_\theta(v\mid\mathrm{pa}_v)$ per
+node. Examples:
+- $X\to Y_i$: latent class analysis, or IRT when $X$ is continuous.
+- $X\to Z_j\to Y_i$: a hierarchical model.
 
-For two binary views and a two-state $X$, the fiber is two-dimensional. Here
-$P(Y_1,Y_2)=A\,\mathrm{diag}(\pi)\,B^\top$ is a nonnegative matrix factorization,
-which is not unique.
+The model predicts $m_\theta(y)=\sum_h p_\theta(h,y)$. Under any proper scoring
+rule, the expected score of $\theta$ depends only on $m_\theta$. Two kinds of
+slack follow:
 
-![fiber](figures/views_fiber.png)
+- **Gauge.** Relabeling or reparametrizing a hidden node changes nothing. A
+  latent value means "the state with these conditionals". This is harmless,
+  and information quantities are invariant under it.
+- **Non-identification.** Different latent models can predict the same
+  $m_\theta$, for example $X=Y$ in the single-latent case. Such models are
+  rewarded identically, so a belief that distinguishes them has no observable
+  content. §5 covers when this happens.
 
-The left panel shows 7,695 two-state models on a grid, all with log-score
-regret 0 (up to $4\times10^{-16}$) on $P(Y_1,Y_2)$. They disagree about latent
-facts. Across the fiber, the posterior $P(X{=}1\mid y_1{=}1,y_2{=}1)$ ranges
-over $[0.83, 1.00]$; the true value is $0.95$. The corner $X=Y_1$ is on the
-fiber. So "the agent's credence that $X=1$" has no observable content here,
-beyond "some point on this fiber".
+## 2. Unexplained dependence and information cost
 
-There are two separate sources of slack:
+Let a latent be coupled to the observables, $p(h,y)=p(y)\,q(h\mid y)$, where
+$q$ is any "encoder". Two quantities matter.
 
-- **Gauge.** Relabeling $X$ changes nothing. A latent value means only "the
-  state whose conditionals are these" (a Ramsey-sentence or functional-role
-  semantics). Information quantities are invariant under relabeling, which is
-  one reason they are the right currency for comparing latents.
-- **Non-identifiability.** Distinct, non-isomorphic latents fit equally well.
-  This is the real problem.
+**Unexplained dependence** is the gap to the best model with structure $G$:
+$$D_G=\mathrm{KL}\Big(p(h,y)\,\Big\|\,\textstyle\prod_v p(v\mid\mathrm{pa}_v)\Big)\;\ge 0,$$
+where the conditionals are those of $p(h,y)$. For one latent $X$ with
+$Y_1,\dots,Y_n$ as children, this is the conditional total correlation
+$\mathrm{TC}(Y|X)=\sum_i H(Y_i|X)-H(Y|X)$. It is zero iff the $Y_i$ are
+independent given $X$. It equals the log-score regret, on the complete data
+$(h,y)$, of the best model with structure $G$, and it upper-bounds the regret
+on $Y$ alone. This is the scoring rule's half of the answer.
 
-## 2. Fit = how much dependence $X$ screens off
+**Information cost** is $I(H;Y)$: how many bits the latent carries about the
+observables.
 
-Let $X$ be coupled to the observables by $p(x,y)=p(y)\,q(x|y)$. The CI model it
-induces is $p(x)\prod_i p(y_i|x)$. Its log-score regret on the complete data is
+On your question 1a: $D_G=0$ admits trivial latents. $X=(Y_1,\dots,Y_n)$
+explains every dependence perfectly, because each $Y_i$ is a deterministic
+function of it. Total correlation alone therefore cannot prefer a real
+latent. The cost $I(H;Y)$ is what penalizes such a latent: it costs $H(Y)$ bits,
+the maximum. A good latent explains a lot of dependence with few bits.
 
-$$\mathrm{KL}\Big(p(x,y)\,\Big\|\,p(x)\textstyle\prod_i p(y_i|x)\Big)=\sum_i H(Y_i|X)-H(Y|X)=\mathrm{TC}(Y\mid X).$$
-
-By data processing, the regret on the observables alone is at most this. So the
-scoring rule's part of the answer is: **$X$ is good to the extent that the views
-are independent given $X$.** That is Reichenbach's common-cause principle, made
-quantitative.
-
-This cannot be the whole answer. $X=(Y_1,Y_2)$ and $X=Y_1$ both have zero
-residual dependence. A cost on $X$ is needed.
+My earlier phrase "choosing among fits" was imprecise. It describes only the
+limiting case: require $D_G=0$ exactly, then minimize cost. That is Wyner's
+common information. The general criterion below is a *trade-off*. Its optimum
+usually leaves a little dependence unexplained, in exchange for a much cheaper
+latent. In the hierarchical example of §4, $\tau=0.8$ keeps 55% of the true
+latents' information and loses only 0.076 bits of log score.
 
 ## 3. The latent bottleneck
 
-Trade residual dependence against the information $X$ carries:
+Trade the two off with a weight $\tau\in[0,1)$. For a single latent:
 
-$$\mathcal L_\beta(X)=I(X;Y)+\beta\,\mathrm{TC}(Y|X).$$
+$$\mathcal L_\tau(X)=I(X;Y)-\tau\sum_i I(X;Y_i)\;\;\equiv\;\;\frac{I(X;Y)+\beta\,\mathrm{TC}(Y|X)}{1+\beta},\qquad \beta=\tfrac{\tau}{1-\tau},$$
 
-Substituting $\mathrm{TC}(Y|X)=\sum_i H(Y_i|X)-H(Y)+I(X;Y)$ and dividing by
-$1+\beta$ gives, up to a constant,
+where $\equiv$ means equal up to a constant. In words: compress all the
+observables jointly, while staying informative about each one separately.
 
-$$\boxed{\;\mathcal L_\tau(X)=I(X;Y)-\tau\sum_i I(X;Y_i),\qquad \tau=\tfrac{\beta}{1+\beta}\in[0,1)\;}$$
+For a general DAG, the objective that §4's scoring rule elicits is
+$I(H;Y)+(D_H+\tau D_Y)/(1-\tau)$. Here $D_G=D_H+D_Y$ splits the violation into
+the part among hidden nodes and the rest.
 
-In words: **compress the whole observable vector, while staying informative
-about each view separately.** Known objects are special cases:
+Known special cases:
 
-| Special case | What it is |
+| Special case | Known as |
 |---|---|
-| $\tau\to1$ (i.e. $\mathrm{TC}(Y\mid X)=0$, then minimal $I(X;Y)$) | **Wyner's common information** $C(Y_1;\dots;Y_n)$ |
-| $n=2$, $X$ restricted to $X-Y_1-Y_2$ | **Information bottleneck** $I(Y_1;X)-\beta I(X;Y_2)$, because under that chain $I(X;Y)=I(X;Y_1)$ and $I(Y_1;Y_2\mid X)=I(Y_1;Y_2)-I(X;Y_2)$ |
-| $\tau=1$, $\lvert X\rvert$ bounded | CorEx (maximize $\mathrm{TC}(Y)-\mathrm{TC}(Y\mid X)$), i.e. maximum-likelihood latent class analysis |
-| relaxed constraint form | relaxed Wyner common information (Gastpar & Sula) |
+| $\tau\to1$: exact fit ($D_G=0$), then least information | Wyner's common information |
+| $\tau=1$, number of latent states fixed | maximum likelihood (EM), CorEx |
+| two observables, encoder restricted to read only $Y_1$ | the information bottleneck |
 
-**Algorithm.** Bound each $p(x)$ and $p(y_i|x)$ by a free distribution, then
-alternate. This gives a monotone tempered EM:
-$$q(x|y)\;\propto\;p(x)\prod_i p(y_i|x)^{\tau}.$$
-At $\tau=1$ it is ordinary EM. Lower $\tau$ is a higher "temperature" that
-penalizes information in $X$. See
-[`lvpm/latent_bottleneck.py`](../lvpm/latent_bottleneck.py).
+### How it differs from the information bottleneck (question 1b)
 
-**Why $I(X;Y)$ is the right cost.** Wyner's operational meaning: $C(Y_1;Y_2)$ is
-the minimum rate of shared randomness that lets two separated parties, each
-seeing only the shared message, generate $Y_1$ and $Y_2$ with the right joint.
-It is the smallest common cause sufficient to produce the correlation. Bounds:
-$I(Y_1;Y_2)\le C\le\min\big(H(T_1^*),H(T_2^*)\big)$, where $T_i^*$ is the minimal
-sufficient statistic of $Y_i$ for the other view. That upper bound is the
-information-bottleneck endpoint.
+In the information bottleneck you are handed $Y_1$ and want to predict $Y_2$.
+You build a summary $T$ of $Y_1$: a (possibly randomized) function of $Y_1$
+alone, an encoder $p(t\mid y_1)$. "$T - Y_1 - Y_2$" is shorthand for exactly
+this: $T$ is computed by looking only at $Y_1$. So once you know $Y_1$, $T$
+adds nothing about $Y_2$. Example: $Y_1$ is an image, $Y_2$ its label, and $T$
+is a feature vector extracted from the image.
 
-**Why the arrows matter.** The information bottleneck asks for a
-*representation* computed from data ($X$ read off $Y_1$). A latent is a *cause*
-that need not be computable from any single view. The cause is strictly
-cheaper. For the doubly symmetric binary source (flip probability $0.1$), the
-cheapest exact explanation computable from $Y_1$ is $Y_1$ itself (1 bit). The
-free latent needs only $C=0.873$ bits. Numerically this matches Wyner's closed
-form $1+h(p)-2h(a)$ to four decimals, and the latent curve lies below the
-information-bottleneck curve at every point.
+A latent is not computed from any one observable. It is a hidden common cause,
+and you only ever infer it. Example: $X$ is whether a patient has a disease,
+and $Y_1,Y_2$ are two noisy tests. Test 1 alone does not determine $X$, and
+test 2 carries independent evidence about it. The encoder $q(x\mid y_1,y_2)$
+must look at both.
+
+The precise relation: take the latent bottleneck and allow only encoders that
+ignore $Y_2$, i.e. $q(x\mid y_1,y_2)=q(x\mid y_1)$. Under that restriction,
+$I(X;Y_1,Y_2)=I(X;Y_1)$ and $\mathrm{TC}(Y|X)=I(Y_1;Y_2)-I(X;Y_2)$. The objective
+becomes, up to a constant, $I(Y_1;X)-\beta I(X;Y_2)$, which is exactly the
+information-bottleneck objective. **The information bottleneck is the latent
+bottleneck restricted to latents readable from one side.** Lifting that
+restriction makes the latent strictly cheaper.
+
+In the example below, the observables are two bits that agree 90% of the time,
+each one a noisy copy of a hidden bit. The cheapest exact explanation computable
+from $Y_1$ is $Y_1$ itself (1 bit). A free latent needs only 0.873 bits, which
+is Wyner's closed form, reproduced numerically. The free curve is below the
+information-bottleneck curve everywhere.
 
 ![bottleneck](figures/bottleneck_dsbs.png)
 
-## 4. But this is a convention
+## 4. What this gives you
 
-On the two-view fiber above, $I(X;Y)$ ranges from 0.483 to 0.977 bits. The
-Wyner-minimal two-state latent ($0.483$, blue diamond) is **not** the true one
-($0.495$). Both are perfectly scored. This is typical: in 10 of 10 random
-two-view models, an exact solve finds a CI latent cheaper than the true one. Picking the minimal latent is a
-parsimony prior, much like choosing a minimal sufficient statistic. It is
-defensible (operational meaning, MDL), but it is not something the observables
-enforce. With two views, latent beliefs beyond the fiber are meaningful only
-relative to such a convention.
+### 4a. An algorithm (question 3a)
 
-## 5. Where real meaning comes from: more views
+**Input:** $P(Y)$ (or an empirical distribution from data), a DAG, and a
+cardinality for each hidden node.
+**Output:** all conditional tables.
 
-**Three views.** Kruskal's theorem (1977), extended to latent class models by
-Allman, Matias & Rhodes (2009), says the following. If $\sum_x P(x)\prod_{i=1}^3
-P(y_i|x)$ has generic conditionals and the Kruskal ranks of the three
-conditional matrices satisfy $k_1+k_2+k_3\ge2r+2$, then the rank-$r$
-decomposition is unique up to relabeling. Consequences:
+The method is tempered EM. Alternate:
+1. **E-step:** $q(h\mid y)\propto\prod_{v\in H}p(v\mid\mathrm{pa}_v)\prod_{v\in Y}p(v\mid\mathrm{pa}_v)^{\tau}$.
+2. **M-step:** set every table to the conditionals of $p(y)\,q(h\mid y)$.
 
-- The latent parameters are functions of $P(Y)$.
-- Log score is strictly proper for the joint, and the parameter-to-joint map is
-  injective modulo relabeling. So **scoring the implied joint is strictly
-  proper for the latent parameters.** A latent belief now has observable
-  content.
+Each step increases $\mathbb E\,S_\tau$, and its fixed points are the latent
+bottleneck's stationary points. At $\tau=1$ this is ordinary EM.
+Implementation: `LatentDAG.fit`.
 
-The right panel of the figure takes the same two-view fiber and adds a third
-view $Y_3$, optimizing $P(Y_3|X)$ separately for each point. Only the true
-latent reaches zero regret. Every model more than $0.05$ away has regret at
-least $2\times10^{-3}$ bits, and the two-view Wyner choice is refuted at
-$0.0079$ bits. EM from 200 random starts recovers the true parameters to
-$1.4\times10^{-8}$.
+Checks:
+- **Single latent:** the maximized $\mathbb E\,S_\tau$ equals
+  $-\min\mathcal L_\tau-\tau\sum_i H(Y_i)$ to $5\times10^{-12}$ bits. The
+  general-DAG identity holds to $5\times10^{-11}$ bits.
+- **Hierarchical model,** $X\to Z_1,Z_2,Z_3$, each with two binary indicators,
+  at $\tau=1$: all 20 random starts recover every table to $1.3\times10^{-7}$,
+  up to relabeling.
+- **Lower $\tau$ compresses:** $I(H;Y)$ falls from 1.46 (the true latents) to
+  1.33 at $\tau=0.95$ and to 0.81 at $\tau=0.8$. The log-score regret on $P(Y)$
+  is 0.0025 and 0.076 bits.
 
-Parsimony is still needed: $X=(Y_1,Y_2,Y_3)$ is also a CI latent. What the
-third view buys is that the *fewest-states* solution becomes unique. The two
-parsimony conventions do not always agree, though. I computed the Wyner-minimal
-latent exactly (SLSQP with the constraint that the model reproduces $P(Y)$;
-violation $<10^{-9}$, best of many restarts) and compared it with the truth.
-The search is local. So "cheaper than truth" is certified, because an exact
-cheaper latent was exhibited. "Equal to truth" means no cheaper latent was
-found.
+Limitations:
+- The objective is nonconvex, so use restarts.
+- The implementation enumerates the full joint table, so it handles small
+  discrete models only. Continuous latents (IRT, factor analysis) use the same
+  E/M structure with parametric M-steps; I did not implement them.
+- "Computes all these distributions" holds only when the structure is
+  identified (§5). Otherwise, at $\tau=1$ it returns *a* model that predicts
+  $P(Y)$, and at $\tau<1$ the bottleneck-optimal one.
 
-| Setting | Wyner-minimal latent vs true latent |
-|---|---|
-| 2 views, 10 random models | cheaper than truth in 10/10 (gap 0.014–0.277 bits) |
-| 3 ternary views, 6 random models | **equal to truth** in 6/6 |
-| 3 binary views, 2-state truth (just-identified: 7 parameters, 7 degrees of freedom) | cheaper than truth in 4/4 random models (gap up to 0.165 bits), using a latent with **more states** (3 or 4) |
-| two of those models plus a 4th binary view | **equal to truth** at every $\lvert X\rvert\le4$ tested |
+### 4b. Eliciting latent beliefs (question 3b)
 
-So at the margin of identifiability, "fewest states" and "fewest bits" name
-different latents. Both are exact, and both are perfectly scored. Adding views shrinks
-the fiber, and in every case tested the conventions then agree. This is the
-precise sense in which more observables give a latent belief more meaning:
-they remove the dependence on convention. (That the conventions agree in
-general under rich enough views is a conjecture suggested by these runs, not a
-theorem I know of.)
+**Claim.** Pay an agent who reports a latent model $\theta$ the amount
+$S_\tau(\theta;y)$ on the realized observables $y$. If the agent believes $Y\sim
+p$, their expected payment is maximized exactly by the latent-bottleneck
+optimum for $p$.
 
-**Infinitely many views.** For exchangeable $Y_1,Y_2,\dots$, de Finetti's latent
-$\theta$ is the limiting empirical distribution, a measurable function of the
-observables. $H(X|Y_{1..n})\to0$, so a belief about $X$ becomes a belief about an
-(asymptotic) observable.
+*Proof.* $\log\sum_h a(h)=\max_q\mathbb E_q[\log a(h)-\log q(h)]$ (the "ELBO"
+form). So $\mathbb E_p S_\tau(\theta)$ is a maximum over encoders $q$ of
+$\mathbb E[\sum_{v\in H}\log p_\theta(v|\mathrm{pa}_v)+\tau\sum_{v\in Y}\log
+p_\theta(v|\mathrm{pa}_v)-\log q]$. For a fixed $q$, the best $\theta$ is the
+coupling's own conditionals. Substituting gives
+$\max_\theta\mathbb E_pS_\tau=-\min_q\big[(1-\tau)I(H;Y)+D_H+\tau D_Y\big]-\tau
+H(Y)$. For a single latent this is $-\min\mathcal L_\tau-\tau\sum_iH(Y_i)$. ∎
 
-The resulting spectrum of meaning:
+Properties:
+- It needs one realization and no knowledge of $p$.
+- It is invariant under relabeling.
+- At $\tau=1$ it is the log score of $m_\theta$.
+- $S_\tau\le0$, so a market maker's loss is bounded exactly as for the log
+  market scoring rule.
 
-| Views | What the observables pin down |
-|---|---|
-| 2 | a fiber, plus a gauge choice. A convention (e.g. Wyner) is needed to name "the" latent |
-| 3 (generic) | the fewest-states latent, up to relabeling, which is strictly scorable. Other conventions may still disagree |
-| richer or more views | conventions agree in every case tested. The latent is effectively determined |
-| $\infty$ | $X$ itself, as a function of the observables |
+The incentives are visible in a three-binary-indicator case where the true
+latent has 2 states but a 3-state latent explains the data with fewer bits.
+Expected score is relative to the best report in each column; rows are reports
+and columns are scoring rules:
 
-## 6. Beliefs about one unit's latent value
+| report | $I(X;Y)$ | $S_1$ | $S_{.999}$ | $S_{.99}$ | $S_{.9}$ |
+|---|---|---|---|---|---|
+| true 2-state latent | 0.385 | **0** | −0.00016 | −0.0017 | −0.023 |
+| optimum at τ=0.999 | 0.229 | **0** | **0** | −0.00018 | −0.007 |
+| optimum at τ=0.99 | 0.202 | −0.00007 | −0.00005 | **0** | −0.005 |
+| optimum at τ=0.9 | 0.086 | −0.0058 | −0.0056 | −0.0046 | **0** |
 
-"This patient has the disease" is a belief about one unit's $X$, i.e. a
-posterior $q(x)$ after seeing that unit's $y_1,y_2$. Score it on a held-out
-probe view $Y_p$ whose likelihood $L=P(Y_p|X)$ is fixed, for example identified
-at the population level as in §5. Use
+Each rule pays most for its own optimum. The plain log score ($S_1$) cannot
+tell the true latent from the cheaper 3-state one. Any $\tau<1$ breaks the tie
+toward fewer bits.
 
-$$S(q,y_p)=\log\textstyle\sum_x q(x)\,L(y_p|x).$$
+Trade-offs, all real:
+- **Forecasts get lossier.** At $\tau<1$ the reported model is a lossy
+  forecast of $Y$ (0.0058 bits of regret at $\tau=0.9$). Its implied indicator
+  probabilities are no longer the agent's best forecasts. Using $\tau$ just
+  below 1 makes it a tie-breaker only.
+- **$\tau$ is a choice.** The designer picks it, and nothing in the
+  observables does.
+- **The optimum is hard to compute.** It is a nonconvex, possibly set-valued
+  property, so agents must solve a hard problem to report it.
 
-This is a proper scoring rule for the predictive $qL$. It is strictly proper for
-$q$ itself iff $q\mapsto qL$ is injective, i.e. iff the rows of $L$ are linearly
-independent. An uninformative probe (equal rows) makes every report score the
+**One unit's latent value** ("this patient has the disease") is a posterior
+$q(x)$. Score it on a held-out indicator $Y_p$ with agreed likelihood
+$L=P(Y_p|X)$, using $\log\sum_x q(x)L(y_p|x)$. This is strictly proper for $q$
+iff the rows of $L$ are linearly independent; otherwise some reports score the
 same.
 
 ![probe](figures/probe_scoring.png)
 
-## 7. What this means for a mechanism that rewards latent beliefs
+## 5. When latent beliefs need no convention
 
-- Rewards have to flow through observable consequences: the implied joint at
-  the population level, and probe views at the unit level.
-- With two views, prices in latent coordinates are not pinned by incentives.
-  Every point of the fiber earns the same. A mechanism must either bring in a
-  third conditionally independent view, or impose a convention explicitly, for
-  instance the Wyner-minimal gauge, and state that it does so.
-- $\tau\sum_i I(X;Y_i)-I(X;Y)$ is a natural "value" of a proposed latent: how much
-  per-view predictive information it supplies, minus what it costs to carry.
+Scoring pins a latent model exactly to the extent that $m_\theta$ determines
+$\theta$.
 
-## Caveats and trade-offs
+- **Identifiable structures.** For one latent with three or more conditionally
+  independent indicators, the decomposition with the fewest latent states is
+  generically unique up to relabeling (Kruskal 1977; Allman, Matias & Rhodes
+  2009). The same holds for latent trees in which every hidden node has at
+  least three neighbours. Here $\tau=1$ already elicits the true latent, and EM
+  recovers it (to $1.4\times10^{-8}$ for one latent and three binary
+  indicators, and to $1.3\times10^{-7}$ in the hierarchy above).
+- **Parsimony is still a convention.** Uniqueness is among the *fewest-state*
+  models. Larger latents fit too, and the fewest-*bits* latent can differ.
+  Exact constrained solves (local search, so "cheaper" is certified and
+  "equal" means no cheaper one was found):
 
-- The latent bottleneck is nonconvex. Tempered EM finds local optima; I used
-  restarts and warm-starting along $\tau$. Wyner's common information is hard to
-  compute in general.
-- Identifiability results are generic (they fail on a measure-zero set), assume
-  finite alphabets, and require knowing or bounding $|X|$.
-- If an agent is uncertain about the parameters, its predictive is a mixture of
-  rank-$r$ models, which generally has higher rank. The log score then elicits
-  the KL projection onto rank $r$, not "the" latent.
-- Two other sources of latent meaning are outside this note. One is
-  **interventions**: a causal latent predicts what $do(X)$ does. The other is
-  **new views not yet observed**, i.e. a latent's role in predicting variables
-  beyond the ones it was fit on, which is the practical reason we posit
-  latents at all.
+| setting | least-information latent vs true latent |
+|---|---|
+| 2 indicators (10 random models) | cheaper in 10/10: the latent is not identified |
+| 3 ternary indicators (6) | equal in 6/6 |
+| 3 binary indicators, 2-state truth (4) | cheaper in 4/4, using 3–4 states |
+| two of those, plus a 4th indicator | equal |
+
+- **The trend.** More indicators shrink the set of exact fits until
+  conventions stop mattering. With infinitely many exchangeable indicators, the
+  latent is a function of the observables (de Finetti). §6 shows the same
+  trend for a continuous latent. That conventions agree in general once the
+  indicators are rich enough is my conjecture from these runs, not a known
+  theorem.
+
+## 6. Latent-variable prediction markets (question 4)
+
+[tailcalled's proposal](https://www.lesswrong.com/posts/ufW5LvcwDuL6qjdBT/latent-variables-for-prediction-markets-motivation-technical):
+the market state is $\theta$, and a trader who moves it from $\phi$ to $\theta$
+is paid $\log P(\vec x\mid\theta)-\log P(\vec x\mid\phi)$ on the resolved
+indicators. This is Hanson's market scoring rule with $S_1$.
+
+**Does it work?**
+- **Incentives:** yes. A myopic trader moves the market to the model in its
+  family that best forecasts the indicators under their beliefs, and the market
+  maker's loss is bounded.
+- **Latent prices:** they mean something exactly when the family identifies the
+  latent. The post's own design (one Gaussian latent standardized to
+  $N(0,1)$, probit links, at least three indicators) is identified up to sign.
+  The loadings follow from the pairwise correlations, as in one-factor analysis.
+  Logistic links behave the same in practice. That case works, and the post's "at least 3 indicators" rule is
+  the right one.
+
+**Where it does not pin latent prices.** Each of these appears among the
+post's design options:
+1. **Free-form latent distribution** ("let people freely drag around the
+   latent variable distribution"). Payouts depend on $P(Y)$ only through the
+   $2^n$ indicator probabilities. For a Gaussian latent, $P(Y>1)=0.156$, but
+   every latent distribution giving the same indicator joint earns identical
+   payouts. Across those, $P(Y>1)$ ranges over $[0.040, 0.317]$ with 3
+   indicators, $[0.078, 0.253]$ with 6, and $[0.087, 0.237]$ with 10. Traders
+   can move such beliefs with zero expected cost or reward. Keep the latent
+   distribution parametric.
+2. **Several latent factors.** Rotating the loadings leaves the joint
+   unchanged. So which axis is "who wins" and which is "escalation" is unpriced,
+   and fixing it needs an explicit convention (e.g. varimax).
+3. **User-proposed latent classes.** The log score never penalizes an extra
+   class, since $k+1$ classes nest $k$. A redundant class ties with the true
+   model (the $S_1$ column above), and the latent drifts toward
+   $X=$ "the indicators themselves". Settling with $S_\tau$ for $\tau$ slightly
+   below 1 makes a proposed class pay for its bits. This answers the post's
+   "who chooses the number of outcomes": the class stays iff it raises
+   $S_\tau$.
+4. **Misspecification.** If the indicators do not truly share one cause, the
+   latent the market finds is a best-fit projection. It is meaningful as "the
+   best single common cause", not as a ground truth.
+
+**Bottom line.** For identified parametric families, use the post's log
+market scoring rule as is. For anything with free latent structure (classes,
+factors, shapes), the plain log score leaves the latent unpriced. Either
+restrict the family, or settle with $S_\tau$ and state the convention $\tau$.
 
 ## References
 
-- A. Wyner, *The common information of two dependent random variables*, IEEE
-  Trans. IT, 1975.
+- tailcalled, *Latent variables for prediction markets: motivation, technical guide, and design considerations*, LessWrong, 2023.
+- R. Hanson, *Combinatorial information market design*, 2003 (market scoring rules).
+- A. Wyner, *The common information of two dependent random variables*, IEEE Trans. IT, 1975.
 - N. Tishby, F. Pereira, W. Bialek, *The information bottleneck method*, 1999.
 - M. Gastpar, E. Sula, *Relaxed Wyner's common information*, ITW 2019.
-- G. Ver Steeg, A. Galstyan, *Discovering structure in high-dimensional data
-  through correlation explanation* (CorEx), NeurIPS 2014.
-- J. Kruskal, *Three-way arrays: rank and uniqueness of trilinear
-  decompositions*, Linear Algebra Appl., 1977.
-- E. Allman, C. Matias, J. Rhodes, *Identifiability of parameters in latent
-  structure models with many observed variables*, Ann. Statist., 2009.
-- P. Gács, J. Körner, *Common information is far less than mutual information*,
-  1973. This is the other extreme: the common part *computable* from each view.
+- G. Ver Steeg, A. Galstyan, *Discovering structure in high-dimensional data through correlation explanation*, NeurIPS 2014.
+- J. Kruskal, *Three-way arrays: rank and uniqueness of trilinear decompositions*, 1977.
+- E. Allman, C. Matias, J. Rhodes, *Identifiability of parameters in latent structure models with many observed variables*, Ann. Statist., 2009.
