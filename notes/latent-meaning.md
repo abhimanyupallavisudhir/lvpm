@@ -24,17 +24,27 @@ better than another, and how can latent beliefs be elicited or traded?
     is a scoring rule on one realized outcome. Its expected value is maximized
     exactly by the bottleneck-optimal latent model. At $\tau=1$ it is the
     ordinary log score.
+- **$S_\tau$ is the latent bottleneck with the encoder optimized out**,
+  written per observation (§4b).
+- **Continuous latents** (IRT, factor analysis, mixed indicators, several
+  factors) use the same score and algorithm (§4c).
+- **Underdetermination comes in two kinds (§1).** *Gauge* is the same latent in
+  different coordinates (relabelings, sign flips, rotations); it is harmless.
+  *Genuine* underdetermination is different latents with the same predictions.
+  It is real but structured, and it vanishes with enough structure or
+  indicators.
 - **The LVPM proposal** (log market scoring rule on the implied joint) is the
-  $\tau=1$ case (§6). It is incentive-compatible, and it prices latent
-  parameters exactly when the market's model family identifies them. It does
-  not price free-form latent distributions, factor rotations, or extra latent
-  classes. $S_\tau$ is a drop-in fix for the last one.
+  $\tau=1$ case (§6). It is incentive-compatible, and it prices latent beliefs
+  exactly when the market's model family identifies them up to gauge. It
+  fails for free-form latent distributions and user-proposed classes.
+  $\tau<1$ pins both, but only by compressing the latent (§5).
 
-Code: [`lvpm/dag.py`](../lvpm/dag.py) and
+Code: [`lvpm/dag.py`](../lvpm/dag.py) (discrete latent DAGs),
+[`lvpm/continuous.py`](../lvpm/continuous.py) (continuous latents) and
 [`lvpm/latent_bottleneck.py`](../lvpm/latent_bottleneck.py). Every number below
 is reproduced by `experiments/*.py`, with outputs in
-[`elicitation.txt`](elicitation.txt), [`results.txt`](results.txt) and
-[`wyner_vs_true.txt`](wyner_vs_true.txt).
+[`elicitation.txt`](elicitation.txt), [`continuous.txt`](continuous.txt),
+[`results.txt`](results.txt) and [`wyner_vs_true.txt`](wyner_vs_true.txt).
 
 ---
 
@@ -48,15 +58,53 @@ node. Examples:
 
 The model predicts $m_\theta(y)=\sum_h p_\theta(h,y)$. Under any proper scoring
 rule, the expected score of $\theta$ depends only on $m_\theta$. Two kinds of
-slack follow:
+slack follow, and they differ in kind (question 2a).
 
-- **Gauge.** Relabeling or reparametrizing a hidden node changes nothing. A
-  latent value means "the state with these conditionals". This is harmless,
-  and information quantities are invariant under it.
-- **Non-identification.** Different latent models can predict the same
-  $m_\theta$, for example $X=Y$ in the single-latent case. Such models are
-  rewarded identically, so a belief that distinguishes them has no observable
-  content. §5 covers when this happens.
+**Gauge: the same latent in different coordinates.** Take a single latent
+(DAGs work the same way). Its coordinate-free content is its *mixing measure*
+$\mu$: the distribution of the vector of conditional laws
+$\big(P(Y_1|X{=}x),\dots,P(Y_n|X{=}x)\big)$ when $x\sim P(X)$. The model says
+$P(Y)=\int\bigotimes_i\pi_i\,d\mu(\pi)$.
+
+Any change of latent coordinates that leaves $\mu$ unchanged is gauge:
+relabeling discrete states, $x\mapsto -x$, and, for continuous latents, any
+invertible reparametrization of latent space. Declaring the prior to be
+$N(0,I)$ with linear predictors $a\cdot z+b$ cuts the group down to rotations
+$O(k)$, i.e. a sign flip for one factor. Check: rotating a 2-factor IRT model
+by 0.7 rad changes no pattern probability by more than $2\times10^{-8}$
+(quadrature error).
+
+Gauge is harmless and expected. Every gauge-invariant latent statement is a
+statement about $\mu$, and it is *relational*. Example: "with probability 0.3
+the world is in a state where indicator 1 has probability above 0.8". A
+coordinate statement like "$Z>1$" means something only after the gauge is
+fixed, e.g. by declaring the prior $N(0,1)$ and the link family.
+
+Your inverted-spectrum intuition fits exactly. A gauge transformation preserves
+every relation to observables, including the agent's own reports. So whatever
+a latent's label carries beyond its relational role is, by construction,
+something no score can reach.
+
+**Genuine underdetermination: different latents with the same predictions.**
+Two *different* mixing measures can have the same mixture $P(Y)$. That is a
+different latent, not a relabeling: some relational statement differs.
+
+Example: two Gaussian indicators with correlation 0.5, and one factor.
+Loadings $(0.6, 0.833)$, $(0.707, 0.707)$ and $(0.9, 0.556)$ all reproduce
+$P(Y)$ exactly and score identically. They still disagree about the world:
+$I(Z;Y)$ is 0.97, 0.79 and 1.26 bits, and $E[Z\mid y=(1,1)]$ is 0.956, 0.943
+and 0.970.
+
+How bad is this? It is not "undetermined to the point of useless". The valid
+$\mu$ form a convex set, and every statement that holds across the whole set
+is determined. What is left depends on the structure:
+
+| structure | what scoring leaves free |
+|---|---|
+| one latent with at least 3 indicators and the fewest states; a 1-factor parametric model (IRT/FA) with at least 3 indicators; latent trees with every hidden node of degree at least 3 | gauge only |
+| 2 indicators | a continuum (the free loading above) |
+| latents larger than necessary | genuine alternatives; a convention picks one (fewest states or fewest bits, §5) |
+| free-form latent distribution | an infinite-dimensional set that shrinks as indicators are added (§5) |
 
 ## 2. Unexplained dependence and information cost
 
@@ -169,34 +217,65 @@ Checks:
 
 Limitations:
 - The objective is nonconvex, so use restarts.
-- The implementation enumerates the full joint table, so it handles small
-  discrete models only. Continuous latents (IRT, factor analysis) use the same
-  E/M structure with parametric M-steps; I did not implement them.
+- `LatentDAG` enumerates the full joint table, so it handles small discrete
+  models only. Continuous latents are in §4c.
 - "Computes all these distributions" holds only when the structure is
   identified (§5). Otherwise, at $\tau=1$ it returns *a* model that predicts
   $P(Y)$, and at $\tau<1$ the bottleneck-optimal one.
 
-### 4b. Eliciting latent beliefs (question 3b)
+### 4b. Where $S_\tau$ comes from, and eliciting with it (questions 3 and 3b)
 
-**Claim.** Pay an agent who reports a latent model $\theta$ the amount
-$S_\tau(\theta;y)$ on the realized observables $y$. If the agent believes $Y\sim
-p$, their expected payment is maximized exactly by the latent-bottleneck
-optimum for $p$.
+Start from the latent bottleneck, written as a minimization over encoders
+$q(x\mid y)$. All entropies below are under the coupling $p(y)\,q(x\mid y)$.
+The single-latent case is shown; for a DAG, replace each entropy by the
+corresponding $H(v\mid\mathrm{pa}_v)$.
 
-*Proof.* $\log\sum_h a(h)=\max_q\mathbb E_q[\log a(h)-\log q(h)]$ (the "ELBO"
-form). So $\mathbb E_p S_\tau(\theta)$ is a maximum over encoders $q$ of
-$\mathbb E[\sum_{v\in H}\log p_\theta(v|\mathrm{pa}_v)+\tau\sum_{v\in Y}\log
-p_\theta(v|\mathrm{pa}_v)-\log q]$. For a fixed $q$, the best $\theta$ is the
-coupling's own conditionals. Substituting gives
-$\max_\theta\mathbb E_pS_\tau=-\min_q\big[(1-\tau)I(H;Y)+D_H+\tau D_Y\big]-\tau
-H(Y)$. For a single latent this is $-\min\mathcal L_\tau-\tau\sum_iH(Y_i)$. ∎
+$$\mathcal L_\tau(q)=I(X;Y)-\tau\sum_i I(X;Y_i).$$
+
+**Step 1: write it in entropies.** Using $I(X;Y)=H(X)-H(X|Y)$ and
+$I(X;Y_i)=H(Y_i)-H(Y_i|X)$:
+$$\mathcal L_\tau(q)+\tau\textstyle\sum_iH(Y_i)=H(X)+\tau\sum_iH(Y_i\mid X)-H(X\mid Y).$$
+
+**Step 2: each entropy is the best achievable log loss.** By Gibbs'
+inequality, $H(X)=\min_r\mathbb E[-\log r(X)]$ and $H(Y_i|X)=\min_{c_i}\mathbb
+E[-\log c_i(Y_i|X)]$. The minimizers, a prior $r$ and indicator conditionals
+$c_i$, are exactly a latent model $\theta$. So
+$$\mathcal L_\tau(q)+\tau\textstyle\sum_iH(Y_i)=\min_\theta\;\mathbb E\Big[\log q(x|y)-\log r(x)-\tau\sum_i\log c_i(y_i|x)\Big].$$
+
+**Step 3: optimize the encoder out.** Minimize over $q$ as well, and swap the
+order of the minimizations. For a fixed $\theta$, the bracket separates over
+$y$ into $\sum_x q(x|y)\,[\log q(x|y)-\log a_\theta(x,y)]$, where
+$a_\theta(x,y)=r(x)\prod_i c_i(y_i|x)^{\tau}$. This is minimized by the
+*tempered posterior* $q\propto a_\theta$, with value
+$-\log\sum_x a_\theta(x,y)=-S_\tau(\theta;y)$. Therefore
+$$\min_q\mathcal L_\tau(q)=-\max_\theta\;\mathbb E_{y\sim p}\,S_\tau(\theta;y)\;-\;\tau\textstyle\sum_iH(Y_i).$$
+
+So **$S_\tau$ is the latent bottleneck with the encoder optimized out, written
+per observation.** It is an average over $y$ of a quantity computable from
+$\theta$ and a single $y$, so it is a scoring rule. Its maximizing $\theta$ is
+the bottleneck-optimal latent model, and the tempered posterior of that model
+is the optimal encoder.
+
+At $\tau=1$, $a_\theta$ is the model's joint and $\sum_xa_\theta=m_\theta(y)$.
+Step 3 is then the familiar "log-likelihood = maximized ELBO" identity, and
+the bottleneck reduces to maximum likelihood. The exponent $\tau$ on the
+indicator factors is where compression comes from. Each indicator's evidence
+counts only to the power $\tau$, so posteriors are less sharp and the latent
+carries fewer bits. This is the "power likelihood" of generalized Bayes
+(e.g. Grünwald's safe Bayes). For a DAG the same steps give the objective
+quoted in §3.
+
+**Elicitation.** Pay an agent who reports a latent model $\theta$ the amount
+$S_\tau(\theta;y)$ on the realized observables. If the agent believes
+$Y\sim p$, their expected payment is maximized exactly by the
+latent-bottleneck optimum for $p$.
 
 Properties:
 - It needs one realization and no knowledge of $p$.
-- It is invariant under relabeling.
+- It is gauge-invariant.
 - At $\tau=1$ it is the log score of $m_\theta$.
-- $S_\tau\le0$, so a market maker's loss is bounded exactly as for the log
-  market scoring rule.
+- With discrete indicators $S_\tau\le0$, so a market maker's loss is bounded
+  exactly as for the log market scoring rule.
 
 The incentives are visible in a three-binary-indicator case where the true
 latent has 2 states but a 3-state latent explains the data with fewer bits.
@@ -232,6 +311,43 @@ same.
 
 ![probe](figures/probe_scoring.png)
 
+### 4c. Continuous latents: IRT, factor analysis, mixed indicators
+
+[`lvpm/continuous.py`](../lvpm/continuous.py) implements continuous latents.
+- **Latent:** $Z\in\mathbb R^k$, with prior $N(0,I)$ (the gauge choice) or a
+  free distribution on a grid.
+- **Indicators:** Bernoulli (logit or probit), Normal, or Categorical, mixed
+  freely. Unresolved indicators are NaN.
+- **Score and fitting:** integrals use Gauss–Hermite quadrature. The score is
+  the same, $S_\tau(\theta;y)=\log\int p(z)\prod_ip(y_i|z)^\tau dz$, and so is
+  tempered EM. The E-step runs on the grid. The M-step is a weighted maximum
+  likelihood fit per indicator (logistic or probit regression, least squares,
+  multinomial logit), plus reweighting of the grid when the prior is free.
+
+Checks ([`continuous.txt`](continuous.txt)):
+- **Quadrature vs closed form.** For factor analysis,
+  $S_\tau=\sum_i[\tfrac{1-\tau}2\log2\pi\psi_i-\tfrac12\log\tau]+\log N(y;b,AA^\top+\Psi/\tau)$.
+  Quadrature matches this to $5\times10^{-12}$ bits.
+- **IRT recovery.** One-factor logit and probit IRT with 6 items: 5 random
+  starts recover all parameters to $3\times10^{-7}$, up to sign. Two-factor
+  IRT with 8 items: the rotation-invariant $AA^\top$ and $b$ are recovered to
+  $2\times10^{-6}$.
+- **Mixed indicators** (logit, probit, normal, 3-category) from 150k samples:
+  the parameters come back within sampling error. The error shrinks with the
+  sample size, and the fit's log score exceeds the true parameters' on the
+  same sample, as a maximum-likelihood fit should.
+- **Gaussian indicators, where the bottleneck latent is continuous.** At
+  $\tau=1$ the loadings form a continuum (the table in §1). As $\tau\to1$, the
+  tempered score selects the symmetric loadings $\sqrt\rho$ from it, and
+  $I(Z;Y)$ converges to Wyner's $\tfrac12\log\frac{1+\rho}{1-\rho}=0.7925$ bits
+  (0.7923 at $\tau=0.9999$). Compare the information bottleneck: the exact
+  sufficient summary of a continuous $Y_1$ is $Y_1$ itself, which carries
+  infinitely many bits.
+
+Limitations:
+- Tensor-product quadrature limits this to $k\le3$ factors.
+- EM converges slowly near $\tau=1$ with a free prior.
+
 ## 5. When latent beliefs need no convention
 
 Scoring pins a latent model exactly to the extent that $m_\theta$ determines
@@ -263,6 +379,53 @@ $\theta$.
   indicators are rich enough is my conjecture from these runs, not a known
   theorem.
 
+### Free-form latent distributions with $\tau<1$ (question 2b)
+
+Setup: three binary IRT indicators whose true latent is $N(0,1)$. The latent
+distribution is left free on 161 grid points, and I ran 3 random starts for
+each setting. The table shows the spread across starts of gauge-invariant
+summaries:
+
+| links | τ | $I(Z;Y)$ | $P\big(P(Y_1{=}1\mid Z)>0.8\big)$ | forecast error (TV) |
+|---|---|---|---|---|
+| fixed | 1 | 0.552–0.553 | **0.18–0.22** | 0.0001 |
+| fixed | 0.95 | 0.488 | 0.06–0.12 | 0.016 |
+| fixed | 0.8 | 0.362–0.364 | 0.000 | 0.071 |
+| fixed | 0.5 | 0.000 | 0 | 0.202 |
+| free | 1 | **0.530–0.569** | **0.15–0.31** | 0.0000 |
+| free | 0.95 | 0.474 | 0.001–0.015 | 0.011 |
+| free | 0.8 | 0.348 | 0 | 0.065 |
+
+With the links fixed, I also computed the exact range of $P(Z>1)$ over *all*
+latent distributions that earn the optimum's score on every outcome:
+$[0.035, 0.317]$ at $\tau=1$, $[0, 0.024]$ at $\tau=0.95$, and $[0, 0.002]$ at
+$\tau=0.8$.
+
+So: **$\tau<1$ removes the indeterminacy, but "fine" only in that sense.** At
+$\tau=1$ the score is flat along an infinite-dimensional set. At $\tau<1$ it
+strictly prefers less informative latent states, which breaks the ties. The
+price is that the latent you get is the *compressed* one:
+- its states' indicator profiles shrink toward uninformative (at $\tau=0.8$,
+  no state makes indicator 1 likely);
+- its mass collects on a few clusters;
+- its implied forecast of the indicators is off (total variation 0.07 at
+  $\tau=0.8$);
+- at $\tau=0.5$ it disappears altogether ($I=0$).
+
+Near $\tau=1$ the pinning is only partial. This is no accident: with discrete
+indicators, the bottleneck optimum always has finite support (standard
+cardinality bounds). A smooth continuous latent is never the
+fewest-bits explanation of discrete indicators. It is for Gaussian
+indicators (§4c).
+
+The real choice is how to pin a free-form latent:
+- **by assumption:** a parametric family, which keeps forecasts honest;
+- **by data:** more indicators, which works, but slowly;
+- **by compression:** $\tau<1$, which costs forecast accuracy.
+
+The score can only distinguish what the observables, or a stated convention,
+distinguish.
+
 ## 6. Latent-variable prediction markets (question 4)
 
 [tailcalled's proposal](https://www.lesswrong.com/posts/ufW5LvcwDuL6qjdBT/latent-variables-for-prediction-markets-motivation-technical):
@@ -290,10 +453,15 @@ post's design options:
    payouts. Across those, $P(Y>1)$ ranges over $[0.040, 0.317]$ with 3
    indicators, $[0.078, 0.253]$ with 6, and $[0.087, 0.237]$ with 10. Traders
    can move such beliefs with zero expected cost or reward. Keep the latent
-   distribution parametric.
-2. **Several latent factors.** Rotating the loadings leaves the joint
-   unchanged. So which axis is "who wins" and which is "escalation" is unpriced,
-   and fixing it needs an explicit convention (e.g. varimax).
+   distribution parametric. $\tau<1$ also pins it, but only by compressing it
+   (§5).
+2. **Several latent factors: not actually a defect.** Rotating the loadings
+   together with the latent changes nothing observable. It is gauge (§1), not
+   missing information. "Which axis is *who wins*" is a coordinate choice, not
+   a fact, so a market cannot price it and should not. Define such quantities
+   relationally instead, e.g. "the latent direction along which
+   P(Ukraine holds Crimea) rises fastest". Those are priced whenever the model
+   is identified up to rotation.
 3. **User-proposed latent classes.** The log score never penalizes an extra
    class, since $k+1$ classes nest $k$. A redundant class ties with the true
    model (the $S_1$ column above), and the latent drifts toward
@@ -305,10 +473,13 @@ post's design options:
    latent the market finds is a best-fit projection. It is meaningful as "the
    best single common cause", not as a ground truth.
 
-**Bottom line.** For identified parametric families, use the post's log
-market scoring rule as is. For anything with free latent structure (classes,
-factors, shapes), the plain log score leaves the latent unpriced. Either
-restrict the family, or settle with $S_\tau$ and state the convention $\tau$.
+**Bottom line.**
+- For parametric families identified up to gauge (single- or multi-factor
+  IRT/FA with enough indicators), use the post's log market scoring rule as is,
+  and phrase latent questions relationally.
+- For free latent structure (extra classes, free-form shapes), the plain log
+  score leaves genuine latent beliefs unpriced. Either restrict the family, or
+  settle with $S_\tau$ and accept the compression that comes with it.
 
 ## References
 
@@ -320,3 +491,4 @@ restrict the family, or settle with $S_\tau$ and state the convention $\tau$.
 - G. Ver Steeg, A. Galstyan, *Discovering structure in high-dimensional data through correlation explanation*, NeurIPS 2014.
 - J. Kruskal, *Three-way arrays: rank and uniqueness of trilinear decompositions*, 1977.
 - E. Allman, C. Matias, J. Rhodes, *Identifiability of parameters in latent structure models with many observed variables*, Ann. Statist., 2009.
+- P. Grünwald, *The safe Bayesian*, ALT 2012; P. Bissiri, C. Holmes, S. Walker, *A general framework for updating belief distributions*, JRSS-B, 2016 (power likelihoods).
