@@ -6,6 +6,7 @@ Builds on tailcalled's [latent variable prediction markets](https://www.lesswron
 - [docs/proposal.md](docs/proposal.md): what to build and why, answering each design question.
 - [reports/pilot.md](reports/pilot.md): synthetic checks, plus an 82-question, post-cutoff pilot scoring LLM latent nets against resolved Polymarket outcomes.
 - [docs/literature.md](docs/literature.md): related work and the gaps.
+- [docs/theory-review.md](docs/theory-review.md): review of Task 1's theory of latent meaning, and what it implies for market design.
 
 ## Library (`lvpm/`)
 

@@ -1,6 +1,6 @@
 # Eliciting trustworthy beliefs about latent variables: what to build
 
-*Context: tailcalled's [latent variable prediction markets](https://www.lesswrong.com/posts/ufW5LvcwDuL6qjdBT/) (LVPMs). Related work is in [literature.md](literature.md); synthetic checks and the pilot are in [../reports/pilot.md](../reports/pilot.md).*
+*Context: tailcalled's [latent variable prediction markets](https://www.lesswrong.com/posts/ufW5LvcwDuL6qjdBT/) (LVPMs). Related work is in [literature.md](literature.md); synthetic checks and the pilot are in [../reports/pilot.md](../reports/pilot.md); the information-theoretic foundations (Task 1) are reviewed in [theory-review.md](theory-review.md). One consequence for the design here: use at least 4 indicators per factor, because 3 is only just-identified.*
 
 ## Recommendation
 
