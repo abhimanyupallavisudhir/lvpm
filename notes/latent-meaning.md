@@ -60,40 +60,69 @@ The model predicts $m_\theta(y)=\sum_h p_\theta(h,y)$. Under any proper scoring
 rule, the expected score of $\theta$ depends only on $m_\theta$. Two kinds of
 slack follow, and they differ in kind (question 2a).
 
-**Gauge: the same latent in different coordinates.** Take a single latent
-(DAGs work the same way). Its coordinate-free content is its *mixing measure*
-$\mu$: the distribution of the vector of conditional laws
-$\big(P(Y_1|X{=}x),\dots,P(Y_n|X{=}x)\big)$ when $x\sim P(X)$. The model says
-$P(Y)=\int\bigotimes_i\pi_i\,d\mu(\pi)$.
+**What a latent model says: its mixing measure.** For each latent state $x$,
+write down its *profile*, the list of what each indicator would do in that
+state:
+$$\pi(x)=\big(P(Y_1|X{=}x),\dots,P(Y_n|X{=}x)\big).$$
+With binary indicators, a profile is a point in the cube $[0,1]^n$.
 
-Any change of latent coordinates that leaves $\mu$ unchanged is gauge:
-relabeling discrete states, $x\mapsto -x$, and, for continuous latents, any
-invertible reparametrization of latent space. Declaring the prior to be
-$N(0,I)$ with linear predictors $a\cdot z+b$ cuts the group down to rotations
-$O(k)$, i.e. a sign flip for one factor. Check: rotating a 2-factor IRT model
-by 0.7 rad changes no pattern probability by more than $2\times10^{-8}$
-(quadrature error).
+A latent model is then a cloud of such points with weights: put mass $P(X{=}x)$
+on the point $\pi(x)$. That weighted cloud is the *mixing measure* $\mu$, a
+probability distribution over profiles. The model's prediction is the
+$\mu$-weighted average of the corresponding independent distributions:
+$P(Y)=\int\pi_1\otimes\dots\otimes\pi_n\,d\mu(\pi)$.
+
+Examples:
+- **Two-state latent class model:** two points in the cube, with weights
+  0.4 and 0.6.
+- **One-factor IRT:** as $z$ runs over $\mathbb R$, the profile
+  $\big(\sigma(a_1z+b_1),\dots,\sigma(a_nz+b_n)\big)$ traces a curve in the
+  cube, and $N(0,1)$ spreads the mass along it.
+
+The *name* of a state ($x$, or the value of $z$) never appears in $\mu$; only
+its profile does. That is why $\mu$ is the latent's coordinate-free content.
+
+**Gauge: same $\mu$, different coordinates.** Relabeling discrete states only
+changes which name goes with which point. $z\mapsto -z$, or any
+reparametrization of $z$, slides along the same curve and carries the mass
+with it. The cloud does not change.
+
+Declaring the prior to be $N(0,I)$ with linear predictors $a\cdot z+b$ cuts the
+freedom down to rotations $O(k)$, i.e. a sign flip for one factor. Check:
+rotating a 2-factor IRT model by 0.7 rad changes no pattern probability by more
+than $2\times10^{-8}$ (quadrature error).
 
 Gauge is harmless and expected. Every gauge-invariant latent statement is a
 statement about $\mu$, and it is *relational*. Example: "with probability 0.3
 the world is in a state where indicator 1 has probability above 0.8". A
 coordinate statement like "$Z>1$" means something only after the gauge is
-fixed, e.g. by declaring the prior $N(0,1)$ and the link family.
+fixed.
 
 Your inverted-spectrum intuition fits exactly. A gauge transformation preserves
 every relation to observables, including the agent's own reports. So whatever
-a latent's label carries beyond its relational role is, by construction,
-something no score can reach.
+a label carries beyond its relational role is something no score can reach.
 
-**Genuine underdetermination: different latents with the same predictions.**
-Two *different* mixing measures can have the same mixture $P(Y)$. That is a
-different latent, not a relabeling: some relational statement differs.
+**Genuine underdetermination: a different $\mu$ with the same average.** Two
+different clouds can average to the same $P(Y)$. They are different claims
+about the world, not relabelings: a relational question such as "how often is
+the world in a state where indicator 1 is likely?" gets different answers.
+Two examples:
+- **Same curve, different mass along it.** In the free-form IRT example of
+  §5, the clouds that fit put anywhere from 0.035 to 0.317 of their mass in a
+  given region of the curve, yet all predict the same $P(Y)$.
+- **Different curves.** Two Gaussian indicators with correlation 0.5 and one
+  factor: loadings $(0.6, 0.833)$, $(0.707, 0.707)$ and $(0.9, 0.556)$ all
+  reproduce $P(Y)$ exactly and score identically. They still disagree:
+  $I(Z;Y)$ is 0.97, 0.79 and 1.26 bits, and $E[Z\mid y=(1,1)]$ is 0.956, 0.943
+  and 0.970.
 
-Example: two Gaussian indicators with correlation 0.5, and one factor.
-Loadings $(0.6, 0.833)$, $(0.707, 0.707)$ and $(0.9, 0.556)$ all reproduce
-$P(Y)$ exactly and score identically. They still disagree about the world:
-$I(Z;Y)$ is 0.97, 0.79 and 1.26 bits, and $E[Z\mid y=(1,1)]$ is 0.956, 0.943
-and 0.970.
+A physics analogy: a density matrix can be written as an ensemble of pure
+states in many ways. The density matrix plays the role of $P(Y)$, the ensemble
+plays $\mu$, and measurement statistics fix only the former. With infinitely
+many exchangeable indicators, the decomposition becomes unique: the set of
+such laws is a simplex whose extreme points are the i.i.d. laws (de Finetti).
+With finitely many indicators, Kruskal-type conditions make it unique among
+decompositions with few states.
 
 How bad is this? It is not "undetermined to the point of useless". The valid
 $\mu$ form a convex set, and every statement that holds across the whole set
@@ -261,9 +290,27 @@ Step 3 is then the familiar "log-likelihood = maximized ELBO" identity, and
 the bottleneck reduces to maximum likelihood. The exponent $\tau$ on the
 indicator factors is where compression comes from. Each indicator's evidence
 counts only to the power $\tau$, so posteriors are less sharp and the latent
-carries fewer bits. This is the "power likelihood" of generalized Bayes
-(e.g. Grünwald's safe Bayes). For a DAG the same steps give the objective
-quoted in §3.
+carries fewer bits. For a DAG the same steps give the objective quoted in
+§3.
+
+The tempered posterior $q\propto p(x)\prod_ip(y_i|x)^{\tau}$ is known in
+statistics as a *power* (or *fractional*, *tempered*) posterior. That family of
+methods is called **generalized Bayes**. It has nothing to do with Jeffreys
+priors, which choose a reparametrization-invariant prior. Generalized Bayes
+instead changes the *update*: evidence enters as $\text{likelihood}^\eta$, or
+more generally as $\exp(-\eta\cdot\text{loss})$, with a learning rate $\eta$.
+
+Its known uses differ from ours:
+- **Robustness to misspecification:** Grünwald's SafeBayes picks $\eta<1$.
+- **Coherent updating with losses:** Bissiri, Holmes and Walker (2016).
+- **PAC-Bayes "Gibbs posteriors"**, which minimize
+  $\eta\,\mathbb E_q[\text{loss}]+\mathrm{KL}(q\,\|\,\text{prior})$.
+
+The last is exactly Step 3 above, with $\eta=\tau$. Averaging that
+$\mathrm{KL}(q(\cdot|y)\,\|\,p(x))$ over $y$ gives $I(X;Y)$, the bottleneck's
+information cost. So "power posterior" and "latent bottleneck" are the same
+trade-off seen per observation and on average. Here $\tau$ is a compression
+knob, not a robustness knob.
 
 **Elicitation.** Pay an agent who reports a latent model $\theta$ the amount
 $S_\tau(\theta;y)$ on the realized observables. If the agent believes
@@ -344,9 +391,43 @@ Checks ([`continuous.txt`](continuous.txt)):
   sufficient summary of a continuous $Y_1$ is $Y_1$ itself, which carries
   infinitely many bits.
 
-Limitations:
-- Tensor-product quadrature limits this to $k\le3$ factors.
-- EM converges slowly near $\tau=1$ with a free prior.
+**Scaling to many factors (question 1).** Nothing in the method limits the
+number of factors. Only the way integrals are computed does.
+- **Gaussian indicators:** everything is closed form for any $k$
+  (`fit_factor_analysis`). Each EM step costs $O(Nnk+k^3)$.
+  With 6 factors, 20 indicators and 50k samples, $AA^\top$ is recovered within
+  sampling error (0.064), the fit beats the true parameters' log score, and
+  the trace is monotone.
+- **Other indicators:** for $k\le3$ the code uses tensor Gauss–Hermite nodes,
+  whose count grows as $m^k$. Above that it switches to scrambled Sobol
+  quasi-Monte Carlo nodes, whose cost does not grow with $k$, and builds the
+  whole log-likelihood as one matrix product.
+  For 4-factor IRT with 10 items, the integration error is 0.004 (total
+  variation) at 1,024 nodes and 0.001 at 4,096. Fitting with 2,048 nodes
+  recovers $AA^\top$ to 0.05–0.08 and $b$ to 0.004. That is limited by
+  integration error and slow EM: two of three starts hit the 3,000-iteration
+  cap.
+- **Fixed nodes are the simplest choice, not the best.** They degrade when
+  many indicators make each posterior sharp. Standard efficient alternatives,
+  all of which apply to $S_\tau$ unchanged (the tempered posterior is just a
+  posterior with a rescaled likelihood):
+  - adaptive Gauss–Hermite or Laplace-centred importance sampling per
+    observation, as used in `lme4`/`glmmTMB`;
+  - stochastic-approximation EM (Metropolis–Hastings Robbins–Monro, as used
+    in the `mirt` package for high-dimensional IRT);
+  - amortized variational inference. A VAE is exactly this model class with a
+    neural decoder, and its ELBO is Step 3 at $\tau=1$; at $\tau<1$ it is a
+    β-VAE-style objective;
+  - for identifiable models, polynomial-time spectral/tensor methods
+    (Anandkumar et al. 2014). These exploit the same three-view structure
+    that gives identifiability.
+- **Hardness.** Exact inference and maximum likelihood are hard in the worst
+  case for general latent DAGs, so the guarantees are for structured or
+  identifiable cases.
+- **Settlement.** Scoring one realized outcome needs only one log-integral,
+  which is cheap to compute accurately even when fitting is expensive.
+- **Remaining limitation:** EM converges slowly near $\tau=1$ with a free
+  prior, and with several factors; acceleration (e.g. SQUAREM) would help.
 
 ## 5. When latent beliefs need no convention
 
@@ -492,3 +573,5 @@ post's design options:
 - J. Kruskal, *Three-way arrays: rank and uniqueness of trilinear decompositions*, 1977.
 - E. Allman, C. Matias, J. Rhodes, *Identifiability of parameters in latent structure models with many observed variables*, Ann. Statist., 2009.
 - P. Grünwald, *The safe Bayesian*, ALT 2012; P. Bissiri, C. Holmes, S. Walker, *A general framework for updating belief distributions*, JRSS-B, 2016 (power likelihoods).
+- L. Cai, *High-dimensional exploratory item factor analysis by a Metropolis–Hastings Robbins–Monro algorithm*, Psychometrika, 2010.
+- A. Anandkumar, R. Ge, D. Hsu, S. Kakade, M. Telgarsky, *Tensor decompositions for learning latent variable models*, JMLR, 2014.

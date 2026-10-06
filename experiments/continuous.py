@@ -8,7 +8,7 @@ from scipy.optimize import linprog, minimize
 
 from lvpm.continuous import (Bernoulli, Categorical, LatentFactorModel, Normal,
                              factor_analysis_expected_score, factor_analysis_info,
-                             factor_analysis_score)
+                             factor_analysis_score, fit_factor_analysis, sobol_gaussian)
 
 A3, B3 = np.array([1.5, 1.0, 2.0]), np.array([0.0, -0.5, 0.5])
 
@@ -172,9 +172,49 @@ def free_prior():
         print(f"      tau={tau:<4}  [{lo.fun:.3f}, {-hi.fun:.3f}]")
 
 
+def scaling():
+    print("[6] More factors")
+    rng = np.random.default_rng(0)
+    n, k, N = 20, 6, 50000
+    A, b, psi = rng.normal(0, 0.8, (n, k)), rng.normal(0, 1, n), rng.uniform(0.3, 1, n)
+    Y = rng.normal(size=(N, k)) @ A.T + b + rng.normal(size=(N, n)) * np.sqrt(psi)
+    Af, bf, pf, tr = fit_factor_analysis(Y, k, 1.0, rng=rng)
+    print(f"    exact tempered FA EM, {k} factors, {n} indicators, {N} samples: "
+          f"max error A A^T {np.abs(Af @ Af.T - A @ A.T).max():.3f}, psi {np.abs(pf - psi).max():.3f}; "
+          f"fit beats truth's log score by {tr[-1] - factor_analysis_score(A, b, psi, Y).mean():.4f} bits; "
+          f"monotone {bool(np.all(np.diff(tr) > -1e-9))}")
+
+    k, n = 4, 10
+    rng = np.random.default_rng(1)
+    A, b = rng.normal(0, 1.0, (n, k)), rng.normal(0, 0.7, n)
+
+    def model(nodes, seed):
+        return LatentFactorModel([Bernoulli(A[i], b[i]) for i in range(n)], k=k,
+                                 grid=sobol_gaussian(k, nodes, seed=seed))
+
+    P, _ = model(1024, 0).patterns()
+    p = sum(np.exp(model(4096, 100 + s).scores(P) * np.log(2)) for s in range(16)) / 16
+    p /= p.sum()  # reference: 65536 Sobol nodes
+    tv = {nodes: 0.5 * np.abs(model(nodes, 7).patterns()[1] - p).sum() for nodes in (1024, 4096)}
+    print(f"    {k}-factor IRT, {n} items, Sobol nodes: integration error (TV) "
+          + ", ".join(f"{v:.4f} at {kk}" for kk, v in tv.items()))
+    errs = []
+    for s in range(3):
+        r = np.random.default_rng(s)
+        m = LatentFactorModel([Bernoulli(r.normal(0, 1, k), 0.0) for _ in range(n)], k=k,
+                              grid=sobol_gaussian(k, 2048, seed=7))
+        tr = m.fit(P, p, iters=3000, tol=1e-10)
+        Af = np.array([ind.theta[:k] for ind in m.indicators])
+        bf = np.array([ind.theta[k] for ind in m.indicators])
+        errs.append((np.abs(Af @ Af.T - A @ A.T).max(), np.abs(bf - b).max(), len(tr) - 1))
+    print("    fitted with 2048 nodes, 3 starts: max error A A^T / b / EM iterations: "
+          + "; ".join(f"{e1:.3f} / {e2:.4f} / {it}" for e1, e2, it in errs))
+
+
 if __name__ == "__main__":
     correctness()
     recovery()
     gauge()
     gaussian_wyner()
     free_prior()
+    scaling()

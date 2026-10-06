@@ -7,7 +7,10 @@ indicators Y_1..Y_n, conditionally independent given Z, each one of
     Normal(a.z + b, psi)                                          (factor analysis)
     Categorical(softmax(A z + B))                                 (nominal response)
 
-Integrals over Z use a quadrature grid (Gauss-Hermite for the Gaussian prior).
+Integrals over Z use fixed nodes: tensor Gauss-Hermite for k <= 3, scrambled
+Sobol quasi-Monte Carlo above that (cost linear, not exponential, in k).
+Gaussian indicators with a Gaussian prior also have an exact path for any k:
+``fit_factor_analysis`` / ``factor_analysis_score``.
 Data are rows of Y (NaN = unresolved indicator) with weights: an empirical
 sample, or an exact table of response patterns.
 
@@ -29,7 +32,8 @@ import itertools
 import numpy as np
 from numpy.polynomial.hermite_e import hermegauss
 from scipy.optimize import minimize
-from scipy.special import log_expit, log_ndtr, logsumexp
+from scipy.special import log_expit, log_ndtr, logsumexp, ndtri
+from scipy.stats import qmc
 
 LN2 = np.log(2)
 _LBFGS = dict(method="L-BFGS-B", options=dict(gtol=1e-13, ftol=1e-15, maxiter=500))
@@ -42,6 +46,12 @@ def gauss_hermite(k, m):
     Z = np.stack([g.ravel() for g in np.meshgrid(*[x] * k, indexing="ij")], -1)
     logw = sum(np.log(g.ravel()) for g in np.meshgrid(*[w] * k, indexing="ij"))
     return Z, logw
+
+
+def sobol_gaussian(k, n=4096, seed=0):
+    """Scrambled Sobol nodes mapped to N(0, I_k), equal weights: (G, k), (G,)."""
+    u = qmc.Sobol(d=k, scramble=True, seed=seed).random(n)
+    return ndtri(np.clip(u, 1e-12, 1 - 1e-12)), np.full(n, -np.log(n))
 
 
 def _design(Z):
@@ -69,16 +79,31 @@ class Bernoulli:
         eta = _design(Z) @ self.theta
         return np.stack([self._logF(-eta), self._logF(eta)], -1)
 
-    def logpmf(self, y, Z):
-        out = np.zeros((len(y), len(Z)))
-        ok = ~np.isnan(y)
-        t = self.logprob_table(Z)
-        out[ok] = np.where(y[ok, None] == 1, t[None, :, 1], t[None, :, 0])
-        return out
+    def features(self, y):
+        """log p(y|z_g) = features(y) @ table(Z).T  (NaN rows give 0)."""
+        return np.stack([y == 0, y == 1], -1).astype(float)
+
+    def table(self, Z):
+        return self.logprob_table(Z)
 
     def m_step(self, y, W):
         s1, s0 = (y == 1) @ W, (y == 0) @ W  # NaN compares False: unresolved rows drop out
         X = _design(self.Z)
+        if self.link == "logit":  # concave: damped Newton to convergence
+            th = self.theta
+            obj = lambda t: (s1 * log_expit(X @ t) + s0 * log_expit(-(X @ t))).sum()
+            for _ in range(100):
+                pr = np.exp(log_expit(X @ th))
+                g = X.T @ (s1 * (1 - pr) - s0 * pr)
+                H = (X.T * ((s1 + s0) * pr * (1 - pr) + 1e-12)) @ X
+                step, f0 = np.linalg.solve(H, g), obj(th)
+                while obj(th + step) < f0 - 1e-15 and np.abs(step).max() > 1e-14:
+                    step = step / 2
+                th = th + step
+                if np.abs(step).max() < 1e-12:
+                    break
+            self.theta = th
+            return
 
         def f(th):
             eta = X @ th
@@ -97,12 +122,15 @@ class Normal:
         self.psi = float(psi)
         self.categories = None
 
-    def logpmf(self, y, Z):
-        out = np.zeros((len(y), len(Z)))
+    def features(self, y):
         ok = ~np.isnan(y)
+        y0 = np.where(ok, y, 0.0)
+        return np.stack([ok, y0, y0 ** 2], -1).astype(float)
+
+    def table(self, Z):
         mean = _design(Z) @ self.theta
-        out[ok] = -0.5 * np.log(2 * np.pi * self.psi) - (y[ok, None] - mean) ** 2 / (2 * self.psi)
-        return out
+        return np.stack([-0.5 * np.log(2 * np.pi * self.psi) - mean ** 2 / (2 * self.psi),
+                         mean / self.psi, np.full(len(Z), -0.5 / self.psi)], -1)
 
     def m_step(self, y, W):
         ok = ~np.isnan(y)
@@ -127,11 +155,11 @@ class Categorical:
         eta = np.hstack([np.zeros((len(Z), 1)), _design(Z) @ self.theta.T])
         return eta - logsumexp(eta, axis=1, keepdims=True)
 
-    def logpmf(self, y, Z):
-        out = np.zeros((len(y), len(Z)))
-        ok = ~np.isnan(y)
-        out[ok] = self.logprob_table(Z)[:, y[ok].astype(int)].T
-        return out
+    def features(self, y):
+        return np.stack([y == c for c in range(self.categories)], -1).astype(float)
+
+    def table(self, Z):
+        return self.logprob_table(Z)
 
     def m_step(self, y, W):
         S = np.stack([(y == c) @ W for c in range(self.categories)], -1)
@@ -152,12 +180,13 @@ class LatentFactorModel:
         """indicators: list of Bernoulli / Normal / Categorical.
         prior: 'gaussian' (N(0, I), fixed: this fixes the gauge up to rotation)
                or 'free' (any distribution on the grid nodes, learned).
-        grid: (Z, logw) nodes and prior log weights; default Gauss-Hermite with
-              m points per dimension."""
+        grid: (Z, logw) nodes and prior log weights. Default: Gauss-Hermite
+              with m points per dimension for k <= 3, else m Sobol nodes."""
         self.k, self.indicators = k, indicators
         self.free_prior = prior == "free"
         if grid is None:
-            grid = gauss_hermite(k, m or {1: 61, 2: 25, 3: 13}[k])
+            grid = gauss_hermite(k, m or {1: 61, 2: 25, 3: 13}[k]) if k <= 3 \
+                else sobol_gaussian(k, m or 4096)
         self.Z, self.logw = np.asarray(grid[0], float).reshape(-1, k), np.asarray(grid[1], float)
         self.logw = self.logw - logsumexp(self.logw)
         for ind in indicators:
@@ -168,8 +197,11 @@ class LatentFactorModel:
 
     # ---------------------------------------------------------------- scoring
     def loglik(self, Y):
+        """(N, G): sum_i log p(y_i | z_g), as one matrix product."""
         Y = np.atleast_2d(np.asarray(Y, float))
-        return sum(ind.logpmf(Y[:, i], self.Z) for i, ind in enumerate(self.indicators))
+        F = np.hstack([ind.features(Y[:, i]) for i, ind in enumerate(self.indicators)])
+        T = np.hstack([ind.table(self.Z) for ind in self.indicators])
+        return F @ T.T
 
     def scores(self, Y, tau=1.0):
         """Tempered log score of each row of Y, in bits."""
@@ -285,3 +317,33 @@ def factor_analysis_info(A, psi):
     A, psi = np.atleast_2d(A), np.asarray(psi, float)
     _, logdet = np.linalg.slogdet(A @ A.T + np.diag(psi))
     return float(0.5 * (logdet - np.log(psi).sum()) / LN2)
+
+
+def fit_factor_analysis(Y, k, tau=1.0, iters=5000, tol=1e-12, rng=None, init=None):
+    """Tempered EM for Gaussian factor analysis, exact for any k.
+
+    E-step: q(z|y) = N(m, V), V = (I + tau A^T Psi^-1 A)^-1, m = V tau A^T Psi^-1 (y - b).
+    M-step: regress y on (z, 1) under q (closed form), Psi = residual variances.
+    Returns (A, b, psi, trace of the average tempered score in bits)."""
+    Y = np.asarray(Y, float)
+    N, n = Y.shape
+    rng = np.random.default_rng() if rng is None else rng
+    if init is None:
+        A, b, psi = rng.normal(0, 0.5, (n, k)), Y.mean(0), Y.var(0)
+    else:
+        A, b, psi = (np.array(x, float) for x in init)
+    trace = []
+    for _ in range(iters + 1):
+        trace.append(float(factor_analysis_score(A, b, psi, Y, tau).mean()))
+        if len(trace) > 1 and trace[-1] - trace[-2] < tol or len(trace) > iters:
+            break
+        AtPi = A.T / psi
+        V = np.linalg.inv(np.eye(k) + tau * AtPi @ A)
+        M = tau * (Y - b) @ AtPi.T @ V  # (N, k) posterior means
+        Ez = np.hstack([M, np.ones((N, 1))])
+        Ezz = Ez.T @ Ez
+        Ezz[:k, :k] += N * V
+        W = np.linalg.solve(Ezz, Ez.T @ Y).T  # (n, k+1) = [A b]
+        A, b = W[:, :k], W[:, k]
+        psi = np.maximum(((Y ** 2).sum(0) - (W * (Y.T @ Ez)).sum(1)) / N, 1e-8)
+    return A, b, psi, trace
