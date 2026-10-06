@@ -116,6 +116,29 @@ Two examples:
   $I(Z;Y)$ is 0.97, 0.79 and 1.26 bits, and $E[Z\mid y=(1,1)]$ is 0.956, 0.943
   and 0.970.
 
+**Why "how often is indicator 1 likely?" is not the question "what is
+$P(Y_1)$?"** Write $\pi_1(x)=P(Y_1{=}1\mid x)$. Then $P(Y_1{=}1)=\mathbb
+E_\mu[\pi_1]$ is the *mean* of $\pi_1$, while "how often is the world in a
+state where indicator 1 is likely" is the tail $\mu(\pi_1>0.8)$. Two worlds
+with $P(Y_1{=}1)=0.5$:
+- **(a)** $\pi_1=0.5$ always: the outcome is a genuine coin flip.
+- **(b)** $\pi_1=0.9$ half the time and $0.1$ otherwise: the world is in a
+  decisive state, and we just don't know which.
+
+The tail is 0 in (a) and 0.5 in (b).
+
+For binary indicators, $P(Y)$ is equivalent to the products over *distinct*
+indicators, $\mathbb E_\mu\big[\prod_{i\in S}\pi_i\big]$ for every subset $S$.
+No power of a single coordinate, such as $\mathbb E_\mu[\pi_1^2]$, ever
+appears, because each indicator resolves once per world. Correlations with
+other indicators reveal part of the spread of $\pi_1$, and the rest is exactly
+what stays underdetermined.
+
+This is also why more indicators help. With $n$ exchangeable indicators that
+share one profile $\pi$, $P(\text{all } n=1)=\mathbb E_\mu[\pi^n]$. So the
+moments up to order $n$ are observed, and as $n\to\infty$ they determine $\mu$:
+de Finetti's theorem seen as a moment problem.
+
 A physics analogy: a density matrix can be written as an ensemble of pure
 states in many ways. The density matrix plays the role of $P(Y)$, the ensemble
 plays $\mu$, and measurement statistics fix only the former. With infinitely
