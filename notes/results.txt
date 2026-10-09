@@ -1,0 +1,14 @@
+[1] DSBS(p=0.1)
+    I(Y1;Y2) = 0.5310  Wyner C (closed form) = 0.8728  latent bottleneck at tau=1-1e-5: rate 0.8728, residual 7.5e-12
+    IB endpoint (minimal sufficient statistic = Y1): 1.0000
+    latent bottleneck <= IB everywhere on the grid: True
+[2] Two views: every model on the fiber reproduces P(Y1,Y2)
+    feasible two-state models on grid: 7695;  max log-score regret on P(Y1,Y2): 4.4e-16 bits
+    P(X=1 | y1=1, y2=1) ranges over [0.833, 1.000]  (true model: 0.950)
+    I(X;Y) ranges over [0.4834, 0.9765];  true 0.4954;  min at a=(0.137, 0.797)
+[3] Three views: best achievable log-score regret on P(Y1,Y2,Y3), per fiber point
+    at the true model: 0.0e+00 bits;  min elsewhere (a more than 0.05 from truth): 2.1e-03 bits
+    at the 2-view Wyner point: 0.0079 bits
+    EM from 200 random starts: 200 reach the optimum; max |param - truth| among them: 1.4e-08
+[4] Scoring a belief about this unit's X via a held-out view Y3
+    true posterior P(X=1|y1=1,y2=1) = 0.950;  argmax of expected log score (informative probe) = 0.950;  spread with uninformative probe = 4.4e-16 bits

@@ -1,0 +1,27 @@
+trial 0  |X|=2 |Y_i|=2  2 views:  true I(X;Y) 0.08063   Wyner-minimal 0.00822   gap +0.07241
+trial 0  |X|=2 |Y_i|=2  3 views:  true I(X;Y) 0.08723   Wyner-minimal 0.05192   gap +0.03531
+trial 1  |X|=2 |Y_i|=3  2 views:  true I(X;Y) 0.03762   Wyner-minimal 0.02405   gap +0.01357
+trial 1  |X|=2 |Y_i|=3  3 views:  true I(X;Y) 0.10481   Wyner-minimal 0.10481   gap +0.00000
+trial 2  |X|=3 |Y_i|=3  2 views:  true I(X;Y) 0.31054   Wyner-minimal 0.23328   gap +0.07726
+trial 2  |X|=3 |Y_i|=3  3 views:  true I(X;Y) 0.57629   Wyner-minimal 0.57629   gap +0.00000
+trial 3  |X|=2 |Y_i|=2  2 views:  true I(X;Y) 0.20061   Wyner-minimal 0.14304   gap +0.05757
+trial 3  |X|=2 |Y_i|=2  3 views:  true I(X;Y) 0.24077   Wyner-minimal 0.23946   gap +0.00132
+trial 4  |X|=2 |Y_i|=3  2 views:  true I(X;Y) 0.28799   Wyner-minimal 0.26293   gap +0.02506
+trial 4  |X|=2 |Y_i|=3  3 views:  true I(X;Y) 0.50059   Wyner-minimal 0.50059   gap +0.00000
+trial 5  |X|=3 |Y_i|=3  2 views:  true I(X;Y) 0.19440   Wyner-minimal 0.09596   gap +0.09845
+trial 5  |X|=3 |Y_i|=3  3 views:  true I(X;Y) 0.34274   Wyner-minimal 0.34274   gap +0.00000
+trial 6  |X|=2 |Y_i|=2  2 views:  true I(X;Y) 0.07762   Wyner-minimal 0.03175   gap +0.04586
+trial 6  |X|=2 |Y_i|=2  3 views:  true I(X;Y) 0.10352   Wyner-minimal 0.09751   gap +0.00601
+trial 7  |X|=2 |Y_i|=3  2 views:  true I(X;Y) 0.21592   Wyner-minimal 0.19301   gap +0.02291
+trial 7  |X|=2 |Y_i|=3  3 views:  true I(X;Y) 0.30003   Wyner-minimal 0.30003   gap +0.00000
+trial 8  |X|=3 |Y_i|=3  2 views:  true I(X;Y) 0.20857   Wyner-minimal 0.12950   gap +0.07907
+trial 8  |X|=3 |Y_i|=3  3 views:  true I(X;Y) 0.31612   Wyner-minimal 0.31612   gap +0.00000
+trial 9  |X|=2 |Y_i|=2  2 views:  true I(X;Y) 0.38254   Wyner-minimal 0.10600   gap +0.27654
+trial 9  |X|=2 |Y_i|=2  3 views:  true I(X;Y) 0.38530   Wyner-minimal 0.22039   gap +0.16491
+2 views: gap true - Wyner  min +0.01357  max +0.27654
+3 views: gap true - Wyner  min +0.00000  max +0.16491
+Part 2: Wyner-minimal I(X;Y) at |X| = 2, 3, 4 (true |X| = 2)
+model A, 3 binary views:  true 0.38507   |X|=2: 0.38507   |X|=3: 0.21967   |X|=4: 0.21967
+model A, 4 binary views:  true 0.40000   |X|=2: 0.40000   |X|=3: 0.40000   |X|=4: 0.40000
+model B, 3 binary views:  true 0.08746   |X|=2: 0.08746   |X|=3: 0.08746   |X|=4: 0.05202
+model B, 4 binary views:  true 0.22047   |X|=2: 0.22047   |X|=3: 0.22047   |X|=4: 0.22047

@@ -1,0 +1,35 @@
+[1] quadrature vs closed-form tempered score (factor analysis, tau in {1, .6}): 5e-12 bits
+[2] Recovery at tau = 1 from random starts (exact pattern tables / large samples)
+    1-factor logit IRT, 6 items, 5 starts: max |param - truth| (up to sign) 3e-07
+    1-factor probit IRT, 6 items, 5 starts: max |param - truth| (up to sign) 3e-07
+    2-factor IRT, 8 items, 3 starts: max error in rotation-invariant A A^T and b 2e-06
+    mixed (logit, probit, normal, 3-category), 150k samples: max |param - truth| 0.037 (normal variance 0.506 vs 0.5)
+[3] Gauge vs genuine non-identification
+    gauge: rotate a 2-factor IRT model by 0.7 rad -> max change in any pattern probability 2e-08;  sign flip of a 1-factor model -> 0e+00
+    genuine: 2 Gaussian indicators (rho = 0.5), loadings with a1*a2 = rho all fit exactly:
+      a = (0.600, 0.833):  E[log score] -3.886672  I(Z;Y) 0.970  E[Z | y = (1,1)] 0.956
+      a = (0.707, 0.707):  E[log score] -3.886672  I(Z;Y) 0.792  E[Z | y = (1,1)] 0.943
+      a = (0.900, 0.556):  E[log score] -3.886672  I(Z;Y) 1.257  E[Z | y = (1,1)] 0.970
+[4] Gaussian indicators (rho = 0.5): tempered-score optimum vs Wyner's 1/2 log((1+rho)/(1-rho)) = 0.7925 bits
+    tau=0.9: loadings (0.6614, 0.6614)  I(Z;Y) 0.6315
+    tau=0.99: loadings (0.7035, 0.7035)  I(Z;Y) 0.7779
+    tau=0.999: loadings (0.7068, 0.7068)  I(Z;Y) 0.7910
+    tau=0.9999: loadings (0.7071, 0.7071)  I(Z;Y) 0.7923
+[5] Free-form latent distribution, 3 binary indicators, 3 random starts each
+    columns: E[S_tau] | I(Z;Y) | P(P(Y1=1|Z) > 0.8) | forecast error TV(m, P(Y))
+    links fixed tau=1.0   [-2.8086, -2.8086]  [0.5522, 0.5526]  [0.1755, 0.2201]  [0.0001, 0.0002]
+    links fixed tau=0.95  [-2.6933, -2.6933]  [0.4876, 0.4881]  [0.0602, 0.1155]  [0.0163, 0.0164]
+    links fixed tau=0.8   [-2.3300, -2.3299]  [0.3624, 0.3643]  [0.0000, 0.0004]  [0.0702, 0.0710]
+    links fixed tau=0.5   [-1.4796, -1.4796]  [0.0001, 0.0003]  [0.0000, 0.0000]  [0.2020, 0.2022]
+    links free  tau=1.0   [-2.8086, -2.8086]  [0.5298, 0.5688]  [0.1455, 0.3064]  [0.0000, 0.0000]
+    links free  tau=0.95  [-2.6921, -2.6921]  [0.4738, 0.4741]  [0.0014, 0.0150]  [0.0109, 0.0110]
+    links free  tau=0.8   [-2.3269, -2.3269]  [0.3479, 0.3480]  [0.0000, 0.0000]  [0.0645, 0.0646]
+    links free  tau=0.5   [-1.4767, -1.4767]  [0.0000, 0.0000]  [0.0000, 0.0000]  [0.1970, 0.1970]
+    links fixed: exact range of P(Z > 1) over ALL latent distributions maximising E[S_tau]:
+      tau=1.0   [0.035, 0.317]
+      tau=0.95  [0.000, 0.024]
+      tau=0.8   [0.000, 0.002]
+[6] More factors
+    exact tempered FA EM, 6 factors, 20 indicators, 50000 samples: max error A A^T 0.064, psi 0.015; fit beats truth's log score by 0.0022 bits; monotone True
+    4-factor IRT, 10 items, Sobol nodes: integration error (TV) 0.0042 at 1024, 0.0011 at 4096
+    fitted with 2048 nodes, 3 starts: max error A A^T / b / EM iterations: 0.070 / 0.0042 / 3000; 0.083 / 0.0017 / 97; 0.049 / 0.0027 / 3000
