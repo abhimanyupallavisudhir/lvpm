@@ -1,5 +1,8 @@
 # lvpm
 
+Start with [notes/program.md](notes/program.md): the research program on training and evaluating conceptual
+reasoning, what is built where, and the first results.
+
 What gives a belief about a latent variable meaning, given that only observables can be scored? And can that
 make conceptual writing scoreable? See [notes/latent-meaning.md](notes/latent-meaning.md) (theory) and
 [notes/essays.md](notes/essays.md) (essays as latent variables: design and first results).
