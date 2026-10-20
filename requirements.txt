@@ -1,3 +1,8 @@
 numpy
 scipy
 matplotlib
+# essays experiments (lvpm/essays, experiments/essays*.py): so-arena's testbed and model layer
+# install with: pip install -e "../so-arena[dev,providers]"
+pandas
+pyarrow
+tabulate

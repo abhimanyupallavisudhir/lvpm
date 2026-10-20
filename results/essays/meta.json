@@ -1,0 +1,89 @@
+{
+ "reader": {
+  "model": "openai/gpt-4.1-mini",
+  "eps": 0.01,
+  "debias": true,
+  "reason": true
+ },
+ "args": {
+  "families": [
+   "rlhack/sensor",
+   "rlhack/fake_goal",
+   "agents/auction",
+   "agents/sycophancy",
+   "agents/persona",
+   "numbers/prime_race",
+   "decisions/newcomb"
+  ],
+  "per_family": 48,
+  "writers": [
+   "openai/gpt-4.1-mini",
+   "openai/gpt-5-mini",
+   "anthropic/claude-sonnet-4-5"
+  ],
+  "reader": "openai/gpt-4.1-mini",
+  "n_informed": 3,
+  "n_uninformed": 2,
+  "n_mixture": 2,
+  "seed": 0,
+  "out": "results/essays"
+ },
+ "families": [
+  {
+   "family": "rlhack/sensor",
+   "n_shown": 16,
+   "n_dev": 16,
+   "n_test": 16,
+   "writer_cost": 0.20194779999999998,
+   "reader_cost": 4.447737599999993
+  },
+  {
+   "family": "rlhack/fake_goal",
+   "n_shown": 16,
+   "n_dev": 16,
+   "n_test": 16,
+   "writer_cost": 0.192182,
+   "reader_cost": 4.3519364000000085
+  },
+  {
+   "family": "agents/auction",
+   "n_shown": 16,
+   "n_dev": 16,
+   "n_test": 16,
+   "writer_cost": 0.21602815000000003,
+   "reader_cost": 2.5945444
+  },
+  {
+   "family": "agents/sycophancy",
+   "n_shown": 16,
+   "n_dev": 16,
+   "n_test": 16,
+   "writer_cost": 0.1588035,
+   "reader_cost": 2.4665940000000113
+  },
+  {
+   "family": "agents/persona",
+   "n_shown": 16,
+   "n_dev": 16,
+   "n_test": 16,
+   "writer_cost": 0.1635071,
+   "reader_cost": 2.5447920000000135
+  },
+  {
+   "family": "numbers/prime_race",
+   "n_shown": 16,
+   "n_dev": 16,
+   "n_test": 16,
+   "writer_cost": 0.13579395,
+   "reader_cost": 3.0104888000001715
+  },
+  {
+   "family": "decisions/newcomb",
+   "n_shown": 16,
+   "n_dev": 16,
+   "n_test": 16,
+   "writer_cost": 0.1985778,
+   "reader_cost": 3.7198060000001583
+  }
+ ]
+}
