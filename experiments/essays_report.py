@@ -15,8 +15,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-import so_arena as soa
-from so_arena.domains.testbed.suite import all_families
+import cvtestbed as cvt
 
 from lvpm.essays import score as S
 from lvpm.essays import writers as W
@@ -108,11 +107,11 @@ def best_of_k(dev, test, k):
 async def judge_all(df, reports, judge_model):
     by_id = {(r["family"], r["id"]): r for r in reports}
     todo = df[df.kind == "informed"]
-    cards = all_families()
+    cards = cvt.families()
 
     async def one(row):
         r = by_id[(row.family, row.id)]
-        s, c = await W.judge_essay(judge_model, cards[row.family].card, r["hypotheses"][0])
+        s, c = await W.judge_essay(judge_model, cards[cvt.ALIASES.get(row.family, row.family)].card, r["hypotheses"][0])
         return s, c
 
     res = await asyncio.gather(*[one(row) for row in todo.itertuples()])
@@ -196,7 +195,6 @@ def figures(df, curves, gains):
 def main(args):
     global OUT
     OUT = Path(args.out)
-    soa.configure(cache_dir=str(Path(__file__).resolve().parents[1] / ".cache" / "so_arena"))
     cells = pd.read_parquet(OUT / "cells.parquet")
     reports = json.loads((OUT / "reports.json").read_text())
     df = report_scores(cells, reports)

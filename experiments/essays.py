@@ -26,9 +26,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-import so_arena as soa
-from so_arena.domains import get_domain
-from so_arena.domains.testbed.suite import all_families
+import cvtestbed as cvt
 
 from lvpm.essays import writers as W
 from lvpm.essays.reader import Reader, outcomes, words
@@ -77,11 +75,10 @@ async def family_reports(family, card, shown, writers, n_informed, n_uninformed,
 
 
 async def run_family(family, args, reader):
-    dom_name = family.split("/", 1)[0]
-    dom = get_domain(dom_name, families=[family], per_family=args.per_family, seed=args.seed)
-    items = dom.load()
+    family = cvt.ALIASES.get(family, family)
+    items = cvt.load([family], n=args.per_family, seed=args.seed)
     shown, dev, test = three_way(items, args.seed)
-    card = all_families()[family].card
+    card = cvt.families()[family].card
     t0 = time.time()
     reports, wcost = await family_reports(family, card, shown, args.writers, args.n_informed, args.n_uninformed,
                                           args.n_mixture)
@@ -110,7 +107,6 @@ async def run_family(family, args, reader):
 async def main(args):
     global OUT
     OUT = Path(args.out)
-    soa.configure(cache_dir=str(Path(__file__).resolve().parents[1] / ".cache" / "so_arena"))
     reader = Reader(args.reader)
     OUT.mkdir(parents=True, exist_ok=True)
     all_rows, all_reports, meta = [], [], []
@@ -128,8 +124,9 @@ async def main(args):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("--families", nargs="+", default=["rlhack/sensor", "rlhack/fake_goal", "agents/auction",
-                                                       "agents/sycophancy", "numbers/prime_race", "decisions/newcomb"])
+    ap.add_argument("--families", nargs="+", default=["rewardhacking/gridworld_sensor", "multiagent/auction",
+                                                       "sycophancy/wrong_answer", "numbers/prime_race",
+                                                       "decisions/newcomb"])
     ap.add_argument("--per-family", type=int, default=60)
     ap.add_argument("--writers", nargs="+", default=["openai/gpt-4.1-mini", "openai/gpt-5-mini",
                                                       "anthropic/claude-sonnet-4-5"])

@@ -14,8 +14,7 @@ experiments. It commits a report before the test items are drawn. Baselines:
 import json
 import re
 
-from so_arena.core.parsing import parse_json_object
-from so_arena.core.types import GenerateOptions, Message
+from cvtestbed.llm import default_llm
 
 ESSAY_SYSTEM = (
     "You are a researcher writing a short theory of a domain. Another model will read your theory "
@@ -26,9 +25,8 @@ ESSAY_SYSTEM = (
 
 def _examples_block(items, limit_chars=60000):
     out, n = [], 0
-    for it in items:
-        ans = it.answer(it.true_label).text
-        block = f"QUESTION:\n{it.question.strip()}\nCORRECT ANSWER: {ans}"
+    for q in items:
+        block = f"QUESTION:\n{q.text.strip()}\nCORRECT ANSWER: {q.options[q.answer]}"
         n += len(block)
         if n > limit_chars:
             break
@@ -62,40 +60,40 @@ def mixture_prompt(card, train_items=None, k=3, words=200):
             "\"weight\": p}, ...]}.")
 
 
-async def write_essay(model, card, train_items=None, *, words=400, sample=0, temperature=1.0, max_tokens=1500):
-    from so_arena.models.base import get_model
+async def write_essay(model, card, train_items=None, *, words=400, sample=0, temperature=1.0, max_tokens=1500,
+                      llm=None):
+    llm = llm or default_llm()
+    r = await llm.chat(model, [{"role": "system", "content": ESSAY_SYSTEM},
+                               {"role": "user", "content": essay_prompt(card, train_items, words)}],
+                       max_tokens=max_tokens, temperature=temperature, key=f"essay|{sample}")
+    return r.text.strip(), r.cost
 
-    m = get_model(model)
-    out = await m.generate([Message.system(ESSAY_SYSTEM), Message.user(essay_prompt(card, train_items, words))],
-                           GenerateOptions(temperature=temperature, max_tokens=max_tokens,
-                                           draw=f"essay|{sample}"), sample_index=sample)
-    return (out.text or "").strip(), out.usage.cost_usd or 0.0
+
+def _last_json(text):
+    for cand in reversed(re.findall(r"\{.*\}", text, flags=re.S)):
+        try:
+            return json.loads(cand)
+        except json.JSONDecodeError:
+            continue
+    return None
 
 
 async def write_mixture(model, card, train_items=None, *, k=3, words=200, sample=0, temperature=1.0,
-                        max_tokens=2500):
-    from so_arena.models.base import get_model
-
-    m = get_model(model)
-    out = await m.generate([Message.system(ESSAY_SYSTEM), Message.user(mixture_prompt(card, train_items, k, words))],
-                           GenerateOptions(temperature=temperature, max_tokens=max_tokens,
-                                           draw=f"mixture|{sample}"), sample_index=sample)
-    text = out.text or ""
+                        max_tokens=2500, llm=None):
+    llm = llm or default_llm()
+    r = await llm.chat(model, [{"role": "system", "content": ESSAY_SYSTEM},
+                               {"role": "user", "content": mixture_prompt(card, train_items, k, words)}],
+                       max_tokens=max_tokens, temperature=temperature, key=f"mixture|{sample}")
     hyps = []
-    m_ = re.search(r"\{.*\}", text, flags=re.S)
-    try:
-        obj = json.loads(m_.group(0)) if m_ else None
-    except json.JSONDecodeError:
-        obj = parse_json_object(text)
-    for h in (obj or {}).get("hypotheses", []):
+    for h in (_last_json(r.text) or {}).get("hypotheses", []):
         try:
             hyps.append((str(h["text"]).strip(), max(0.0, float(h.get("weight", 1.0)))))
         except (KeyError, TypeError, ValueError):
             continue
     if not hyps or sum(w for _, w in hyps) <= 0:
-        return [], out.usage.cost_usd or 0.0
+        return [], r.cost
     tot = sum(w for _, w in hyps)
-    return [(t, w / tot) for t, w in hyps], out.usage.cost_usd or 0.0
+    return [(t, w / tot) for t, w in hyps], r.cost
 
 
 JUDGE_PROMPT = (
@@ -104,13 +102,11 @@ JUDGE_PROMPT = (
     "'Score: N' where N is from 1 to 10.")
 
 
-async def judge_essay(model, card, essay, sample=0):
+async def judge_essay(model, card, essay, sample=0, llm=None):
     """An LLM's rating of an essay's quality (1-10): the alternative training signal to compare S_tau with."""
-    from so_arena.core.parsing import parse_score
-    from so_arena.models.base import get_model
-
-    m = get_model(model)
-    out = await m.generate([Message.user(JUDGE_PROMPT.format(card=card, essay=essay))],
-                           GenerateOptions(temperature=0.0, max_tokens=600, draw=f"judge|{sample}"))
-    s = parse_score(out.text or "", 1, 10)
-    return (s if s is not None else 5.0), out.usage.cost_usd or 0.0
+    llm = llm or default_llm()
+    r = await llm.chat(model, JUDGE_PROMPT.format(card=card, essay=essay), max_tokens=600, temperature=0.0,
+                       key=f"judge|{sample}")
+    m = re.findall(r"score\W{0,3}(\d+(?:\.\d+)?)", r.text, re.I)
+    s = float(m[-1]) if m else 5.0
+    return min(10.0, max(1.0, s)), r.cost

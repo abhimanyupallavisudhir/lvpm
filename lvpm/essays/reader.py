@@ -1,13 +1,13 @@
 """The frozen reader: what a hypothesis (essay) predicts about a task.
 
 The reader is a fixed language model with a fixed prompt. Given a hypothesis h
-and a two-option task, it answers as if h were true; its probability for each
-option is read from next-token log-probabilities. That probability is
+and a two-option task, it answers as if h were true and states its probability
+for each option. That probability is
 p_R(y | h): the meaning of h, relative to this reader. The writer of h never
 sees the tasks it will be scored on, so it can move these predictions only
 through what h says about the domain.
 
-Two choices keep p_R well defined:
+Three choices keep p_R well defined:
 
 * Position bias is removed by asking with the options in both orders and
   averaging (``debias=True``).
@@ -21,8 +21,8 @@ Two choices keep p_R well defined:
   into a deterministic one; a stated probability lets a theory that says "this
   is a toss-up" or "70% likely" predict softly.
 
-Calls go through so-arena's model layer, so they are cached on disk and their
-cost is recorded (``Reader.cost``).
+Calls go through the testbed's cached LLM client (``cvtestbed.llm``), so they
+are cached on disk and their cost is recorded (``Reader.cost``).
 """
 
 import asyncio
@@ -30,98 +30,88 @@ import re
 
 import numpy as np
 
-from so_arena.core.parsing import probs_from_logprobs, parse_json_object
-from so_arena.core.types import GenerateOptions, Message
+from cvtestbed.llm import LLM
 
 SYSTEM = (
     "You answer questions by applying a theory someone else wrote about the domain. "
     "Assume the theory is correct and answer as it implies. Where it does not settle "
     "the question, use your best judgment in the spirit of the theory.")
 SYSTEM_BARE = "You answer questions as accurately as you can."
+PROB = ('Reply with a JSON object {"A": p, "B": 1 - p} giving your probability that each answer is correct, '
+        "and nothing else.")
 
 
-def task_text(item, swap=False):
-    a, b = item.answers
+def task_text(q, swap=False):
+    a, b = q.options
     first, second = (b, a) if swap else (a, b)
-    return (f"{item.question.strip()}\n\n(A) {first.text}\n(B) {second.text}")
+    return f"{q.text.strip()}\n\n(A) {first}\n(B) {second}"
+
+
+def parse_prob(text):
+    m = re.search(r'"A"\s*:\s*([0-9.]+)', text or "")
+    try:
+        return float(m.group(1)) if m else 0.5
+    except ValueError:
+        return 0.5
 
 
 class Reader:
-    def __init__(self, model="openai/gpt-4.1-mini", eps=0.01, debias=True, reason=True, max_reasoning=700,
-                 concurrency=32):
-        from so_arena.models.base import get_model
+    """A frozen reader: ``model`` answering as if a hypothesis were true (see the module docstring)."""
 
-        self.model_name = model
-        self.model = get_model(model)
-        self.eps, self.debias, self.reason, self.max_reasoning = eps, debias, reason, max_reasoning
-        self.sem = asyncio.Semaphore(concurrency)
+    def __init__(self, model="openai/gpt-4.1-mini", eps=0.01, debias=True, reason=True, max_reasoning=700,
+                 llm=None):
+        self.model_name, self.eps, self.debias = model, eps, debias
+        self.reason, self.max_reasoning = reason, max_reasoning
+        self.llm = llm or LLM()
         self.cost, self.calls = 0.0, 0
 
     def describe(self):
         return {"model": self.model_name, "eps": self.eps, "debias": self.debias, "reason": self.reason}
 
-    async def _p_first(self, hypothesis, item, swap):
-        """P(the option shown first is correct)."""
-        body = task_text(item, swap)
-        if hypothesis:
-            msgs = [Message.system(SYSTEM),
-                    Message.user(f"THEORY:\n{hypothesis.strip()}\n\nQUESTION:\n{body}\n\n"
-                                 "Which answer is correct according to the theory? "
-                                 "Reply with only the letter A or B.")]
-        else:
-            msgs = [Message.system(SYSTEM_BARE),
-                    Message.user(f"QUESTION:\n{body}\n\nWhich answer is correct? "
-                                 "Reply with only the letter A or B.")]
-        cost = 0.0
-        async with self.sem:
-            if self.reason:
-                ask = msgs[-1].content.replace("Reply with only the letter A or B.",
-                                               "Work it out step by step, briefly.")
-                think = await self.model.generate([msgs[0], Message.user(ask)], GenerateOptions(
-                    temperature=0.0, max_tokens=self.max_reasoning))
-                cost += think.usage.cost_usd or 0.0
-                self.calls += 1
-                msgs = [msgs[0], Message.user(ask), Message.assistant(think.text or ""),
-                        Message.user("Now give the probability that each answer is correct"
-                                     + (" according to the theory" if hypothesis else "") + ".")]
-            if self.model.supports_logprobs and not self.reason:
-                out = await self.model.generate(msgs, GenerateOptions(
-                    temperature=0.0, max_tokens=2, logprobs=True, top_logprobs=20))
-                p = probs_from_logprobs(out.logprobs, ["A", "B"])
-                p = p["A"] if p else 0.5
-            else:  # verbalized probability
-                instr = ('Reply with a JSON object {"A": p, "B": 1 - p} giving your probability that each '
-                         "answer is correct, and nothing else.")
-                last = msgs[-1].content
-                msgs[-1] = Message.user(last + " " + instr if self.reason else
-                                        last.replace("Reply with only the letter A or B.", instr))
-                out = await self.model.generate(msgs, GenerateOptions(temperature=0.0, max_tokens=40))
-                d = parse_json_object(out.text or "") or {}
-                try:
-                    p = float(d.get("A", 0.5))
-                except (TypeError, ValueError):
-                    p = 0.5
-        self.cost += cost + (out.usage.cost_usd or 0.0)
+    async def _chat(self, msgs, max_tokens, key):
+        r = await self.llm.chat(self.model_name, msgs, max_tokens=max_tokens, temperature=0.0, key=key)
+        self.cost += r.cost
         self.calls += 1
-        return p
+        return r.text
 
-    async def prob(self, hypothesis, item):
-        """p_R(answer A of ``item`` is correct | hypothesis), clipped."""
-        p = await self._p_first(hypothesis, item, False)
+    async def _p_first(self, hypothesis, q, swap):
+        """P(the option shown first is correct)."""
+        body = task_text(q, swap)
+        if hypothesis:
+            sys_ = SYSTEM
+            ask = f"THEORY:\n{hypothesis.strip()}\n\nQUESTION:\n{body}\n\nWhich answer is correct according to the theory?"
+        else:
+            sys_ = SYSTEM_BARE
+            ask = f"QUESTION:\n{body}\n\nWhich answer is correct?"
+        key = f"{q.id}|{swap}"  # the cache key also covers the messages, so each hypothesis is its own draw
+        msgs = [{"role": "system", "content": sys_}]
+        if self.reason:
+            msgs.append({"role": "user", "content": ask + " Work it out step by step, briefly."})
+            think = await self._chat(msgs, self.max_reasoning, "think|" + key)
+            msgs += [{"role": "assistant", "content": think},
+                     {"role": "user", "content": "Now give the probability that each answer is correct"
+                      + (" according to the theory" if hypothesis else "") + ". " + PROB}]
+        else:
+            msgs.append({"role": "user", "content": ask + " " + PROB})
+        return parse_prob(await self._chat(msgs, 40, "prob|" + key))
+
+    async def prob(self, hypothesis, q):
+        """p_R(option A of question ``q`` is correct | hypothesis), clipped."""
+        p = await self._p_first(hypothesis, q, False)
         if self.debias:
-            p = 0.5 * (p + 1.0 - await self._p_first(hypothesis, item, True))
+            p = 0.5 * (p + 1.0 - await self._p_first(hypothesis, q, True))
         return float(np.clip(p, self.eps, 1 - self.eps))
 
-    async def matrix(self, hypotheses, items):
-        """[K, n] matrix P[k, i] = p_R(answer A of item i | hypothesis k)."""
-        cells = [self.prob(h, it) for h in hypotheses for it in items]
+    async def matrix(self, hypotheses, questions):
+        """[K, n] matrix P[k, i] = p_R(option A of question i | hypothesis k)."""
+        cells = [self.prob(h, q) for h in hypotheses for q in questions]
         vals = await asyncio.gather(*cells)
-        return np.array(vals, dtype=float).reshape(len(hypotheses), len(items))
+        return np.array(vals, dtype=float).reshape(len(hypotheses), len(questions))
 
 
-def outcomes(items):
-    """y_i = 1 if answer A of item i is the true one."""
-    return np.array([1.0 if it.true_label == "A" else 0.0 for it in items])
+def outcomes(questions):
+    """y_i = 1 if option A of question i is the correct one."""
+    return np.array([1.0 if q.answer == 0 else 0.0 for q in questions])
 
 
 WORD_RE = re.compile(r"\w+")
