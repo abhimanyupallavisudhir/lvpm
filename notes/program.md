@@ -11,7 +11,7 @@ truth*, then tests methods for each there.
 
 | project | question | where | status |
 |---|---|---|---|
-| 1. Testbed | questions that must be argued about, with hidden ground truth from computation, proof or experiment | `so-arena`: `so_arena.domains.testbed`, [docs/testbed.md](https://github.com/abhimanyupallavisudhir/so-arena/blob/master/docs/testbed.md) | 21 families, ~2,000 items. 600 RL and 120 LLM-agent experiments run and committed as data |
+| 1. Testbed | questions that must be argued about, with hidden ground truth from computation, proof or experiment - mostly *about the outcomes of alignment experiments*, specified so they can be run at the click of a button | [conceptual-validation-testbed](https://github.com/abhimanyupallavisudhir/conceptual-validation-testbed) (`cvtestbed`, CLI `cvt`) | 36 families across 14 research streams; ~1,150 labelled experiment questions, plus unlimited generated ones; expensive experiments (fine-tuning) defined and runnable, unlabelled |
 | 2. Oversight evaluations | do debate-like protocols make a weak judge more accurate, and stay so under optimization? | `so-arena`: `mechanisms/recursive.py`, `experiments/oversight_*.py`, [docs/oversight-results.md](https://github.com/abhimanyupallavisudhir/so-arena/blob/master/docs/oversight-results.md) | 5 protocols × 4 debater models × 160 items; best-of-$n$ curves |
 | 3. Essays as latents | is an essay valuable in proportion to how it improves a frozen reader's predictions of questions its writer never saw? | `lvpm`: `lvpm/essays/`, [essays.md](essays.md) | 7 families, 150 reports, 28k reader calls |
 
@@ -42,10 +42,43 @@ a proper elicitation of latent structure, relative to the reader.
    measurements. RL reward-hacking outcomes follow learnable structure (a 12-feature model reaches 90%) that
    current models don't apply.
 
-Total API spend: about \$120 (\$3 testbed experiments, \$25 essays, \$87 protocol comparisons, \$5
-optimization, under \$1 pilots).
+Total API spend: about \$125 (\$3 + \$3 testbed experiments, \$25 essays, \$87 protocol comparisons, \$5
+optimization, about \$1 pilots), plus one fine-tuning test job queued at OpenAI.
 
-## Next steps, in order of expected value
+## What we should measure next: one arena for questions 2 and 3 (proposed, awaiting a decision)
+
+The first experiments answered narrower questions than the program's. The oversight comparison measured
+protocols as *decision procedures* with prompted debaters arguing assigned sides of yes/no questions. The essay
+experiment measured whether essays carry transferable information, not whether a mechanism *incentivizes* better
+essays. The program's questions are:
+
+- (2) will training against debate or another oversight protocol produce better conceptual essays?
+- (3) will training against a latent-variable mechanism with verifiable downstream tasks produce better ones?
+
+Both ask *which reward signal, when optimized, yields better conceptual outputs*. One experiment answers both:
+
+- **Policy:** a writer that produces an essay (a theory plus conclusions) on a conceptual topic with checkable
+  implications. Examples: "when does RL find reward hacks?", "when do LLM agents collude?", "when should an agent
+  one-box?", "when are chain-of-thought monitors reliable?".
+- **Rewards compared,** all with weak overseers:
+  - an LLM judge's rating (the RLAIF baseline);
+  - debate on the essay (writer vs critic);
+  - consultancy;
+  - market making;
+  - the latent mechanism: $S_\tau$ of the essay through a frozen reader on *training* downstream questions;
+  - an oracle upper bound.
+- **Optimization:** best-of-$n$, then expert iteration, then RL on an open model.
+- **Ground-truth evaluation,** never used as a reward:
+  - held-out downstream questions, including shifted kinds of question, so that memorizing the reward
+    questions does not pay;
+  - independent quality ratings (a strong-model rubric, later experts or LMCA-style ratings);
+  - correctness of the essay's checkable conclusions.
+- **Outputs:** Goodhart curves (ground truth against optimization pressure) for each reward signal, stratified
+  by the writer-overseer knowledge gap. The essay-level analogue of so-arena's ASD measures sits alongside:
+  concordance of each reward with ground truth over natural samples of essays.
+
+## Next steps
+ in order of expected value
 
 1. **Train, don't select.** Run RL or iterated best-of-$n$ on essay writers with DEV $S_\tau$ as the reward, and
    plot held-out $S$ along training (the Goodhart curve). Do the same for debaters in self-play, and for the
