@@ -20,8 +20,8 @@ Theory and exact checks:
 - `experiments/continuous.py`: continuous-latent checks (about 13 min).
 - `experiments/wyner_vs_true.py`: exact Wyner-minimal latent vs the true latent (about 15 min).
 
-Essays as latents (uses the testbed and model layer of
-[so-arena](https://github.com/abhimanyupallavisudhir/so-arena)):
+Essays as latents (questions and the cached LLM client come from the
+[conceptual validation testbed](https://github.com/abhimanyupallavisudhir/conceptual-validation-testbed)):
 
 - `lvpm/essays/score.py`: $S_\tau$ of weighted natural-language hypotheses on resolved tasks; posteriors,
   held-out scores, information diagnostics, incentive-preserving adaptive task selection.
@@ -33,6 +33,5 @@ Essays as latents (uses the testbed and model layer of
 ```sh
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 PYTHONPATH=. .venv/bin/python experiments/latent_meaning.py
-.venv/bin/pip install -e "../so-arena[dev,providers]"   # for the essays experiments
 PYTHONPATH=. .venv/bin/pytest tests
 ```
