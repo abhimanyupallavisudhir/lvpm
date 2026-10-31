@@ -1,3 +1,9 @@
 numpy
 scipy
 matplotlib
+# essays experiments (lvpm/essays, experiments/essays*.py): questions and the cached LLM client come from the
+# conceptual validation testbed
+conceptual-validation-testbed[llm] @ git+https://github.com/abhimanyupallavisudhir/conceptual-validation-testbed
+pandas
+pyarrow
+tabulate
