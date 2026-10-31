@@ -59,17 +59,24 @@ class Reader:
     """A frozen reader: ``model`` answering as if a hypothesis were true (see the module docstring)."""
 
     def __init__(self, model="openai/gpt-4.1-mini", eps=0.01, debias=True, reason=True, max_reasoning=700,
-                 llm=None):
+                 llm=None, temperature=0.0, reading=0):
+        """``temperature`` > 0 with different ``reading`` indices gives independent readings of the same
+        hypothesis (to measure ambiguity); the defaults reproduce the original reader exactly."""
         self.model_name, self.eps, self.debias = model, eps, debias
         self.reason, self.max_reasoning = reason, max_reasoning
+        self.temperature, self.reading = temperature, reading
         self.llm = llm or LLM()
         self.cost, self.calls = 0.0, 0
 
     def describe(self):
-        return {"model": self.model_name, "eps": self.eps, "debias": self.debias, "reason": self.reason}
+        return {"model": self.model_name, "eps": self.eps, "debias": self.debias, "reason": self.reason,
+                "temperature": self.temperature, "reading": self.reading}
 
     async def _chat(self, msgs, max_tokens, key):
-        r = await self.llm.chat(self.model_name, msgs, max_tokens=max_tokens, temperature=0.0, key=key)
+        if self.reading:
+            key = f"{key}|r{self.reading}"
+        r = await self.llm.chat(self.model_name, msgs, max_tokens=max_tokens, temperature=self.temperature,
+                                key=key)
         self.cost += r.cost
         self.calls += 1
         return r.text
