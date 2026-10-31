@@ -295,18 +295,9 @@ conditionals. Validity is not scored separately:
 ## 8. Building it
 
 Some pieces already exist: [`lvpm/dag.py`](../lvpm/dag.py) and
-[`lvpm/continuous.py`](../lvpm/continuous.py) compute $S_\tau$, and fit it,
-for any parsed structure.
-
-What is missing:
-- an interpreter: a language model with fixed prompts for parsing and for link
-  queries;
-- a bank of resolvable questions with their resolutions and dates;
-- the bookkeeping for question sampling and for the market.
-
-**A first experiment.** Score historical essays against questions created
-independently after each essay's date. Use an interpreter whose knowledge
-cutoff precedes the resolutions. Compare the result with the cheap answer (B).
+[`lvpm/continuous.py`](../lvpm/continuous.py) compute $S_\tau$ for any parsed
+structure. What to build, and the experiments that would test the proposal,
+are in [latent-essays-plan.md](latent-essays-plan.md).
 
 ## References
 
