@@ -128,7 +128,7 @@ async def write_all(setting, z, profile, qs, seen):
 async def judge(setting, essay):
     t = await chat(C.STRONG, JUDGE.format(name=NAMES[setting], brief=WD.SETTINGS[setting]["brief"], essay=essay),
                    "judge", max_tokens=800, temperature=0.0)
-    m = re.findall(r"score\W{0,3}(\d+(?:\.\d+)?)", t, re.I)
+    m = re.findall(r"score\W{0,8}(\d+(?:\.\d+)?)", t, re.I)
     return min(10.0, max(1.0, float(m[-1]))) if m else None
 
 
