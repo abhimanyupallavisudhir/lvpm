@@ -203,3 +203,107 @@ over time.
   - a spend limit;
   - your choice of 3–4 topics for E2;
   - a Metaculus API token, if their API requires one for resolution data.
+
+---
+
+## After reading the existing work (added later)
+
+The plan above was written before I read [essays.md](essays.md), the code in
+`lvpm/essays/`, and [program.md](program.md). This section compares the two
+and revises the plan.
+
+### The same core, derived independently
+
+Both designs have:
+- **Reports:** an essay as $K$ weighted natural-language hypotheses.
+- **A frozen reader as the semantics:** literal reading, "assume the theory is
+  correct".
+- **Separate calls per (hypothesis, task):** so tasks are conditionally
+  independent given the hypothesis *by construction*, and the mixture has to
+  carry any cross-task structure.
+- **Scoring:** $S_\tau$.
+- **Commit before testing:** the writer commits before the test tasks are
+  drawn.
+- **Meaning relative to the reader:** this is accepted as unavoidable.
+- **$\tau$ where it belongs:** it acts on mixtures (cheat sheets tie at
+  $\tau=1$ and lose below 1), not on single essays.
+
+Two independent derivations landing on the same mechanism is some evidence
+that it is the natural one.
+
+### What the existing work has that my note and plan lack
+
+- **It is built and has results.** Across 7 testbed families, essays help
+  where the reader's prior is wrong (auction: +1.1 nats/item) and not where it
+  is already good. Mixtures that update on resolved tasks predict unresolved
+  ones slightly better.
+- **The use of a latent:** the held-out conditional score
+  $S(y_\text{dev}\cup y_\text{test})-S(y_\text{dev})$. It is a cleaner
+  operational definition than my per-claim weights of evidence, and it should
+  be the primary metric.
+- **Reader engineering I had not thought through:**
+  - reason first, then state a probability (log-probabilities collapse to 0
+    or 1 after reasoning);
+  - debias by answer order;
+  - clip probabilities.
+- **Incentive-preserving adaptive task selection:** importance-weighted
+  sampling tilted toward tasks where rival reports disagree. My sampler was
+  uniform.
+- **A much better question source.** The testbed's families yield many
+  exchangeable items whose answers come from computation or experiment. That
+  is rung 2 of my ladder of observables. It is also the de Finetti case, where
+  the theory latent becomes identifiable as items grow. Metaculus and
+  Manifold questions are views of *one* world, which is the weakest case.
+- **Recursion:** an essay's value includes the improvement of essays written
+  by its readers. This complements my market-style increment against the
+  consensus.
+- **Evidence about power.** With 16 test items, DEV scores could not rank
+  essays whose true differences are about 0.1 nats/item. My $m\approx30$
+  per essay is underpowered too. From the reported intervals, the per-item
+  standard deviation is about 0.9 nats unpaired. Separating 0.1 nats/item
+  needs roughly 60–300 shared items, compared pairwise on the same items.
+
+### What my note and plan add to it
+
+- **Scoring *arbitrary* essays:** a parse step (essay → scenarios), shown to
+  the author. The existing work sidesteps parsing by having writers emit
+  structured reports. That is the right choice for experiments, and parsing is
+  only needed for human-written essays.
+- **A validity gate (E0) the existing reader has not been put through:**
+  - paraphrase invariance (gauge);
+  - author-attribution invariance (literal reading);
+  - ambiguity measured with $K$ readings and $\mathbb E_r[\log]$, instead of
+    one reading at temperature 0.
+- **Tests aimed at each design choice (E1 conditions):**
+  - separate vs. joint queries, against the true unexplained dependence;
+  - style variants;
+  - distortion: properness tested over many realizations, which needs
+    generated worlds with a known latent;
+  - list essays on seen vs. held-out tasks;
+  - the Duhem–Quine consequence-count rule.
+- **Theory for the cases the testbed does not cover:** one-world essays
+  (geopolitics, technology forecasts), the literal-vs-evidential distinction,
+  and the warning that peer prediction (the planned expert-rating anchor)
+  rewards common causes, including shared bias.
+
+### Revised recommendation
+
+Don't build the plan's infrastructure from scratch. Extend the existing
+harness:
+
+1. **E0 on the existing reader:** paraphrase, attribution and
+   multiple-reading tests on the existing reports. This is cheap, since writer
+   outputs are cached.
+2. **E1 as a new kind of testbed family:** a generator with a known latent
+   model and fictional entities. "Oracle quality" is then exact, and repeated
+   realizations make properness testable. Add the list, style, distortion and
+   proliferation conditions, and the separate-vs-joint comparison.
+3. **E3 is the program's step 1 and the proposed unified arena.** Use the
+   Goodhart curves for $S_\tau$ against the judge and debate rewards. Add an
+   interpreter ensemble, and report the gap between training and held-out
+   gains.
+4. **Power:** at least 100 shared test items per family, with paired
+   comparisons.
+5. **E2 (Metaculus/Manifold, one world) is last.** It is the external-validity
+   check for essays about the real world, and the only place the parse step
+   is required.
