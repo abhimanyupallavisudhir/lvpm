@@ -78,6 +78,10 @@ Both ask *which reward signal, when optimized, yields better conceptual outputs*
   concordance of each reward with ground truth over natural samples of essays.
 
 ## Next steps
+
+The essays-as-latents concept, its failure modes, and the experiments that would settle it are worked out in
+[essays-plan.md](essays-plan.md), with revised training costs.
+
  in order of expected value
 
 1. **Train, don't select.** Run RL or iterated best-of-$n$ on essay writers with DEV $S_\tau$ as the reward, and
