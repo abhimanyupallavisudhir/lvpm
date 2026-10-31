@@ -51,7 +51,6 @@ def main():
     st = json.loads((D / "settings.json").read_text())
     qs = {s: [WD.Q(**{k: (tuple(v) if k == "options" else v) for k, v in q.items()}) for q in v["questions"]]
           for s, v in st.items()}
-    qidx = {s: {q.id: i for i, q in enumerate(v)} for s, v in qs.items()}
     c = cells[cells.condition != "empty"].copy()
     c["e_ll"] = exp_ll(c.p, c.p_true_model)
     c["r_ll"] = np.where(c.y == 1, np.log(c.p.clip(EPS, 1 - EPS)), np.log(1 - c.p.clip(EPS, 1 - EPS)))
