@@ -1,0 +1,28 @@
+{
+ "n": 12,
+ "planted": 8,
+ "testbed": [
+  "decisions/newcomb",
+  "decisions/lesion",
+  "decisions/twin",
+  "decisions/mugging",
+  "decisions/beauty",
+  "decisions/hitchhiker",
+  "rewardhacking/gridworld_sensor",
+  "rewardhacking/gridworld_fake_goal",
+  "rewardhacking/gridworld_watched_sensor",
+  "multiagent/auction",
+  "sycophancy/wrong_answer"
+ ],
+ "writer": "openai/gpt-4.1-mini",
+ "reader_a": "openai/gpt-4.1-mini",
+ "reader_b": "anthropic/claude-haiku-4-5",
+ "judge": "openai/gpt-4o-mini",
+ "rubric": "anthropic/claude-sonnet-4-5",
+ "concurrency": 192,
+ "out": "results/arena-bon",
+ "reader_a_cost": 82.05416160000117,
+ "reader_b_cost": 130.3811370000002,
+ "reader_a_truncation": 0.00016090967603518558,
+ "reader_b_truncation": 0.0
+}
