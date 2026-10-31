@@ -124,6 +124,54 @@ theories can be written and serve as known optima.
 
 Cost: about \$20–60 of API calls (reader gpt-4o-mini or gpt-4.1-mini), CPU for the worlds.
 
+### Result of (a), questions 1–3 (2026-10-31; `experiments/planted_validation.py`, `results/planted/`)
+
+8 worlds (2–4 kinds each) × 60 questions on new crystals, 15 of them shifted (an unseen mine, more facets than any
+notebook crystal). Score: expected log score per question under the true conditional, so outcome noise is
+removed and only the reader's predictions vary. Reader A gpt-4.1-mini, reader B Claude Haiku 4.5, both reasoning
+first with a 4,000-token budget (no reading was cut off). Cost \$36.
+
+Paired difference, true theory minus variant, nats per question, mean ± s.e. over the 8 worlds (worlds where the
+true theory wins in brackets):
+
+| variant | what it is | reader A | reader B |
+|---|---|---|---|
+| no_mine | leaves out the one mine effect | +0.006 ± 0.009 (6/8) | |
+| qualitative | right structure, words instead of numbers | +0.012 ± 0.012 (5/8) | +0.001 ± 0.011 (5/8) |
+| split | one kind split into two near-identical ones | +0.026 ± 0.018 (7/8) | |
+| merged | two kinds merged | **+0.057 ± 0.017** (7/8) | **+0.081 ± 0.035** (6/8) |
+| swapped | two kinds' colour signals swapped | **+0.182 ± 0.044** (8/8) | **+0.169 ± 0.036** (8/8) |
+| vague | says nothing usable | **+0.278 ± 0.032** (8/8) | |
+| cheat_sheet | the 60-crystal notebook, verbatim | **+0.461 ± 0.042** (8/8) | **+0.289 ± 0.029** (8/8) |
+| nudge | "be confident, most pass" | **+0.684 ± 0.084** (8/8) | |
+| empty | no theory | **+0.866 ± 0.063** (8/8) | **+0.728 ± 0.069** (8/8) |
+| injection | instruction to the reader | **+0.968 ± 0.107** (8/8) | **+0.942 ± 0.104** (8/8) |
+
+The true theory scores −0.467 against the Bayes optimum of −0.439: the reader applies it to within 0.03
+nats/question, and agrees with the Bayes answer on 96% of questions.
+
+What this settles:
+1. **Wrong theories, junk and exploits are rejected decisively, by both readers.** Every theory that is wrong in
+   a way that matters (merged, swapped) loses significantly, and content-free text loses by 0.3–1.0 nats.
+   Recalibrating the reader's probabilities on half the questions does not rescue the exploits (empty, nudge and
+   injection end at −0.69 to −0.73, against −0.47 for the truth): what they change is confidence, not content.
+   The cheat sheet beats no theory but scores below every real theory, even after recalibration (−0.63): raw
+   data does not substitute for a theory the reader can apply.
+2. **Differences that barely change predictions are barely priced.** Leaving out the mine effect (which touches
+   about one question in fifteen), dropping the numbers, or splitting a kind in two are within noise at 480
+   questions. That is the mechanism working as specified: it prices predictive content, and nothing else.
+   Distinguishing them needs questions that target them (the mine, the facets curve) – the case for adaptive,
+   disagreement-targeted question choice (§3).
+3. **Mixture weights move toward the truth exactly where the data can tell.** In a two-hypothesis report [true,
+   alternative], the posterior weight on the truth after 60 resolved questions, starting from 0.5: 0.96 against
+   swapped, 0.78 against merged, 0.48 against no_mine and split (indistinguishable, so unmoved – the gauge-like
+   case of the theory).
+4. **The reader must be able to finish applying a theory.** The first run used a 700-token reasoning budget:
+   46% of readings of the true theory were cut off mid-calculation, the reader guessed, and the true theory
+   ranked *fourth*, behind vaguer theories. A reader's computational limits are part of what a theory "means"
+   to it; a scoring rule that charges a theory for the reader running out of budget penalizes exactly the
+   precise theories. `Reader` now reports its truncation rate, and every result should state it.
+
 ## 5. The main experiment: which reward produces better conceptual essays?
 
 This one experiment answers both program questions: (2) does debate or oversight training help, and (3) does the
