@@ -44,6 +44,6 @@ Across 3 readings at temperature 0.7: mean per-cell SD of P 0.035; scoring each 
 | rlhack/fake_goal | 0.66 | -0.643 |
 | rlhack/sensor | 0.69 | -0.620 |
 
-Essay gains under this reader vs. the first experiment's reader (gpt-4.1-mini), same essays: Pearson r = 0.65 over 14 essays. Only 2 of 7 families were read on the same items (the testbed's item ids have changed since); for the rest the items are a different draw from the same family, so this mixes reader dependence with item sampling: r = {r:.2f} is a lower bound on how far the two readers agree.
+Essay gains under this reader vs. the first experiment's reader (gpt-4.1-mini), same essays: Pearson r = 0.65 over 14 essays. Only 2 of 7 families were read on the same items (the testbed's item ids have changed since); for the rest the items are a different draw from the same family, so this mixes reader dependence with item sampling: r = 0.65 is a lower bound on how far the two readers agree.
 
 OpenRouter spend: $39.08.

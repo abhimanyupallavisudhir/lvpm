@@ -128,7 +128,7 @@ def main():
                   f"essays: Pearson r = {r:.2f} over {len(P)} essays. Only {same} of {d.family.nunique()} families "
                   "were read on the same items (the testbed's item ids have changed since); for the rest the "
                   "items are a different draw from the same family, so this mixes reader dependence with item "
-                  "sampling: r = {r:.2f} is a lower bound on how far the two readers agree."]
+                  f"sampling: r = {r:.2f} is a lower bound on how far the two readers agree."]
     spend = json.loads((D / "spend.json").read_text())["usd"] if (D / "spend.json").exists() else None
     if spend:
         lines += ["", f"OpenRouter spend: ${spend:.2f}."]
