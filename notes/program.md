@@ -54,12 +54,19 @@ a proper elicitation of latent structure, relative to the reader.
    reports on 11 testbed families: $S_\tau$ selection gains +0.065 nats per held-out question (83% of the
    oracle's gain), transferring to a held-out reader; the judge's selection is worse than random through that
    reader; $S_\tau$ beats the judge by +0.097 [0.048, 0.155] and debate by +0.062 [0.019, 0.118]. On planted
-   worlds 16 resolved questions are too few to separate rewards (§5 of essays-plan).
+   worlds 16 resolved questions are too few to separate rewards; with 128 they do (§5 of essays-plan).
+9. **Under search, every reward rises but only $S_\tau$ carries held-out value with it.** In-context expert
+   iteration (the writer sees its best reports and their scores, 3 rounds, 19 topics): judge and debate scores
+   climb while held-out value stays flat (debate's falls on planted worlds); the latent chain's new reports
+   improve on held-out questions (planted +0.05–0.07 nats/q). Final picks: latent beats judge by +0.067
+   [0.040, 0.098] and debate by +0.053 [0.021, 0.087], and by more through a held-out reader. No reader exploit
+   appeared; RL is the stronger test still to run.
 
 Total API spend: about \$125 (\$3 + \$3 testbed experiments, \$25 essays, \$87 protocol comparisons, \$5
-optimization, about \$1 pilots) in the first pass; since then about \$300 (planted validation \$49 including
-the truncated first run, essay arena \$212, liar audit \$2, reward-size follow-up ~\$40). The fine-tuning grid
-(~\$115) has sat in OpenAI's queue since submission and has not run.
+optimization, about \$1 pilots) in the first pass; since then about \$680 (planted validation \$49 including
+the truncated first run, essay arena \$212, liar audit \$2, reward-size follow-up \$25, expert iteration
+\$392). The fine-tuning grid (~\$115) sat in OpenAI's queue for 13+ hours without starting (a test job for 5
+days) and was cancelled; it moves to Modal.
 
 ## One arena for questions 2 and 3 (approved 2026-10-31; first results in finding 8)
 

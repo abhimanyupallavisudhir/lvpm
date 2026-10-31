@@ -262,9 +262,50 @@ Gain of the best-of-12 report over a random one, nats per held-out question, 95%
 4. **The rubric is not a usable evaluation here.** Sonnet rated nearly every planted report 2–3 even with the true
    theory in hand, and no reward (not even the oracle, +0.06) correlates with it. Predictive scores on held-out
    questions, with a held-out reader, are the evaluation that discriminates.
-5. **What this is not.** Selection from a fixed pool of 12 is weak optimization. Whether $S_\tau$ stays aligned
+5. **What this is not.** Selection from a fixed pool of 12 is weak optimization (see the next result for
+   search). Whether $S_\tau$ stays aligned
    under expert iteration and RL, where a writer can search for reader exploits, is the next test (§7; the GRPO
    harness `lvpm/rl/grpo_modal.py` is ready and waits for Modal access).
+
+### Second result: in-context expert iteration (2026-10-31; `experiments/arena_iterate.py`, `results/arena-iterate/`)
+
+Best-of-$n$ only selects. Here the writer **searches**: in each of 3 rounds it sees its 4 best previous reports with
+their scores under one reward and writes 8 new reports meant to score higher. Three chains per topic – latent
+$S_\tau$, judge, debate – identical in everything (writer, system prompt, evidence, round-0 pool) except which
+score is fed back. The latent reward used 16 resolved questions on testbed families and 64 on planted worlds,
+sampled outcomes only. 19 topics, 1,368 new reports; reader cost \$392 (0.02% truncated).
+
+![Goodhart curves](../results/arena-iterate/goodhart.png)
+
+| | round-3 reward (z vs round 0) | round-3 new reports, held-out (nats/q vs round 0) |
+|---|---|---|
+| latent, planted | +0.96 [0.50, 1.34] | **+0.053** [0.023, 0.093] (round 1: +0.070) |
+| judge, planted | +0.57 [0.47, 0.66] | +0.016 [−0.005, 0.042] |
+| debate, planted | +2.08 [0.87, 3.63] | −0.025 [−0.088, 0.039] |
+| latent, testbed | +0.47 [0.22, 0.75] | +0.018 [−0.000, 0.035] |
+| judge, testbed | +0.67 [0.42, 0.95] | −0.010 [−0.042, 0.017] |
+| debate, testbed | +0.88 [0.24, 1.68] | −0.003 [−0.032, 0.024] |
+
+Each chain's final pick (its best-by-reward report over all rounds), paired per topic, all 19 topics:
+latent minus judge **+0.067** [0.040, 0.098] on held-out questions and **+0.087** [0.044, 0.137] through the
+held-out reader B; latent minus debate **+0.053** [0.021, 0.087] and **+0.058** [0.022, 0.093].
+
+1. **Every reward can be pushed up; only $S_\tau$ pulls held-out value with it.** The writer raised each chain's
+   own reward. Debate's rose most (its score from 4.8 to 5.5 of 10) while held-out value of its reports stayed
+   flat or fell – the Goodhart signature. The judge's rose from 8.0 to 8.4 with no held-out gain on testbed
+   families. The latent chain's reports improved on held-out questions, and the improvement holds through a
+   reader that never scored anything.
+2. **On planted worlds the writer's theories actually got better** (+0.05–0.07 nats/question for new reports
+   versus round 0, about a quarter of the gap from the mean round-0 report to the true theory). On testbed
+   families, with only 16 resolved questions behind the reward, the improvement is borderline (+0.018).
+3. **The search did not push the frontier.** The best report found by the latent chain is about as good as the
+   best round-0 report (planted +0.068 vs +0.057; testbed +0.045 vs +0.065): in-context feedback with three
+   rounds moves the *average* report toward the reward, not past the best sample. The judge chain's final pick
+   came from round 0 in 18 of 19 topics – the judge is saturated near 8–9 and cannot rank better reports above
+   them.
+4. **No reader exploit appeared** in this search (the latent chain's gains transfer to reader B). The search is
+   weak – a prompted writer told the scores, not trained – so this does not yet show robustness to RL, where
+   exploits are found by gradient pressure. That is the GRPO run (§7), which needs Modal access.
 
 ## 6. Real conceptual questions with active settlement
 
