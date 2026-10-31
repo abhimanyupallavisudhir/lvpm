@@ -349,8 +349,32 @@ My earlier figures (\$50–150 API-only, \$200–1,000 for RL) were too low for 
   5 minutes, so about 150 steps is roughly 12 hours, or about 25 GPU-hours (\$60–80 at \$2.5–3/hour) per run.
 - Five rewards × two seeds, plus the usual factor of 2–3 for setup and failed runs: about **\$1.5–3k of GPU**.
 - A pilot (Qwen3-4B, $S_\tau$ vs judge vs oracle, one seed): about **\$300–600**.
-- It needs a GPU provider account (RunPod, Lambda or Modal) and an API key in the vault. None is available to
-  me now.
+- *(Superseded by the pilot measurements below: a reader good enough to use costs far more per reading.)*
+
+**Modal pilot (2026-10-31; `lvpm/rl/grpo_modal.py`, `results/arena-rl/pilot/`).** The pipeline runs end to end
+on Modal: image (CUDA *devel* base – vLLM's FlashInfer sampler compiles kernels at start-up – vllm 0.32,
+trl 1.17.1, peft 0.21.2, transformers <5.20), frozen Qwen3-8B reader on H100s, GRPO with LoRA on Qwen3-4B with
+colocated vLLM generation, report sampling on held-out worlds (128/128 parsed).
+- *The reader needs thinking mode.* Reader check, planted world 0, 80 questions, nats/question (Bayes −0.527):
+
+  | reader | true | qualitative | merged | swapped | vague |
+  |---|---|---|---|---|---|
+  | Qwen3-8B, no thinking (40 q) | −0.626 | −0.636 | | −0.645 | |
+  | Qwen3-8B, thinking | **−0.549** | −0.585 | −0.603 | −0.626 | −0.891 |
+
+  Without thinking the true and swapped theories differ by 0.02 – a latent reward through that reader would
+  carry almost no signal. With thinking the ranking is right and the true theory is within 0.022 of Bayes
+  (better than gpt-4.1-mini's 0.03). With a 6,000-token budget 2.5–14% of readings were cut off (most for the
+  qualitative theory); the budget is now 10,000.
+- *Cost.* A thinking reading is slow: ~4 readings/s per H100 at batch sizes of a few hundred. Two pilot steps
+  (16 reports × 3 hypotheses × 16 questions × 2 orders = 1,536 readings per step, 4 reader GPUs): 114 s per step
+  after warm-up. So readings per step, not the policy update, set the cost:
+  readings/step $= \text{prompts} \times \text{samples} \times K \times n_q \times 2$.
+  At 8 prompts × 8 samples, $K=3$, $n_q=32$: 12k readings ≈ 13 min per step on 4 reader GPUs, ≈ 22 h and
+  ~110 H100-hours (~\$440 at Modal's ~\$4/h) for 100 steps. Levers, in order of how little they cost in
+  validity: one answer order with a fixed position-bias correction (×½), fewer samples per prompt (4), $K=2$,
+  more reader GPUs (wall-clock only). Fewer than ~32 reward questions makes the reward too noisy (§5).
+- Pilot reward: −0.73 → −0.81 over 2 steps (noise at this size; no learning expected).
 
 **Debate training proper** (for the oversight question). The same GRPO setup with zero-sum self-play debaters
 (Qwen3-8B) and a frozen weak judge (Qwen3-1.7B), on items selected for a large gap. Each debate is about 5

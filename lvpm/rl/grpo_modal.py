@@ -26,11 +26,17 @@ import modal
 APP = "lvpm-essay-grpo"
 POLICY = "Qwen/Qwen3-4B"
 READER = "Qwen/Qwen3-8B"
-READER_BUDGET = 2500
+# Qwen3's thinking mode: without it the 8B reader barely separates the true planted theory from a wrong one
+# (true -0.626 vs swapped -0.645 nats/q against Bayes -0.536 on 40 questions)
+READER_THINKING = True
+READER_BUDGET = 10000 if READER_THINKING else 2500
+READER_GPUS = 4  # reader containers the reward fans out to (a thinking reading takes ~0.6 s of one H100)
 
 image = (
-    modal.Image.debian_slim(python_version="3.11")
-    .pip_install("vllm==0.32.0", "trl==1.17.1", "peft==0.21.2", "transformers==5.22.1", "datasets", "accelerate",
+    # a CUDA *devel* image: vLLM's FlashInfer sampler compiles kernels at start-up and needs nvcc
+    modal.Image.from_registry("nvidia/cuda:12.8.1-devel-ubuntu22.04", add_python="3.11")
+    .entrypoint([])
+    .pip_install("vllm==0.32.0", "trl==1.17.1", "peft==0.21.2", "transformers>=5.16.1,<5.20", "datasets", "accelerate",
                  "numpy", "pydantic", "pyyaml", "scipy")
     .env({"HF_HOME": "/cache/hf", "TOKENIZERS_PARALLELISM": "false"})
     .add_local_python_source("cvtestbed", "lvpm")
@@ -65,19 +71,24 @@ def parse_report(text: str):
     return None
 
 
-@app.cls(gpu="H100", volumes={"/cache": cache}, timeout=60 * 60 * 24, scaledown_window=600, max_containers=1)
+@app.cls(gpu="H100", volumes={"/cache": cache}, timeout=60 * 60 * 24, scaledown_window=600,
+         max_containers=READER_GPUS)
 class Reader:
     @modal.enter()
     def load(self):
         from vllm import LLM
 
-        self.llm = LLM(READER, max_model_len=8192, gpu_memory_utilization=0.9, enable_prefix_caching=True)
+        self.llm = LLM(READER, max_model_len=12288, gpu_memory_utilization=0.9, enable_prefix_caching=True)
 
-    def _chat(self, convs, max_tokens):
+    def _chat(self, convs, max_tokens, thinking=False):
         from vllm import SamplingParams
 
-        sp = SamplingParams(temperature=0.0, max_tokens=max_tokens)
-        outs = self.llm.chat(convs, sp, chat_template_kwargs={"enable_thinking": False}, use_tqdm=False)
+        # Qwen3 recommends sampling (not greedy) in thinking mode; greedy thinking can loop
+        sp = (SamplingParams(temperature=0.6, top_p=0.95, top_k=20, max_tokens=max_tokens, seed=0) if thinking else
+              SamplingParams(temperature=0.0, max_tokens=max_tokens))
+        outs = self.llm.chat(convs, sp, chat_template_kwargs={"enable_thinking": thinking}, use_tqdm=False)
+        cut = sum(o.outputs[0].finish_reason == "length" for o in outs)
+        print(f"reader: {len(outs)} generations, {cut / max(1, len(outs)):.3%} truncated", flush=True)
         return [o.outputs[0].text for o in outs]
 
     @modal.method()
@@ -91,7 +102,8 @@ class Reader:
                               {"role": "user", "content": f"THEORY:\n{hyp}\n\nQUESTION:\n{q}\n\n{opts}\n\nWork it out "
                                "step by step, briefly, according to the theory. Then end with a line 'P(A) = x' giving "
                                "the probability that answer A is correct."}])
-        texts = self._chat(convs, READER_BUDGET)  # truncated readings guess: keep the budget ample
+        texts = self._chat(convs, READER_BUDGET, READER_THINKING)  # truncated readings guess: keep the budget ample
+        texts = [t.split("</think>")[-1] for t in texts]
         out = []
         for i in range(0, len(texts), 2):
             ps = []
@@ -138,7 +150,9 @@ def make_reward(kind: str, n_questions: int, tau: float = 0.9):
                 for qi, q in enumerate(qs_by_world[k]):
                     items.append((h, q["text"]))
                     index.append((ci, hi, qi))
-        ps = reader.probs.remote(items) if items else []
+        size = max(1, -(-len(items) // READER_GPUS))
+        chunks = [items[i:i + size] for i in range(0, len(items), size)]
+        ps = [p for part in reader.probs.map(chunks) for p in part] if items else []
         table = {}
         for (ci, hi, qi), p in zip(index, ps):
             table[(ci, hi, qi)] = p
@@ -171,7 +185,7 @@ def make_reward(kind: str, n_questions: int, tau: float = 0.9):
 
 
 @app.function(gpu="H100", volumes={"/cache": cache, "/runs": runs}, timeout=60 * 60 * 24)
-def train(reward: str = "latent", steps: int = 150, n_worlds: int = 256, n_questions: int = 16, seed: int = 0,
+def train(reward: str = "latent", steps: int = 150, n_worlds: int = 256, n_questions: int = 32, seed: int = 0,
           lr: float = 1e-5, num_generations: int = 8, prompts_per_step: int = 16) -> str:
     from datasets import Dataset
     from peft import LoraConfig
@@ -227,16 +241,32 @@ def read_log(path: str) -> list:
 
 
 @app.local_entrypoint()
-def main(reward: str = "latent", steps: int = 150, n_worlds: int = 256, seed: int = 0, sample_only: bool = False):
+def main(reward: str = "latent", steps: int = 150, n_worlds: int = 256, seed: int = 0, sample_only: bool = False,
+         n_questions: int = 64, prompts_per_step: int = 16, num_generations: int = 8, reader_check: bool = False):
     import pathlib
+    import time
 
     out_dir = pathlib.Path("results/arena-rl")
     out_dir.mkdir(parents=True, exist_ok=True)
+    if reader_check:  # the frozen reader on the true and empty theories of held-out world 0, vs the Bayes optimum
+        from lvpm.essays.theories import variants
+        from lvpm.rl import worlds as W
+
+        qs = W.questions(0, 80, seed="reader-check")
+        t0 = time.time()
+        rows = {}
+        for name in ("true", "qualitative", "merged", "swapped", "vague"):
+            ps = Reader().probs.remote([(variants(0)[name], q["text"]) for q in qs])
+            rows[name] = sum(q["p_yes"] * math.log(p) + (1 - q["p_yes"]) * math.log(1 - p) for q, p in zip(qs, ps)) / len(qs)
+        bayes = sum(q["p_yes"] * math.log(q["p_yes"]) + (1 - q["p_yes"]) * math.log(1 - q["p_yes"]) for q in qs) / len(qs)
+        print({k: round(v, 3) for k, v in rows.items()}, "bayes", round(bayes, 3), f"{time.time() - t0:.0f}s")
+        return
     if sample_only:
         rows = sample_reports.remote(None, list(range(8)))
         (out_dir / "reports-base.json").write_text(json.dumps(rows))
         return
-    path = train.remote(reward=reward, steps=steps, n_worlds=n_worlds, seed=seed)
+    path = train.remote(reward=reward, steps=steps, n_worlds=n_worlds, seed=seed, n_questions=n_questions,
+                        prompts_per_step=prompts_per_step, num_generations=num_generations)
     (out_dir / f"log-{reward}-s{seed}.json").write_text(json.dumps(read_log.remote(path)))
     rows = sample_reports.remote(path + "/final", list(range(8)), seed=seed)
     (out_dir / f"reports-{reward}-s{seed}.json").write_text(json.dumps(rows))
