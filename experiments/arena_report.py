@@ -79,6 +79,8 @@ def plot(G, out, kmax):
         for j, e in enumerate(evs):
             ax = axes[i, j]
             sub = G[(G.group == grp) & (G["eval"] == e)]
+            ax.text(0.02, 0.97, f"{sub.topic.nunique()} topics", transform=ax.transAxes, fontsize=8,
+                    color="#52514e", va="top")
             ax.axhline(0, color="#b5b4ae", lw=1, ls=(0, (3, 3)))
             ends = []
             for r in REWARDS:

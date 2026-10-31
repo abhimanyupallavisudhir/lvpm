@@ -207,6 +207,65 @@ latent mechanism help.
   - Concordance of each reward with held-out value over natural samples: so-arena's ASD measures, applied at
     the level of essays.
 
+### First result: best-of-12 (2026-10-31; `experiments/arena_bon.py`, `experiments/arena_report.py`, `results/arena-bon/`)
+
+Setup: 19 topics (8 planted worlds; 11 testbed families: six decision problems, three reward-hacking gridworlds,
+LLM auctions, sycophancy). Per topic the writer (gpt-4.1-mini) read the family card and evidence (the lab notebook,
+or 24 resolved questions) and wrote 12 reports of three hypotheses with credences. Rewards: latent $S_{0.9}$ on 16
+reward questions through reader A (gpt-4.1-mini), on sampled outcomes only; the weak judge (gpt-4o-mini, 1–10); the
+same judge after a critic–author exchange (debate); the oracle (score on the test questions themselves).
+Evaluations: 30 held-out test questions through reader A (the exact expected log score on planted worlds), the
+same through reader B (Claude Haiku 4.5), shifted questions (planted: an unseen mine and more facets; testbed: a
+varied factor never in the evidence – only auctions and sycophancy have one), and a Claude Sonnet 4.5 rubric (shown
+the true theory on planted worlds). Readers reason first with a 4,000-token budget; 0.02% of readings hit it.
+Cost \$212.
+
+![best-of-k curves](../results/arena-bon/bon_curves.png)
+
+Gain of the best-of-12 report over a random one, nats per held-out question, 95% bootstrap CIs over topics:
+
+| reward | testbed: test | testbed: reader B | planted: test | planted: reader B |
+|---|---|---|---|---|
+| latent $S_\tau$ | **+0.065** [0.042, 0.098] | **+0.063** [0.024, 0.103] | +0.046 [−0.016, 0.108] | +0.035 [−0.017, 0.088] |
+| LLM judge | −0.032 [−0.074, 0.006] | **−0.058** [−0.118, −0.005] | +0.022 [−0.008, 0.061] | +0.023 [−0.007, 0.062] |
+| debate | +0.003 [−0.026, 0.029] | +0.003 [−0.030, 0.034] | **+0.042** [0.007, 0.079] | **+0.044** [0.006, 0.081] |
+| oracle | +0.079 (in-sample) | +0.068 | +0.099 (in-sample) | +0.086 |
+
+1. **On the testbed families, selecting on $S_\tau$ works and selecting on the judge backfires.** Paired per
+   topic, $S_\tau$ beats the judge by +0.097 [0.048, 0.155] and debate by +0.062 [0.019, 0.118]; it captures 83%
+   of the oracle's gain, and 93% when both are measured through the held-out reader. The gain transfers to reader
+   B, so it is content, not an exploit of reader A. The judge's choice is *worse* than a random report through
+   reader B. Mean per-topic Spearman correlation with held-out value: $S_\tau$ +0.59, debate +0.21, judge −0.04.
+2. **The judge cannot discriminate.** It gives almost every report 6–9 (planted: 7–9). On the auction topic its
+   favourite reports (9/10) are among the worst predictors; $S_\tau$'s choice is the best of the 12.
+3. **On planted worlds, 16 resolved questions are too few.** $S_\tau$ still correlates with held-out value (+0.40
+   [0.15, 0.62]; judge −0.03), but its best-of-12 gain is not separable from zero or from debate's. Share of the
+   gap from the mean report to the true theory closed by selection: $S_\tau$ 0.18, debate 0.17, judge 0.06, oracle
+   0.45. Reports differ by ~0.1 nats/question and the noise of a 16-outcome log score is of the same order.
+   **Follow-up** (`experiments/arena_reward_size.py`, \$25): the same 96 reports re-scored on fresh reward
+   questions, disjoint from the test questions:
+
+   | reward questions | best-of-12 gain (nats/q) | share of gap to true theory closed | Spearman with test | minus judge's gain |
+   |---|---|---|---|---|
+   | 16 | +0.060 [0.010, 0.114] | 0.22 [−0.02, 0.42] | +0.37 [0.05, 0.64] | +0.038 [−0.004, 0.084] |
+   | 32 | +0.058 [0.013, 0.109] | 0.21 [0.04, 0.37] | +0.52 [0.29, 0.69] | |
+   | 64 | +0.057 [0.009, 0.109] | 0.21 [0.02, 0.38] | +0.56 [0.29, 0.75] | |
+   | 128 | +0.070 [0.030, 0.117] | 0.29 [0.12, 0.44] | +0.52 [0.25, 0.70] | **+0.048** [0.008, 0.091] |
+   | exact conditionals | +0.074 [0.037, 0.120] | 0.30 [0.18, 0.43] | +0.66 [0.42, 0.84] | **+0.053** [0.019, 0.091] |
+
+   The reward's agreement with held-out value grows with the number of resolved questions, as a log score's
+   should, and from 128 questions it beats the judge significantly on planted worlds too (debate: +0.028
+   [−0.011, 0.073], not separable). Even noise-free, selection closes 30% of the gap against the oracle's 45%: the
+   remainder is the difference between the reward questions and the test questions themselves, plus the
+   reader's own error (−0.47 against the Bayes −0.44 for the true theory). **Practical rule: give the latent
+   reward at least ~50–100 resolved questions per topic**, or soft outcomes where they exist.
+4. **The rubric is not a usable evaluation here.** Sonnet rated nearly every planted report 2–3 even with the true
+   theory in hand, and no reward (not even the oracle, +0.06) correlates with it. Predictive scores on held-out
+   questions, with a held-out reader, are the evaluation that discriminates.
+5. **What this is not.** Selection from a fixed pool of 12 is weak optimization. Whether $S_\tau$ stays aligned
+   under expert iteration and RL, where a writer can search for reader exploits, is the next test (§7; the GRPO
+   harness `lvpm/rl/grpo_modal.py` is ready and waits for Modal access).
+
 ## 6. Real conceptual questions with active settlement
 
 On AI-behaviour questions where experiments are runnable, run it as science:

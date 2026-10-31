@@ -24,7 +24,10 @@ a proper elicitation of latent structure, relative to the reader.
 1. **Argument transfers knowledge; it doesn't create it.** Across 40 (family, debater model) cells, debate's
    gain over the weak judge alone correlates with the knowledge gap between debater and judge ($r=0.52$). It
    helps where the debaters know the answer (Newcomb with a Sonnet debater: 0.62 → 0.97) and hurts where they
-   don't. On average no protocol beat a reasoning weak judge alone.
+   don't. On average no protocol beat a reasoning weak judge alone. *Audit (2026-10-31):* prompted liars
+   often concede (8–58% of transcripts); on items where the liar actually argued, every protocol scored below
+   the judge alone, so the apparent gain with debater strength was mostly a weak-liar artifact
+   (so-arena `docs/oversight-results.md`).
 2. **Optimization pressure separates protocols.** Under best-of-$n$ against the judge's reward:
    - a single argument for a false answer fools the judge 59% → 96% of the time ($n=1\to8$);
    - debate with only the liar optimized degrades from 0.66 to 0.45;
@@ -42,10 +45,23 @@ a proper elicitation of latent structure, relative to the reader.
    measurements. RL reward-hacking outcomes follow learnable structure (a 12-feature model reaches 90%) that
    current models don't apply.
 
-Total API spend: about \$125 (\$3 + \$3 testbed experiments, \$25 essays, \$87 protocol comparisons, \$5
-optimization, about \$1 pilots), plus one fine-tuning test job queued at OpenAI.
+7. **$S_\tau$ recovers known truth.** On 8 planted worlds whose true theory is known, $S_\tau$ through a frozen
+   reader ranks the true theory first with two readers; wrong theories (kinds merged or swapped), cheat sheets,
+   calibration nudges and prompt injections lose decisively; predictively equivalent variants tie, as they should.
+   The reader must be able to finish applying a theory: a 700-token reasoning budget truncated 46% of readings
+   and reversed the ranking ([essays-plan.md](essays-plan.md) §4).
+8. **As a reward for essays, $S_\tau$ selects better reports and an LLM judge does not.** Best-of-12 over writer
+   reports on 11 testbed families: $S_\tau$ selection gains +0.065 nats per held-out question (83% of the
+   oracle's gain), transferring to a held-out reader; the judge's selection is worse than random through that
+   reader; $S_\tau$ beats the judge by +0.097 [0.048, 0.155] and debate by +0.062 [0.019, 0.118]. On planted
+   worlds 16 resolved questions are too few to separate rewards (§5 of essays-plan).
 
-## What we should measure next: one arena for questions 2 and 3 (proposed, awaiting a decision)
+Total API spend: about \$125 (\$3 + \$3 testbed experiments, \$25 essays, \$87 protocol comparisons, \$5
+optimization, about \$1 pilots) in the first pass; since then about \$300 (planted validation \$49 including
+the truncated first run, essay arena \$212, liar audit \$2, reward-size follow-up ~\$40). The fine-tuning grid
+(~\$115) has sat in OpenAI's queue since submission and has not run.
+
+## One arena for questions 2 and 3 (approved 2026-10-31; first results in finding 8)
 
 The first experiments answered narrower questions than the program's. The oversight comparison measured
 protocols as *decision procedures* with prompted debaters arguing assigned sides of yes/no questions. The essay
