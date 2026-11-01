@@ -67,7 +67,8 @@ def select_essays(essays):
     single = [e for e in essays if e["author"] != "Zvi" and by[e["author"]] == 1 and e["topic"] == "ai"
               and e["forward"] == 3]
     random.Random(0).shuffle(single)
-    return zvi + repeat + nonai + single[:max(0, 75 - len(zvi) - len(repeat) - len(nonai))]
+    chosen = zvi + repeat + nonai + single[:max(0, 75 - len(zvi) - len(repeat) - len(nonai))]
+    return list({e["id"]: e for e in chosen}.values())  # an essay can qualify twice (e.g. Zvi, non-AI)
 
 
 def sample_questions(essay, pool, now):

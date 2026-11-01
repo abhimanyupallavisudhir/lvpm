@@ -48,8 +48,8 @@ def essay_scores(g, qs):
 
 
 def main():
-    d = pd.read_parquet(D / "cells.parquet")
-    recs = pd.DataFrame(json.loads((D / "essays.json").read_text())).set_index("id")
+    d = pd.read_parquet(D / "cells.parquet").drop_duplicates()
+    recs = pd.DataFrame(json.loads((D / "essays.json").read_text())).drop_duplicates("id").set_index("id")
     rows = []
     for eid, g in d.groupby("essay"):
         topic = sorted(g[(g.kind == "topic") & (g.condition == "base")].q)

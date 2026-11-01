@@ -1,6 +1,6 @@
 # Prototype and experiments: scoring essays as latent models
 
-Companion to [latent-essays.md](latent-essays.md). The scorers are named as
+Companion to [latent-essays.md](latent-essays.md). Results: [latent-essays-results.md](latent-essays-results.md). The scorers are named as
 follows:
 
 | name | what it is |

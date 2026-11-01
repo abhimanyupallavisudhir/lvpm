@@ -27,6 +27,10 @@ Essays as latents (questions and the cached LLM client come from the
   held-out scores, information diagnostics, incentive-preserving adaptive task selection.
 - `lvpm/essays/reader.py`: the frozen LLM reader that gives a hypothesis its predictions.
 - `lvpm/essays/writers.py`: essay and hypothesis-mixture writers, baselines, an LLM essay judge.
+- `lvpm/essays/llmconf.py`, `lvpm/essays/worlds.py` and `experiments/essays_{validity,worlds,history,optimize}*.py`:
+  the reader validity gate, synthetic worlds with known latents, real LessWrong essays on later Manifold
+  questions, and optimization against each score. Results:
+  [notes/latent-essays-results.md](notes/latent-essays-results.md).
 - `experiments/essays.py` then `experiments/essays_report.py`: the first experiment (7 testbed families,
   about $25 of API calls; cached, so re-running is free). Results in `results/essays/`.
 

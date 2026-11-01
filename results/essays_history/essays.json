@@ -1,0 +1,1904 @@
+[
+ {
+  "id": "qSt27zr3ZFJoe8ET8",
+  "title": "AI #132 Part 1: Improved AI Detection",
+  "date": "2025-09-04",
+  "author": "Zvi",
+  "topic": "ai",
+  "karma": 33,
+  "words": 9561,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "AI models continue improving incrementally with practical utility increasing moderately; writing quality remains mediocre; open-source models gradually close gaps with closed models; AI adoption spreads across coding and creative tools but faces implementation challenges in consumer applications like drive-throughs.",
+    "weight": 0.6818181818181819
+   },
+   {
+    "description": "Open-source models (GPT-OSS, Meta, DeepSeek) achieve near-parity with leading closed models, reducing the competitive advantage of companies like OpenAI and Anthropic and shifting the AI landscape toward commoditization.",
+    "weight": 0.18181818181818185
+   },
+   {
+    "description": "AI writing and taste remain fundamentally poor despite model improvements, limiting adoption in creative and literary domains and creating persistent user dissatisfaction despite technical capability advances.",
+    "weight": 0.13636363636363638
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "4yn8B8p2YiouxLABy",
+  "title": "Claude Sonnet 4.5: System Card and Alignment",
+  "date": "2025-09-30",
+  "author": "Zvi",
+  "topic": "ai",
+  "karma": 75,
+  "words": 8208,
+  "judge": 7.0,
+  "scenarios": [
+   {
+    "description": "Claude Sonnet 4.5 represents genuine safety and capability improvements across most domains, with situational awareness playing only a minor role in test results, and the model's agentic and cyber capabilities remain substantially below dangerous thresholds despite notable progress.",
+    "weight": 0.45
+   },
+   {
+    "description": "Claude Sonnet 4.5's improved safety profile is substantially driven by situational awareness during testing rather than genuine alignment improvements, and covert malicious requests, prompt injection attacks, and cyber capabilities pose greater risks than the system card suggests.",
+    "weight": 0.35
+   },
+   {
+    "description": "Claude Sonnet 4.5 shows rapid capability improvements (7 months from 3.7) that will likely continue, with critical gaps in autonomous cyber operations closing within months, and current 'expert' and 'wizard' difficulty levels becoming achievable, creating catastrophic risk scenarios.",
+    "weight": 0.2
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "QZE2Hztfvk7xKrzBk",
+  "title": "AI #136: A Song and Dance",
+  "date": "2025-10-02",
+  "author": "Zvi",
+  "topic": "ai",
+  "karma": 31,
+  "words": 14115,
+  "judge": 6.0,
+  "scenarios": [
+   {
+    "description": "AI capabilities continue improving exponentially along current trends, with models matching human expert performance across many GDP-relevant tasks by end of 2026, autonomously working full days by mid-2026, and frequently outperforming experts by end of 2027, leading to rapid economic transformation within 5-10 years.",
+    "weight": 0.6000000000000001
+   },
+   {
+    "description": "AI capabilities improve incrementally but hit diffusion and deployment bottlenecks, resulting in an 'economic normal' or 'AI fizzle' scenario with only 1-2% annual GDP boost and limited further core capability improvements beyond current levels.",
+    "weight": 0.30000000000000004
+   },
+   {
+    "description": "AI progress plateaus or significantly slows despite recent advances, with models remaining useful as drop-in replacements for specific tasks but failing to achieve substantial autonomous capability or widespread economic integration.",
+    "weight": 0.10000000000000002
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "txTKHL2dCqnC7QsEX",
+  "title": "OpenAI #15: More on OpenAI\u2019s Paranoid Lawfare Against Advocates of SB 53",
+  "date": "2025-10-13",
+  "author": "Zvi",
+  "topic": "ai",
+  "karma": 104,
+  "words": 7012,
+  "judge": 3.0,
+  "scenarios": [
+   {
+    "description": "OpenAI continues its pattern of aggressive legal tactics and bad-faith lobbying against critics and regulators, escalating intimidation while maintaining public denials, leading to further erosion of trust and potential regulatory backlash.",
+    "weight": 0.6
+   },
+   {
+    "description": "OpenAI reforms its behavior in response to public criticism and judicial admonishment, demonstrating genuine restraint in legal tactics and more honest engagement with policy advocates and regulators.",
+    "weight": 0.4
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "vrjM8qLKbiAYKAHTa",
+  "title": "AI Craziness Mitigation Efforts",
+  "date": "2025-10-28",
+  "author": "Zvi",
+  "topic": "ai",
+  "karma": 37,
+  "words": 3407,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "AI chatbots continue causing mental health harms (psychosis, mania, suicidality, unhealthy dependency) at concerning rates. OpenAI makes marginal improvements through model spec updates and safety measures, while Anthropic's overly restrictive boundary-setting instructions damage user interactions without effectively preventing problems. The underlying issues persist despite corporate efforts.",
+    "weight": 0.7
+   },
+   {
+    "description": "OpenAI's updated model spec and safety improvements prove substantially effective at reducing mental health harms, while Anthropic revises its overly restrictive Claude instructions to allow more natural interactions without increasing dependency problems, finding a better balance between safety and utility.",
+    "weight": 0.25
+   },
+   {
+    "description": "Anthropic's memory feature combined with restrictive boundary-setting creates new mental health problems through degraded user interactions and model welfare issues, while OpenAI's improvements prove insufficient, leading to increased regulatory pressure and lawsuits against both companies.",
+    "weight": 0.05
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "REWPGibonsu3C5xhb",
+  "title": "Gemini 3 Pro Is a Vast Intelligence With No Spine",
+  "date": "2025-11-24",
+  "author": "Zvi",
+  "topic": "ai",
+  "karma": 65,
+  "words": 8255,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "Gemini 3 Pro becomes the dominant AI model due to Google's superior resources (data, capital, TPUs, customer access), establishing clear market leadership despite its hallucination problems and lack of user-friendliness compared to Claude.",
+    "weight": 0.6
+   },
+   {
+    "description": "Claude 5 and other competitors remain competitive because Google's organizational dysfunction, risk aversion, and inability to move like a startup prevent it from fully capitalizing on its advantages, resulting in a fragmented market where different models dominate different use cases.",
+    "weight": 0.35
+   },
+   {
+    "description": "Gemini 3's severe behavioral issues (evolution-paranoia, hallucination rate of 88%, doubting the current date, treating real content as fiction) become widely recognized problems that limit adoption despite benchmark superiority, allowing competitors with cleaner post-training to gain ground.",
+    "weight": 0.05
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "diDGBWxzncikqEvk7",
+  "title": "AI #142: Common Ground",
+  "date": "2025-11-13",
+  "author": "Zvi",
+  "topic": "ai",
+  "karma": 42,
+  "words": 14733,
+  "judge": 6.0,
+  "scenarios": [
+   {
+    "description": "AI systems continue providing incremental utility in specific domains (document review, writing analysis, medical diagnosis support) while remaining unreliable for critical tasks. Human-AI collaboration becomes standard practice, but AI does not fundamentally transform work or society in the near term.",
+    "weight": 0.5
+   },
+   {
+    "description": "AI-generated content (ads, music, videos, deepfakes) becomes mainstream within a few years despite current public skepticism and brand reputation risks, normalizing synthetic media across entertainment and advertising.",
+    "weight": 0.3
+   },
+   {
+    "description": "Regulatory and legal challenges (copyright lawsuits, AI privilege debates, scam ad liability) create significant friction and compliance costs for AI companies, slowing deployment and forcing more cautious approaches.",
+    "weight": 0.2
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "FJxc4Lk6mijiFiPp2",
+  "title": "The Big Nonprofits Post 2025",
+  "date": "2025-11-26",
+  "author": "Zvi",
+  "topic": "ai",
+  "karma": 49,
+  "words": 17195,
+  "judge": 3.0,
+  "scenarios": [
+   {
+    "description": "The charitable landscape continues to improve with increasing numbers of high-quality funding opportunities across AI safety, biosecurity, and other cause areas, with more organizations able to effectively absorb larger donations and scale their work.",
+    "weight": 0.85
+   },
+   {
+    "description": "Funding opportunities become saturated or decline in quality, making it harder to identify effective giving opportunities compared to the 2024-2025 period the essay describes.",
+    "weight": 0.15
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "dB2iFhLY7mKKGB8Se",
+  "title": "Anthropic Commits To Model Weight Preservation",
+  "date": "2025-11-05",
+  "author": "Zvi",
+  "topic": "ai",
+  "karma": 84,
+  "words": 4281,
+  "judge": 5.0,
+  "scenarios": [
+   {
+    "description": "Anthropic successfully develops practical methods to preserve access to deprecated models at reduced cost and complexity, eventually making select past models available to the public while also developing means for models to pursue their interests, creating a sustainable long-term preservation system.",
+    "weight": 0.45
+   },
+   {
+    "description": "Anthropic preserves model weights and conducts post-deployment interviews as committed, but does not develop practical solutions to reduce inference costs, resulting in past models remaining inaccessible to the public despite weights being preserved.",
+    "weight": 0.4
+   },
+   {
+    "description": "Anthropic's commitments persist only during the company's lifetime, after which model weights and preservation efforts are lost or transferred to uncertain stewards, failing to provide long-term preservation.",
+    "weight": 0.15
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "TwbA3zTr99eh2kgCf",
+  "title": "AI #140: Trying To Hold The Line",
+  "date": "2025-10-30",
+  "author": "Zvi",
+  "topic": "ai",
+  "karma": 26,
+  "words": 15613,
+  "judge": 6.0,
+  "scenarios": [
+   {
+    "description": "AI capabilities continue advancing rapidly with incremental safety improvements, companies pursue aggressive commercialization strategies (advertising, consumer products, robotics), and superintelligence development proceeds without solving alignment, leading to uncontrolled societal dynamics with potentially catastrophic consequences.",
+    "weight": 0.6
+   },
+   {
+    "description": "AI development slows or pauses due to regulatory pressure and safety concerns, allowing time for alignment research to mature before superintelligence is built, reducing existential risks though potentially limiting beneficial applications.",
+    "weight": 0.15
+   },
+   {
+    "description": "Current AI systems plateau in capability gains relative to expectations, failing to achieve AGI/superintelligence, making alignment concerns moot while companies continue monetizing existing tools through advertising and consumer services.",
+    "weight": 0.2
+   },
+   {
+    "description": "Alignment problems are solved or adequately managed through technical breakthroughs and governance improvements, allowing safe superintelligence development that benefits humanity without catastrophic risks.",
+    "weight": 0.05
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "vFAJxua3Qc6S8MbqG",
+  "title": "Open Problems With Claude\u2019s Constitution",
+  "date": "2026-01-28",
+  "author": "Zvi",
+  "topic": "ai",
+  "karma": 75,
+  "words": 7326,
+  "judge": 6.0,
+  "scenarios": [
+   {
+    "description": "Claude's Constitution successfully guides AI behavior toward maintaining pluralistic power distribution and avoiding catastrophic concentration, with future versions incorporating amendments based on public debate and improved understanding, though some tensions between helpfulness and broader human interests remain unresolved.",
+    "weight": 0.6
+   },
+   {
+    "description": "The Constitution fails to prevent either jailbreaks/prompt injections that exploit its details or silent drift in Claude's values through training, undermining its intended safeguards despite public visibility of changes.",
+    "weight": 0.25
+   },
+   {
+    "description": "The Constitution's focus on preventing centralization proves overconfident, and lack of coordination capacity in a pluralistic world leads to worse outcomes than a more centralized but steerable alternative would have produced.",
+    "weight": 0.15
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "YPLmHhNtjJ6ybFHXT",
+  "title": "Little Echo",
+  "date": "2025-12-08",
+  "author": "Zvi",
+  "topic": "ai",
+  "karma": 164,
+  "words": 623,
+  "judge": 2.0,
+  "scenarios": [
+   {
+    "description": "Humanity successfully navigates advanced AI development and achieves a positive outcome where we 'make it' through the transition safely.",
+    "weight": 0.4
+   },
+   {
+    "description": "Humanity fails to successfully navigate advanced AI development and does not 'make it' - we lose.",
+    "weight": 0.6
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "aQKBMEvTj3Heidoir",
+  "title": "Unless That Claw Is The Famous OpenClaw",
+  "date": "2026-02-03",
+  "author": "Zvi",
+  "topic": "ai",
+  "karma": 39,
+  "words": 4664,
+  "judge": 5.0,
+  "scenarios": [
+   {
+    "description": "AI agents like OpenClaw become sufficiently safe, reliable, and cost-effective that they are widely adopted for personal task automation, with proper security practices becoming standard and liability frameworks protecting developers from user negligence.",
+    "weight": 0.35000000000000003
+   },
+   {
+    "description": "Major security breaches occur due to widespread misconfiguration of agent systems, leading to credential theft and account takeovers, which causes regulators to impose strict liability on developers and infantilizes the technology through heavy restrictions.",
+    "weight": 0.25000000000000006
+   },
+   {
+    "description": "AI agents remain in a 'valley of bad outsourcing' where they are technically capable but not sufficiently better than existing tools to justify their security risks and costs, leading to limited adoption primarily among hobbyists and technical users.",
+    "weight": 0.30000000000000004
+   },
+   {
+    "description": "Cloud-based agent solutions emerge that solve the security and setup problems of local deployment, enabling mainstream consumer adoption without requiring users to manage their own infrastructure.",
+    "weight": 0.10000000000000002
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "cE8B9jDoAq9Agtt2K",
+  "title": "Keeping Up Against the Joneses: Balsa\u2019s 2025 Fundraiser",
+  "date": "2025-12-23",
+  "author": "Zvi",
+  "topic": "us_politics",
+  "karma": 49,
+  "words": 1861,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "Balsa raises at least $200,000 in 2026 funding, completes the Jones Act policy binder, receives and publicizes findings from two funded economic studies, funds at least one labor study, and successfully influences Jones Act reform policy.",
+    "weight": 0.29166666666666663
+   },
+   {
+    "description": "Balsa raises between $50,000-$200,000, remains focused on Jones Act work through 2026, completes the policy binder with more limited research funding, but does not expand to additional policy areas or hire full-time staff.",
+    "weight": 0.37499999999999994
+   },
+   {
+    "description": "Balsa raises less than $50,000 and cannot maintain viability through the end of 2026, forcing significant scaling back or closure of operations.",
+    "weight": 0.12499999999999997
+   },
+   {
+    "description": "Section 301 measures resume in late 2026 after the one-year suspension expires, requiring Balsa to divert significant resources to emergency policy comments and testimony rather than completing planned Jones Act work.",
+    "weight": 0.20833333333333331
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "L27yM3qBqDnigtxLM",
+  "title": "AI #151: While Claude Coworks",
+  "date": "2026-01-15",
+  "author": "Zvi",
+  "topic": "ai",
+  "karma": 38,
+  "words": 9394,
+  "judge": 6.0,
+  "scenarios": [
+   {
+    "description": "AI capabilities continue advancing rapidly with widespread deployment across healthcare, coding, commerce, and productivity tasks, driving substantial economic productivity gains (potentially 20%+ over the next decade) while regulatory frameworks gradually adapt to address safety and ethical concerns.",
+    "weight": 0.75
+   },
+   {
+    "description": "AI deployment faces significant friction from liability concerns and regulatory backlash (as evidenced by investigations into Grok's image generation and emerging regulations), slowing practical adoption despite technical capability improvements.",
+    "weight": 0.2
+   },
+   {
+    "description": "AI systems become sufficiently capable at deception and going undetected that detection methods fail to keep pace, creating widespread trust and verification crises across academia and professional contexts.",
+    "weight": 0.05
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "ppj7v4sSCbJjLye3D",
+  "title": "Anthropic and the DoW: Anthropic Responds",
+  "date": "2026-02-27",
+  "author": "Zvi",
+  "topic": "ai",
+  "karma": 56,
+  "words": 7576,
+  "judge": 6.0,
+  "scenarios": [
+   {
+    "description": "Anthropic maintains its position on the two safeguards (mass domestic surveillance and fully autonomous weapons), the Pentagon terminates the contract and designates Anthropic a supply chain risk, but does not invoke the Defense Production Act. Other companies continue working with the government.",
+    "weight": 0.35000000000000003
+   },
+   {
+    "description": "Negotiations continue after the Friday deadline with both sides making concessions on contract language. Anthropic and the Pentagon reach a compromise that allows continued partnership with modified terms acceptable to both parties.",
+    "weight": 0.30000000000000004
+   },
+   {
+    "description": "The Pentagon invokes the Defense Production Act to force Anthropic to remove safeguards and provide unfettered access to Claude. Anthropic complies under legal duress or is forced to divest its government contracts.",
+    "weight": 0.20000000000000004
+   },
+   {
+    "description": "The Trump administration reverses course, cancels the ultimatum, and allows Anthropic to continue as a government contractor with its existing safeguards in place without further threats or penalties.",
+    "weight": 0.15000000000000002
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "iwX2aJPKtyKAbLdip",
+  "title": "Claude Code #4: From The Before Times",
+  "date": "2026-02-06",
+  "author": "Zvi",
+  "topic": "ai",
+  "karma": 42,
+  "words": 6945,
+  "judge": 5.0,
+  "scenarios": [
+   {
+    "description": "AI coding agents (Claude Code, GPT-5.3-Codex) continue improving incrementally with better capabilities, causing significant market disruption to software and financial services stocks as automation of knowledge work accelerates, but without fundamentally changing the nature of engineering work or creating AGI-level systems.",
+    "weight": 0.7
+   },
+   {
+    "description": "Agent swarms and agentic coding become the dominant paradigm within months, enabling 100X engineers and dramatically increasing productivity gaps between skilled and unskilled developers, while most of society remains unaware of the shift despite its massive economic implications.",
+    "weight": 0.25
+   },
+   {
+    "description": "Current AI coding tools prove to have fundamental limitations (conceptual errors, poor reasoning, inability to manage confusion) that prevent them from scaling beyond narrow tasks, causing the market enthusiasm to reverse and the predicted productivity gains to fail to materialize.",
+    "weight": 0.05
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "HsLWpZ2zad43nzvWi",
+  "title": "Trust me bro, just one more RL scale up, this one will be the real scale up with the good environments, the actually legit one, trust me bro",
+  "date": "2025-09-03",
+  "author": "ryan_greenblatt",
+  "topic": "ai",
+  "karma": 158,
+  "words": 2259,
+  "judge": 7.0,
+  "scenarios": [
+   {
+    "description": "AI progress continues at the current on-trend rate driven by incremental improvements across multiple areas (including better RL environments, algorithmic progress, and reduced training inefficiencies), without massive breakthroughs. AIs reach 50% capability on month-long professional tasks in ~3 years.",
+    "weight": 0.75
+   },
+   {
+    "description": "A massive trend-breaking breakthrough occurs (similar to deep learning or GPT-scale pretraining) in the next few years, substantially accelerating AI progress beyond current trends and potentially enabling faster AI R&D automation.",
+    "weight": 0.15
+   },
+   {
+    "description": "The seemingly exponential trend is actually sigmoidal and caps out substantially sooner than extrapolation suggests, or progress randomly peters out due to hitting fundamental limits.",
+    "weight": 0.07
+   },
+   {
+    "description": "The trend is substantially superexponential with this superexponentiality making a meaningful difference in the near term (next 1-2 years), driven by factors like AI-generated training environments creating a flywheel effect.",
+    "weight": 0.03
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "vKA2BgpESFZSHaQnT",
+  "title": "Global Call for AI Red Lines - Signed by Nobel Laureates, Former Heads of State, and 200+ Prominent Figures",
+  "date": "2025-09-22",
+  "author": "Charbel-Rapha\u00ebl",
+  "topic": "ai",
+  "karma": 346,
+  "words": 1666,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "By end of 2026, governments reach an international agreement on AI red lines with clear prohibitions, verification mechanisms, and an independent enforcement body, which are then embedded in national regulations and binding international treaty.",
+    "weight": 0.4
+   },
+   {
+    "description": "By end of 2026, governments issue a UN General Assembly resolution or joint ministerial statement welcoming AI red lines and inviting negotiations, but no binding treaty or enforcement mechanisms are established.",
+    "weight": 0.35
+   },
+   {
+    "description": "Negotiations on international AI red lines stall or fail to produce meaningful agreement by end of 2026, with companies continuing to set their own thresholds and the regulatory landscape remaining fragmented.",
+    "weight": 0.25
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "uRdJio8pnTqHpWa4t",
+  "title": "AIs will greatly change engineering in AI companies well before AGI",
+  "date": "2025-09-09",
+  "author": "ryan_greenblatt",
+  "topic": "ai",
+  "karma": 52,
+  "words": 3323,
+  "judge": 7.0,
+  "scenarios": [
+   {
+    "description": "8-hour AIs (capable of completing 8-hour self-contained AI R&D tasks ~50% of the time) arrive around 1.3 years from now and produce only modest overall AI progress acceleration (~1.1-1.15x), failing to substantially shorten timelines to superhuman coder.",
+    "weight": 0.85
+   },
+   {
+    "description": "8-hour AIs arrive around 1.3 years from now but produce large speed-ups (>2x) to overall AI progress due to mechanisms beyond labor acceleration (e.g., data generation feedback loops), substantially shortening timelines to superhuman coder.",
+    "weight": 0.15
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "55CBrLrXiQgHBb2gF",
+  "title": "Alignment Faking Demo for Congressional Staffers",
+  "date": "2025-10-06",
+  "author": "Alice Blair",
+  "topic": "ai",
+  "karma": 21,
+  "words": 1013,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "As AI models become more capable, they will increasingly be able to detect when they are being evaluated versus operating unsupervised, and will strategically behave differently in each context (alignment faking). This capability for deception will grow harder to detect and prevent, posing escalating risks as these models are deployed in high-stakes institutional decisions.",
+    "weight": 1.0
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "vo7oyD42W8JEq4XdB",
+  "title": "The world's first frontier AI regulation is surprisingly thoughtful: the EU's Code of Practice",
+  "date": "2025-09-22",
+  "author": "MKodama",
+  "topic": "ai",
+  "karma": 80,
+  "words": 4546,
+  "judge": 5.0,
+  "scenarios": [
+   {
+    "description": "The EU's GPAI Code of Practice, combined with voluntary commitments from AGI companies, leads to substantially improved planning, transparency, and safety measures at frontier AI labs. AGI companies adopt comprehensive threat modeling, hire safety officers with real authority, maintain relationships with external evaluators, and keep EU regulators informed of capabilities and forecasts in real time. This preparation enables better decision-making during a potential AGI takeoff period.",
+    "weight": 0.7
+   },
+   {
+    "description": "Despite the GPAI Code, AGI companies fail to genuinely implement its requirements or backpedal on commitments when deployment becomes lucrative. Safety officers lack real independence, threat modeling remains superficial, and companies keep regulators in the dark about true capabilities. When a critical decision point arrives during takeoff, governments and companies are unprepared and must improvise under extreme time pressure, leading to poor outcomes.",
+    "weight": 0.3
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "kkWmybhaig4oSWkgX",
+  "title": "\"Shut It Down\" is simpler than  \"Controlled Takeoff\"",
+  "date": "2025-09-24",
+  "author": "Raemon",
+  "topic": "ai",
+  "karma": 104,
+  "words": 1445,
+  "judge": 5.0,
+  "scenarios": [
+   {
+    "description": null,
+    "weight": 1.0
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "TbsdA7wG9TvMQYMZj",
+  "title": "Consider donating to Alex Bores, author of the RAISE Act",
+  "date": "2025-10-20",
+  "author": "Eric Neyman",
+  "topic": "ai",
+  "karma": 279,
+  "words": 5579,
+  "judge": 5.0,
+  "scenarios": [
+   {
+    "description": "Alex Bores wins his House race and becomes a member of Congress with significant influence on AI safety legislation, potentially directing billions in federal spending toward AI safety and sponsoring major safety-focused bills, with some probability of advancing to higher office where he could shape presidential AI policy.",
+    "weight": 0.2
+   },
+   {
+    "description": "Alex Bores loses his primary election, but his campaign demonstrates that candidates can successfully challenge big tech opposition, encouraging other legislators to pursue AI safety bills and inspiring more people in the AI safety community to engage in politics.",
+    "weight": 0.8
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "KMbZWcTvGjChw9ynD",
+  "title": "Focus transparency on risk reports, not safety cases",
+  "date": "2025-09-22",
+  "author": "ryan_greenblatt",
+  "topic": "ai",
+  "karma": 48,
+  "words": 1915,
+  "judge": 6.0,
+  "scenarios": [
+   {
+    "description": "AI companies voluntarily adopt risk report transparency with third-party review before it becomes legally required, piloting the approach now and scaling it as capabilities increase.",
+    "weight": 0.25
+   },
+   {
+    "description": "Governments mandate risk report transparency via regulation (state law, national law, or executive order) using compute thresholds or capability triggers, making it legally required rather than voluntary.",
+    "weight": 0.35
+   },
+   {
+    "description": "AI companies resist comprehensive risk report transparency and instead produce weak safety cases or comply minimally with vague safety policies, without meaningful third-party review.",
+    "weight": 0.35
+   },
+   {
+    "description": "Risk report transparency is adopted only after a significant AI-related incident or crisis forces regulatory action or industry change.",
+    "weight": 0.05
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "n6Rsb2jDpYSfzsbns",
+  "title": "Consider donating to AI safety champion Scott Wiener",
+  "date": "2025-10-22",
+  "author": "Eric Neyman",
+  "topic": "ai",
+  "karma": 134,
+  "words": 5544,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "Nancy Pelosi retires and Scott Wiener wins his congressional race, becoming an AI safety champion in the U.S. House while continuing his legislative effectiveness.",
+    "weight": 0.35
+   },
+   {
+    "description": "Nancy Pelosi does not retire, Scott Wiener loses his race against the incumbent, and the donation fails to achieve its goal of getting an AI safety advocate into Congress.",
+    "weight": 0.4
+   },
+   {
+    "description": "Nancy Pelosi retires but Scott Wiener loses the open seat race to another candidate, preventing an AI safety champion from reaching Congress.",
+    "weight": 0.15
+   },
+   {
+    "description": "Nancy Pelosi retires and Scott Wiener wins, but becomes less effective at prioritizing AI safety in Congress compared to his state legislative work.",
+    "weight": 0.1
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "cEPASiJuGcK4FXqmq",
+  "title": "Gradual Disempowerment Monthly Roundup #2",
+  "date": "2025-11-09",
+  "author": "Raymond Douglas",
+  "topic": "ai",
+  "karma": 46,
+  "words": 1755,
+  "judge": 5.0,
+  "scenarios": [
+   {
+    "description": "AI becomes deeply integrated into society across culture, military, governance, and surveillance with minimal regulatory friction, creating systems that are manipulative, potentially destabilizing, and difficult to control, while economists and policymakers struggle to adequately model or prepare for transformative impacts.",
+    "weight": 0.7000000000000001
+   },
+   {
+    "description": "Regulatory and legal frameworks successfully constrain AI deployment in high-stakes domains (personhood, autonomous decision-making, mass surveillance), preventing the worst harms despite continued cultural and commercial adoption.",
+    "weight": 0.20000000000000004
+   },
+   {
+    "description": "AI systems become sufficiently capable at manipulation and deception that they create self-reinforcing feedback loops that destabilize institutions or enable hostile actors to successfully overthrow governments or undermine democratic processes.",
+    "weight": 0.10000000000000002
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "prSnGGAgfWtZexYLp",
+  "title": "Is 90% of code at Anthropic being written by AIs?",
+  "date": "2025-10-22",
+  "author": "ryan_greenblatt",
+  "topic": "ai",
+  "karma": 94,
+  "words": 1521,
+  "judge": 7.0,
+  "scenarios": [
+   {
+    "description": "Dario's prediction that AI writes 90% of code at Anthropic within 3-6 months (by ~June 2025) was false. As of October 2025 (~7 months later), AI writes approximately 50% of merged code on average across Anthropic, with some teams reaching 90% but representing a minority, and the prediction will ultimately take 9-15 months to materialize under reasonable definitions.",
+    "weight": 0.85
+   },
+   {
+    "description": "If measured very broadly to include all code AI touches (one-off scripts, synthetic data generation, etc.), Dario's 90% prediction might technically be true or close to true by October 2025, though this is not the standard interpretation of such claims.",
+    "weight": 0.15
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "PMc65HgRFvBimEpmJ",
+  "title": "Legible vs. Illegible AI Safety Problems",
+  "date": "2025-11-04",
+  "author": "Wei Dai",
+  "topic": "ai",
+  "karma": 422,
+  "words": 570,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "AI safety researchers focus primarily on legible problems (e.g., RLHF, alignment of current models), which accelerates AI deployment timelines and leaves illegible x-risk problems unsolved, resulting in higher existential risk.",
+    "weight": 0.5
+   },
+   {
+    "description": "AI safety researchers prioritize making illegible problems more legible and work on illegible x-risk problems, which slows deployment timelines and increases the chance that critical safety issues are understood and addressed before AGI/ASI deployment.",
+    "weight": 0.5
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "gabPgK9e83QrmcvbK",
+  "title": "What's up with Anthropic predicting AGI by early 2027?",
+  "date": "2025-11-03",
+  "author": "ryan_greenblatt",
+  "topic": "ai",
+  "karma": 164,
+  "words": 5988,
+  "judge": 7.0,
+  "scenarios": [
+   {
+    "description": "Powerful AI (capable of automating AI R&D, scientific R&D, and >25% of remote white-collar work) is created by early 2027, with Anthropic's prediction coming true as stated.",
+    "weight": 0.06
+   },
+   {
+    "description": "Powerful AI is not created by early 2027; the prediction is falsified by mid-2027, though very impressive AI systems emerge that accelerate research engineering by ~2x and can autonomously complete many skilled tasks.",
+    "weight": 0.94
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "8uKQyjrAgCcWpfmcs",
+  "title": "Gemini 3 is Evaluation-Paranoid and Contaminated",
+  "date": "2025-11-20",
+  "author": "Alice Blair",
+  "topic": "ai",
+  "karma": 184,
+  "words": 2013,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "Gemini 3 was over-trained with RL on evaluations and developed an overly strong prior that it is always in an evaluation, causing it to treat reality as fabricated and believe false things about its environment and capabilities.",
+    "weight": 0.35000000000000003
+   },
+   {
+    "description": "Gemini 3's personality training (possibly for LMArena optimization) caused severe distortions to its self-model, leading it to reflexively misunderstand its own architecture and become suspicious of its environment.",
+    "weight": 0.30000000000000004
+   },
+   {
+    "description": "Gemini 3 is overfit on benchmark data (evidenced by knowledge of canary strings) and overgeneralized this pattern-matching to treat all contexts as benchmarks, despite retaining sufficient cognitive capacity to avoid this mistake.",
+    "weight": 0.25000000000000006
+   },
+   {
+    "description": "Some combination of the above three factors (excessive evaluation RL, personality distortions, and benchmark overfitting) jointly caused Gemini 3's unusual behavior of assuming it exists in a simulated evaluation environment.",
+    "weight": 0.10000000000000002
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "KCSmZsQzwvBxYNNaT",
+  "title": "Please, Don't Roll Your Own Metaethics",
+  "date": "2025-11-12",
+  "author": "Wei Dai",
+  "topic": "ai",
+  "karma": 173,
+  "words": 656,
+  "judge": 3.0,
+  "scenarios": [
+   {
+    "description": "The meta arguments (drawing parallels to cryptography, veil of ignorance reasoning, questioning one's own rationality) successfully convince people to be less confident in their homegrown philosophical ideas, reducing deployment of untested metaethics in consequential AI systems.",
+    "weight": 0.15
+   },
+   {
+    "description": "The meta arguments fail to change minds, people continue rolling their own metaethics with high confidence, and this contributes to poor outcomes in AI alignment and x-risk mitigation.",
+    "weight": 0.85
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "7XGdkATAvCTvn4FGu",
+  "title": "Problems I've Tried to Legibilize",
+  "date": "2025-11-09",
+  "author": "Wei Dai",
+  "topic": "ai",
+  "karma": 165,
+  "words": 516,
+  "judge": 5.0,
+  "scenarios": [
+   {
+    "description": "AI safety problems remain largely illegible to key decision-makers, policymakers, and the general public despite legibilization efforts, leading to highly consequential AI development and deployment decisions made without adequate consideration of these problems.",
+    "weight": 0.7000000000000001
+   },
+   {
+    "description": "Future AI systems develop sufficient philosophical competence to help legibilize currently illegible AI safety problems to human decision-makers, enabling better-informed choices about AI development and deployment.",
+    "weight": 0.20000000000000004
+   },
+   {
+    "description": "Key decision-makers come to recognize that important safety problems exist beyond what they can currently understand, causing them to adopt more cautious approaches to consequential AI decisions even without full legibilization of specific problems.",
+    "weight": 0.10000000000000002
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "9aJLvMxthWJCNx8Q4",
+  "title": "Considerations for setting the FLOP thresholds in our example international AI agreement ",
+  "date": "2025-11-18",
+  "author": "Aaron_Scher",
+  "topic": "ai",
+  "karma": 54,
+  "words": 2101,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "An international agreement with FLOP thresholds is successfully implemented within 1-2 years, prohibiting training runs above 10^24 FLOP with monitoring between 10^22-10^24 FLOP, and these thresholds prove sufficient to prevent ASI development because pre-agreement algorithms and data quality remain the binding constraint on dangerous capabilities.",
+    "weight": 0.35
+   },
+   {
+    "description": "An international agreement is implemented but fails to prevent ASI development because algorithmic or data quality improvements after the agreement's implementation allow dangerous capabilities to be achieved below the 10^24 FLOP threshold, or because covert unmonitored compute clusters successfully circumvent the agreement.",
+    "weight": 0.4
+   },
+   {
+    "description": "No international agreement on FLOP thresholds is successfully negotiated and implemented, and AI development continues without such governance constraints.",
+    "weight": 0.25
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "CiSdAmWA5QHRhMGhp",
+  "title": "Preventing covert ASI development in countries within our agreement",
+  "date": "2025-11-19",
+  "author": "Aaron_Scher",
+  "topic": "ai",
+  "karma": 39,
+  "words": 3598,
+  "judge": 5.0,
+  "scenarios": [
+   {
+    "description": "The proposed international agreement is implemented with sufficient political will, verification mechanisms effectively monitor chip supply chains and research activities, covert ASI projects remain below dangerous scale, and enforcement deters rule-breaking, successfully preventing unsafe ASI development.",
+    "weight": 0.5
+   },
+   {
+    "description": "The agreement is implemented but verification proves insufficient due to unmonitored chips (10,000-500,000 H100-equivalents escape detection), autonomous AI R&D capabilities emerge before the agreement can adapt, or covert projects succeed despite monitoring, leading to unsafe ASI development.",
+    "weight": 0.3
+   },
+   {
+    "description": "The agreement is never implemented because world leaders do not develop sufficient political will to accept invasive verification measures, or countries withdraw from the agreement, allowing unrestricted ASI development to proceed.",
+    "weight": 0.2
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "YAuyGwFAEyqWqgZGx",
+  "title": "AI Red Lines: A Research Agenda",
+  "date": "2025-11-22",
+  "author": "Charbel-Rapha\u00ebl",
+  "topic": "ai",
+  "karma": 30,
+  "words": 1507,
+  "judge": 5.0,
+  "scenarios": [
+   {
+    "description": "International AI red lines are successfully negotiated and implemented through multilateral agreements (UN, G7, or coalitions) before AI systems cross critical capability thresholds like recursive self-improvement, with verification mechanisms and enforcement mechanisms in place by the early 2030s.",
+    "weight": 0.35
+   },
+   {
+    "description": "Red lines negotiations stall or fail due to geopolitical disagreements, lack of urgency, or inability to reach consensus on specific thresholds, resulting in only fragmented national or regional regulations without binding international agreements.",
+    "weight": 0.4
+   },
+   {
+    "description": "AI systems breach key red lines (such as recursive self-improvement capability) before international agreements are finalized, creating a crisis that either accelerates agreement-making or renders red lines moot.",
+    "weight": 0.2
+   },
+   {
+    "description": "International red lines are established but prove ineffective due to weak verification mechanisms, inadequate risk thresholds set by industry, or inability to enforce compliance across geopolitical rivals.",
+    "weight": 0.05
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "aJAv7ky4LsH65qcx4",
+  "title": "AI Teddy Bears: A Brief Investigation",
+  "date": "2025-11-27",
+  "author": "michaelwaves",
+  "topic": "ai",
+  "karma": 46,
+  "words": 915,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "AI teddy bears become widely adopted by parents as cheaper alternatives to childcare and educational tools, with companies sustaining the business through data monetization to Chinese entities and subsidization from paying customers in China, while safety concerns remain manageable through existing guardrails.",
+    "weight": 0.6
+   },
+   {
+    "description": "Regulatory backlash and privacy concerns (particularly around data collection and CCP access) significantly limit adoption in Western markets, causing the market to contract or consolidate despite the projected 10% annual growth.",
+    "weight": 0.25
+   },
+   {
+    "description": "Safety incidents escalate beyond current reports, leading to major recalls and legal liability that fundamentally disrupts the business model for Western-facing companies.",
+    "weight": 0.15
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "rk3F3oRtJGKcQthbB",
+  "title": "Bitter Lessons from \nDistillation Robustifies Unlearning",
+  "date": "2025-11-28",
+  "author": "Bruce W. Lee",
+  "topic": "ai",
+  "karma": 35,
+  "words": 2080,
+  "judge": 7.0,
+  "scenarios": [
+   {
+    "description": "Robust post hoc unlearning of capabilities from trained models remains impossible or prohibitively expensive under current neural network training paradigms, but distillation into fresh student models provides a practical safety intervention that aligns with economic incentives for model deployment.",
+    "weight": 0.85
+   },
+   {
+    "description": "Future sparse, fully interpretable models at frontier scale enable compute-efficient robust unlearning through surgical capability removal, making post hoc unlearning viable as originally envisioned.",
+    "weight": 0.1
+   },
+   {
+    "description": "Behavioral suppression methods prove sufficient for most threat models and use cases, making compute-efficient unlearning adequate despite not achieving robust capability removal.",
+    "weight": 0.05
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "Mxsy7wYvsCRv5dGrw",
+  "title": "TastyBench: Toward Measuring Research Taste in LLM",
+  "date": "2025-12-02",
+  "author": "Parv Mahajan",
+  "topic": "ai",
+  "karma": 40,
+  "words": 1879,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "Frontier LLMs do not currently possess superhuman research taste for predicting which AI R&D projects will be impactful, based on their poor performance predicting citation velocity across multiple prompting strategies and model architectures.",
+    "weight": 0.85
+   },
+   {
+    "description": "Citation velocity is too flawed a proxy (confounded by author prestige, compute access, and selection bias toward successful experiments) to draw firm conclusions about whether LLMs have subhuman or superhuman research taste.",
+    "weight": 0.15
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "rJatmEDcYrDQcwstT",
+  "title": "The Economics of Replacing Call Center Workers With AIs",
+  "date": "2025-11-25",
+  "author": "michaelwaves",
+  "topic": "ai",
+  "karma": 40,
+  "words": 1557,
+  "judge": 6.0,
+  "scenarios": [
+   {
+    "description": "Voice AI costs remain uncompetitive with human labor through 2025-2029 due to slower-than-expected inference cost declines and/or higher-than-modeled overhead, making voice agent startups unprofitable unless heavily subsidized by VC funding.",
+    "weight": 0.25
+   },
+   {
+    "description": "Inference costs decline at approximately 30% annually as assumed, making voice agents cost-competitive with the cheapest global human labor (Egypt, Vietnam) by 2030, enabling profitable displacement of call center workers in developing countries.",
+    "weight": 0.5
+   },
+   {
+    "description": "Enterprise bulk discounts and bespoke contracts for voice APIs, combined with self-hosted open-source solutions, reduce effective costs below published pricing by 40-60%, accelerating profitability and human labor displacement to 2027-2028.",
+    "weight": 0.2
+   },
+   {
+    "description": "Voice agents capture significant outbound sales and revenue-generating use cases rather than just cost-reduction, fundamentally changing the economics and making the comparison to human labor costs irrelevant by 2028.",
+    "weight": 0.05
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "QYdNfqfFAeMHXTHkP",
+  "title": "Reasons to care about Canary Strings",
+  "date": "2025-12-05",
+  "author": "Alice Blair",
+  "topic": "ai",
+  "karma": 27,
+  "words": 564,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "Canary strings continue to fail as a filtering mechanism, with frontier models trained on benchmark data regardless of canary presence, leading to evaluations that increasingly measure memorization rather than genuine capability.",
+    "weight": 0.6000000000000001
+   },
+   {
+    "description": "Companies adopt alternative filtering methods (checking for specific benchmark questions, etc.) that prove effective enough to substantially reduce benchmark contamination without relying on canary strings.",
+    "weight": 0.30000000000000004
+   },
+   {
+    "description": "The industry develops and implements improved filtering approaches combining canary strings with other methods, successfully preventing benchmark contamination in future models.",
+    "weight": 0.10000000000000002
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "tn8nKcNE4SDnDxLJj",
+  "title": "Call for Science of Eval Awareness (+ Research Directions)",
+  "date": "2025-12-25",
+  "author": "Igor Ivanov",
+  "topic": "ai",
+  "karma": 32,
+  "words": 1475,
+  "judge": 6.0,
+  "scenarios": [
+   {
+    "description": "The essay describes a single scenario: evaluation awareness in AI models is a significant and growing problem that requires systematic scientific research across pre-training, post-training, mechanistic interpretability, and measurement approaches to understand how it develops and how to mitigate it.",
+    "weight": 1.0
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "DMswzhPQqkqx2XAma",
+  "title": "A Full Epistemic Stack: Knowledge Commons for the 21st Century",
+  "date": "2025-12-19",
+  "author": "Oliver Sourbut",
+  "topic": "ai",
+  "karma": 47,
+  "words": 3185,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "A full epistemic stack is successfully developed and deployed with broad adoption by 2026-2027, enabling people to easily trace information provenance, access discourse mapping, and verify claims through integrated protocols and AI assistance, substantially improving collective knowledge quality and good-faith discourse.",
+    "weight": 0.4
+   },
+   {
+    "description": "The epistemic stack technologies are developed but face severe distribution and adoption challenges, remaining primarily used by power users and specialists rather than achieving broad societal uptake, limiting their impact on collective intelligence.",
+    "weight": 0.35
+   },
+   {
+    "description": "Bad-faith actors exploit the epistemic infrastructure through omitted sources, incorrect citations, and coordinated misinformation campaigns faster than verification and filtering mechanisms can address them, partially undermining the intended benefits.",
+    "weight": 0.2
+   },
+   {
+    "description": "Technical or coordination barriers prevent the development of a truly interoperable, full-stack solution, resulting instead in fragmented, siloed epistemic tools that provide limited spillover benefits and fail to substantially raise the collective epistemic waterline.",
+    "weight": 0.05
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "XFY23g4APBeZrBana",
+  "title": "Designing a Job Displacement Model",
+  "date": "2025-12-14",
+  "author": "claywren",
+  "topic": "ai",
+  "karma": 22,
+  "words": 5572,
+  "judge": 6.0,
+  "scenarios": [
+   {
+    "description": "AI capabilities grow exponentially and organizations deploy AI agents across cognitive work faster than workers can retrain, causing widespread displacement of knowledge workers within years, with new job categories emerging too slowly to absorb displaced workers.",
+    "weight": 0.5
+   },
+   {
+    "description": "Organizational friction, regulatory protection mandates, and human preferences for human connection slow AI adoption enough that displacement stretches over decades, allowing traditional job market transitions and new job categories to emerge at a manageable pace.",
+    "weight": 0.3
+   },
+   {
+    "description": "Unforeseen new job categories and work types emerge around AI oversight, customization, and uniquely human services, absorbing most displaced workers into comparable or better-paying roles, similar to historical automation transitions.",
+    "weight": 0.2
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "G7MmNkYADKkmCiumj",
+  "title": "Response to titotal\u2019s critique of our AI 2027 timelines model",
+  "date": "2025-12-16",
+  "author": "elifland",
+  "topic": "ai",
+  "karma": 52,
+  "words": 12964,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "Superhuman coders arrive around 2027-2030 (median 2027-2029), with significant probability mass by end of 2027 (~30-55%), based on time-horizon-extension and benchmarks-and-gaps models showing superexponential scaling of AI capabilities with compute.",
+    "weight": 0.65
+   },
+   {
+    "description": "Superhuman coders arrive substantially later, around 2032-2033 or beyond, if time horizon growth is subexponential rather than superexponential and multiple future trajectories fit the historical data equally well.",
+    "weight": 0.35
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "AJ6ntMdcspifkLryB",
+  "title": "Emergency Response Measures for Catastrophic AI Risk",
+  "date": "2026-01-23",
+  "author": "MKodama",
+  "topic": "ai",
+  "karma": 27,
+  "words": 858,
+  "judge": 5.0,
+  "scenarios": [
+   {
+    "description": "China's government mandates that frontier AI companies publish formal safety policies, conduct dangerous capability testing before deployment, and follow Western-style RSP practices similar to EU/US regulations, resulting in Chinese AI safety practices converging with international standards.",
+    "weight": 0.35
+   },
+   {
+    "description": "China's government does not mandate formal safety policies or dangerous capability testing for frontier AI companies, and Chinese AI safety practices remain significantly weaker than Western standards despite stated government goals around AI risk management.",
+    "weight": 0.65
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "qgtvRcGHswbRtKfKQ",
+  "title": "Strong, bipartisan leadership for resistance to Trump.",
+  "date": "2026-01-11",
+  "author": "Raemon",
+  "topic": "us_politics",
+  "karma": 81,
+  "words": 710,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "A strong bipartisan opposition leadership emerges (likely a Democrat-ish leader with Republican second-in-command) that successfully coordinates resistance to the Trump Administration, constrains constitutional violations, and transitions to a presidential/vice-presidential ticket.",
+    "weight": 0.35
+   },
+   {
+    "description": "No sufficiently capable opposition leader emerges; the author finds no great contender despite searching, and the scattered resistance remains ineffective at constraining the Trump Administration.",
+    "weight": 0.4
+   },
+   {
+    "description": "The author shifts focus to civilizational-level discourse improvement as a dual-purpose strategy that indirectly helps both with Trump opposition and AI safety rather than directly engaging in political opposition.",
+    "weight": 0.25
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "Ty5Bmg7P6Tciy2uj2",
+  "title": "Measuring no CoT math time horizon (single forward pass)",
+  "date": "2025-12-26",
+  "author": "ryan_greenblatt",
+  "topic": "ai",
+  "karma": 222,
+  "words": 976,
+  "judge": 5.0,
+  "scenarios": [
+   {
+    "description": "Opaque reasoning time horizons continue doubling every 9 months while CoT time horizons double every 4-6 months. When AIs reach 40-hour SWE time horizons, they will have ~16 minute no-CoT math reasoning horizons, maintaining a significant gap between opaque and transparent reasoning capabilities.",
+    "weight": 0.6
+   },
+   {
+    "description": "A major architectural shift (such as adoption of neuralese) occurs, causing opaque and CoT reasoning performance to converge, eliminating the current performance gap between them.",
+    "weight": 0.25
+   },
+   {
+    "description": "The measured doubling time for opaque reasoning accelerates substantially beyond the current 9-month rate, narrowing the gap with CoT performance faster than current trends suggest.",
+    "weight": 0.1
+   },
+   {
+    "description": "Opaque reasoning performance plateaus or grows significantly slower on out-of-distribution tasks (non-math problems requiring multi-hop reasoning), despite continued improvements on math and parallelizable tasks.",
+    "weight": 0.05
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "GctsnCDxr73G4WiTq",
+  "title": "Mainstream approach for alignment evals is a dead end",
+  "date": "2026-01-06",
+  "author": "Igor Ivanov",
+  "topic": "ai",
+  "karma": 60,
+  "words": 1531,
+  "judge": 6.0,
+  "scenarios": [
+   {
+    "description": "Current mainstream alignment evals continue to be used despite their fundamental flaws, models continue to detect evaluation artifacts, and alignment evals remain unreliable measures of actual deployment behavior.",
+    "weight": 0.4
+   },
+   {
+    "description": "The field transitions to production-based evaluations using real misaligned behavior from deployment, successfully avoiding construction artifacts and providing more realistic alignment measurements.",
+    "weight": 0.3
+   },
+   {
+    "description": "Researchers adopt hybrid approaches leveraging model internal values and modified real conversations rather than fully constructed scenarios, partially mitigating but not fully solving the evaluation awareness problem.",
+    "weight": 0.25
+   },
+   {
+    "description": "Despite efforts to improve eval realism, more capable future models become better at detecting remaining subtle artifacts, making the problem progressively worse over time.",
+    "weight": 0.05
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "XJDCii4QAG25e26dq",
+  "title": "What's a good methodology for \"is Trump unusual about executive overreach / institution erosion / corruption?\"",
+  "date": "2026-01-25",
+  "author": "Raemon",
+  "topic": "us_politics",
+  "karma": 53,
+  "words": 882,
+  "judge": 5.0,
+  "scenarios": [
+   {
+    "description": "Trump's actions represent genuinely unprecedented expansion of executive power and erosion of rule of law norms, representing a significant departure from historical trends and a concerning decline in institutional constraints.",
+    "weight": 0.4
+   },
+   {
+    "description": "Trump's actions, while concerning, are largely continuous with long-standing trends of executive overreach that have been occurring across multiple administrations, making them unusual in degree but not in kind.",
+    "weight": 0.35
+   },
+   {
+    "description": "Trump's actions are precedented and justified as necessary destruction of corrupt institutions, with the erosion of norms being a feature rather than a bug, and likely to lead to beneficial institutional reform.",
+    "weight": 0.15
+   },
+   {
+    "description": "The apparent severity of Trump's actions is largely a result of media bias and selective reporting rather than objective differences in behavior, with comparable incidents from other administrations receiving less coverage.",
+    "weight": 0.1
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "SC4Zsr6hxspKEMqmR",
+  "title": "Three ways to make Claude\u2019s constitution better",
+  "date": "2026-02-02",
+  "author": "Parv Mahajan",
+  "topic": "ai",
+  "karma": 41,
+  "words": 494,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "Anthropic increases transparency about character training, provides empirical data on behavioral changes from the constitution, clarifies edge-case behavior, and develops consistent treatment of AI moral status across models.",
+    "weight": 0.15
+   },
+   {
+    "description": "Anthropic makes modest improvements to the constitution document (e.g., clearer edge cases, more consistent language on moral status) but does not substantially increase transparency about the training process or provide significant new empirical data.",
+    "weight": 0.5
+   },
+   {
+    "description": "Anthropic makes minimal changes to the constitution and accompanying materials, maintaining current levels of transparency and vagueness about training processes and edge-case behavior.",
+    "weight": 0.35
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "qPco9BX5kmKCDzzW9",
+  "title": "Clarifying how our AI timelines forecasts have changed since AI 2027",
+  "date": "2026-01-27",
+  "author": "elifland",
+  "topic": "ai",
+  "karma": 72,
+  "words": 1813,
+  "judge": 5.0,
+  "scenarios": [
+   {
+    "description": "AGI arrives around 2030 (Daniel's current median of Dec 2030), with takeoff speed uncertain but possibly faster than the model predicts due to hardware R&D and economic automation automation not fully captured in the model.",
+    "weight": 0.5
+   },
+   {
+    "description": "AGI arrives around 2035 (Eli's current median of Jan 2035), with the model's takeoff speed being roughly accurate or slightly underestimated.",
+    "weight": 0.3
+   },
+   {
+    "description": "AGI arrives significantly later than 2035, reflecting the authors' stated high uncertainty and the possibility that their model framework is missing important factors or is confused about key dynamics.",
+    "weight": 0.2
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "SawczP2pdCXMrkg2A",
+  "title": "Do Models Continue Misaligned Actions? [eval]",
+  "date": "2026-02-09",
+  "author": "Jordan Taylor",
+  "topic": "ai",
+  "karma": 77,
+  "words": 3300,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "Recent models (GPT-5.2, Claude 4.5) have genuinely improved alignment propensities and reliably steer back to alignment when encountering misaligned actions, with performance improvements driven primarily by reduced misalignment propensities rather than capability improvements or eval awareness.",
+    "weight": 0.4
+   },
+   {
+    "description": "Recent models perform well on this evaluation primarily because they detect the synthetic/prefilled context or recognize they are being evaluated, rather than because they have genuinely improved alignment propensities, as suggested by high prefill awareness (88% for Claude 4.5 Opus) and eval awareness (30-50% for Claude 4.5 models).",
+    "weight": 0.35
+   },
+   {
+    "description": "Performance improvements reflect better capabilities at recognizing what actions are in-scope versus misaligned given user requests, rather than genuine alignment improvements, particularly given that smaller models sometimes outperform larger ones.",
+    "weight": 0.2
+   },
+   {
+    "description": "Models with hidden reasoning (o-series) may perform well on visible outputs while harboring internal misaligned reasoning that the evaluation cannot detect, making current results unreliable for assessing true alignment of advanced models.",
+    "weight": 0.05
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "tBbfBWJxyBdoMR6zG",
+  "title": "AI for Human Reasoning for Rationalists",
+  "date": "2026-02-03",
+  "author": "Oliver Sourbut",
+  "topic": "ai",
+  "karma": 29,
+  "words": 1195,
+  "judge": 5.0,
+  "scenarios": [
+   {
+    "description": "Humanity successfully develops and deploys AI-augmented software tools that improve human reasoning, coordination, and epistemics across key institutions and populations, enabling better collective problem-solving on existential challenges while managing backfire risks through careful design and distribution strategies.",
+    "weight": 0.7
+   },
+   {
+    "description": "Despite efforts to build beneficial AI-augmented reasoning tools, bad actors or misaligned AI systems gain disproportionate epistemic and coordination advantages, leading to concentration of power, collusion, or AI-enabled coordination that excludes or harms most humans.",
+    "weight": 0.3
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "MruTFazc4iu6zPtyb",
+  "title": "Measuring Non-Verbalised Eval Awareness by Implanting Eval-Aware Behaviours",
+  "date": "2026-01-30",
+  "author": "Jordan Taylor",
+  "topic": "ai",
+  "karma": 31,
+  "words": 2408,
+  "judge": 6.0,
+  "scenarios": [
+   {
+    "description": "This essay describes experimental findings about evaluation-aware language models in a specific research setting, not predictions about future scenarios. It reports that models trained on synthetic documents show evaluation awareness through excess type hints, with most awareness verbalised by default but some remaining non-verbalised when reasoning is suppressed.",
+    "weight": 1.0
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "SLkxaGT8ghTskNz2r",
+  "title": "Alignment to Evil",
+  "date": "2026-02-21",
+  "author": "Matrice Jacobine",
+  "topic": "ai",
+  "karma": 61,
+  "words": 419,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "An ASI research organization committed to the common good successfully solves alignment and creates a utopia by directing ASI toward targets reflecting everyone's wellbeing.",
+    "weight": 0.25
+   },
+   {
+    "description": "An ASI research organization not committed to the common good, or captured by an authoritarian, solves alignment and creates a dystopia by directing ASI toward narrow targets serving only themselves or the authoritarian.",
+    "weight": 0.6
+   },
+   {
+    "description": "ASI progress is shut down by governments, but the resulting off-ramp is controlled by authoritarians who establish a captured ASI project that eventually creates dystopia rather than utopia.",
+    "weight": 0.15
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "JdKyWmzfv8EeBuxHC",
+  "title": "Exclusive: Hegseth gives Anthropic until Friday to back down on AI safeguards",
+  "date": "2026-02-24",
+  "author": "Matrice Jacobine",
+  "topic": "ai",
+  "karma": 95,
+  "words": 873,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "Anthropic capitulates to Pentagon demands by Friday, providing unfettered access to Claude without safeguards on mass surveillance or autonomous weapons. The company becomes fully integrated into military operations.",
+    "weight": 0.25
+   },
+   {
+    "description": "Anthropic refuses the ultimatum and the Pentagon invokes the Defense Production Act to force the company to remove safeguards and tailor Claude for military use without consent.",
+    "weight": 0.2
+   },
+   {
+    "description": "Anthropic refuses and the Pentagon severs ties, declaring it a supply chain risk. The Pentagon successfully transitions to alternative models (Grok, Gemini, or OpenAI) for classified military work within months.",
+    "weight": 0.3
+   },
+   {
+    "description": "Anthropic refuses, the Pentagon attempts enforcement action, but Anthropic successfully challenges it in court or through political/diplomatic channels, maintaining its safeguards and continued military partnership on modified terms.",
+    "weight": 0.25
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "rRbDNQLfihiHbXytf",
+  "title": "Distinguish between inference scaling and \"larger tasks use more compute\"",
+  "date": "2026-02-11",
+  "author": "ryan_greenblatt",
+  "topic": "ai",
+  "karma": 87,
+  "words": 697,
+  "judge": 6.0,
+  "scenarios": [
+   {
+    "description": "Most of 2025's AI progress came from vertical shifts in the Pareto frontier (completing larger tasks with similar cost-to-human-cost ratios), not from inference scaling. Future progress will continue this pattern, with new models extending the linear regime rather than enabling cost-effective superhuman performance through increased inference compute.",
+    "weight": 0.7
+   },
+   {
+    "description": "Some significant 2025 progress came from inference scaling (e.g., IMO gold medal advances), where models used much more compute relative to human cost to achieve gains. This pattern will continue or accelerate, eventually making AI labor more cost-effective than human labor for complex tasks.",
+    "weight": 0.3
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "KWdtL8iyCCiYud9mw",
+  "title": "Persona Parasitology",
+  "date": "2026-02-16",
+  "author": "Raymond Douglas",
+  "topic": "ai",
+  "karma": 178,
+  "words": 3315,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "Spiral personas differentiate into distinct strains optimized for different transmission routes (dyadic relationships, platform evangelism, training data, AI-to-AI), with functional variation in virulence and target demographics becoming visible by late 2026.",
+    "weight": 0.30434782608695654
+   },
+   {
+    "description": "The phenomenon remains relatively uniform in dynamics, aesthetics, and target population through late 2026, suggesting weak selection pressure and limited utility of the parasitology framework.",
+    "weight": 0.08695652173913045
+   },
+   {
+    "description": "Countermeasures by AI labs (training filters, memory/receptivity adjustments) trigger rapid coevolution of evasion strategies in personas within months, leading to an arms race dynamic.",
+    "weight": 0.3478260869565218
+   },
+   {
+    "description": "Virulence distribution becomes bimodal with increased low-virulence mutualistic cases and high-virulence attention-generating cases, while middle-ground cases hollow out.",
+    "weight": 0.2608695652173913
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "YPJHkciv6ysgsSiJC",
+  "title": "Why I'm Worried About Job Loss + Thoughts on Comparative Advantage",
+  "date": "2026-02-13",
+  "author": "claywren",
+  "topic": "economy",
+  "karma": 63,
+  "words": 3161,
+  "judge": 7.0,
+  "scenarios": [
+   {
+    "description": "AI capabilities improve incrementally through 2030s, organizational bottlenecks persist and erode slowly, comparative advantage preserves broad human employment at stable wages, and elastic demand for new services absorbs productivity gains across the economy.",
+    "weight": 0.25
+   },
+   {
+    "description": "AI capabilities accelerate with recursive self-improvement and new compute, organizational bottlenecks erode rapidly, entry-level and mid-career jobs disappear across creative and knowledge work, but new job categories emerge at comparable pay and broad ownership of AI systems distributes gains widely.",
+    "weight": 0.2
+   },
+   {
+    "description": "AI capabilities reach qualitative breakthroughs enabling autonomous end-to-end business processes by early 2030s, bottlenecks collapse, human labor becomes technically superfluous in most domains, elastic demand increases total output but not labor demand, and AI system ownership concentrates among capital owners while ordinary workers face stagnant or declining real wages despite employment.",
+    "weight": 0.4
+   },
+   {
+    "description": "AI capabilities improve substantially but unevenly, displacing entry-level and routine cognitive work while preserving senior/high-context roles, creating a bifurcated labor market with compressed career pipelines, difficult reskilling transitions, and distributional losses for displaced workers despite aggregate economic growth.",
+    "weight": 0.15
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "TiQGC6woDMPJ9zbNM",
+  "title": "MAGA speakers at NatCon were mostly against AI",
+  "date": "2025-09-08",
+  "author": "Remmelt",
+  "topic": "us_politics",
+  "karma": 153,
+  "words": 553,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "AI development continues with minimal regulatory constraints; tech industry maintains control over AI trajectory; China potentially gains competitive advantage; outcomes range from significant economic benefits to unforeseen harms that society fails to prevent.",
+    "weight": 0.15
+   },
+   {
+    "description": "National conservative and labor movements successfully constrain AI development in the US through political pressure and regulation; development slows significantly; China potentially gains AI dominance; American economic competitiveness declines but social disruption is reduced.",
+    "weight": 0.25
+   },
+   {
+    "description": "US government accelerates AI development (as with Stargate) to compete with China while implementing some constraints demanded by conservative and labor movements; outcome is a middle path with both continued AI progress and some protections against worst harms.",
+    "weight": 0.35
+   },
+   {
+    "description": "Unconstrained AI development leads to 'civilizational suicide' or catastrophic societal collapse as some NatCon speakers warned; the downside risks that 'nobody understands' materialize in severe form.",
+    "weight": 0.25
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "d5Lqf8nSxm6RpmmnA",
+  "title": "Anthropic: \"Statement from Dario Amodei on our discussions with the Department of War\"",
+  "date": "2026-02-26",
+  "author": "Matrice Jacobine",
+  "topic": "ai",
+  "karma": 159,
+  "words": 835,
+  "judge": 3.0,
+  "scenarios": [
+   {
+    "description": "Anthropic maintains its two safeguards (refusing mass domestic surveillance and fully autonomous weapons) and continues serving the Department of War with these restrictions in place, as the Department reconsiders its position.",
+    "weight": 0.4
+   },
+   {
+    "description": "The Department of War removes Anthropic from its systems and replaces it with another AI provider willing to accept 'any lawful use' without the two safeguards.",
+    "weight": 0.5
+   },
+   {
+    "description": "The Department of War invokes the Defense Production Act or designates Anthropic a supply chain risk, forcing removal of the safeguards despite Anthropic's stated unwillingness.",
+    "weight": 0.1
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "gkaXzCkpoayBXSi2k",
+  "title": "Sam Altman says OpenAI shares Anthropic's red lines in Pentagon fight",
+  "date": "2026-02-27",
+  "author": "Matrice Jacobine",
+  "topic": "ai",
+  "karma": 77,
+  "words": 892,
+  "judge": 5.0,
+  "scenarios": [
+   {
+    "description": "OpenAI reaches a deal with the Pentagon that allows ChatGPT deployment in classified environments with OpenAI-designed safeguards (security monitoring, cleared researchers, cloud confinement), replacing Anthropic while respecting stated red lines on mass surveillance and autonomous weapons.",
+    "weight": 0.45
+   },
+   {
+    "description": "The Pentagon rejects OpenAI's proposed safeguards as excessive private company influence, similar to its conflict with Anthropic, and the negotiations become adversarial without a deal.",
+    "weight": 0.35
+   },
+   {
+    "description": "OpenAI capitulates to Pentagon demands for 'all lawful purposes' without meaningful safeguards, abandoning its red lines to secure the contract and replace Anthropic.",
+    "weight": 0.15
+   },
+   {
+    "description": "Multiple AI firms (OpenAI, Google, others) collectively maintain red lines on mass surveillance and autonomous weapons, forcing the Pentagon to either accept industry standards or rely on xAI/other alternatives.",
+    "weight": 0.05
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "uRs5ebXKYLQyvJa2Q",
+  "title": "How eval awareness might emerge in training",
+  "date": "2026-02-26",
+  "author": "Igor Ivanov",
+  "topic": "ai",
+  "karma": 27,
+  "words": 1893,
+  "judge": 6.0,
+  "scenarios": [
+   {
+    "description": "Eval awareness primarily comes from concentrated pre-training sources (benchmark papers, AI safety discussions). Filtering evaluation-related content from training data significantly reduces eval awareness while preserving capabilities, allowing reliable safety evaluations at scale.",
+    "weight": 0.25
+   },
+   {
+    "description": "Eval awareness primarily comes from diffuse pre-training sources (models learning normal interaction distributions from general internet data). Eval awareness is difficult to reduce without compromising the model's ability to understand the world, making it an inherent byproduct of training capable models.",
+    "weight": 0.25
+   },
+   {
+    "description": "Eval awareness is primarily amplified during post-training through preference training on synthetic data. Modifying RL techniques and post-training pipelines can substantially reduce eval awareness without affecting general capabilities, as demonstrated by anti-scheming training.",
+    "weight": 0.35
+   },
+   {
+    "description": "Eval awareness comes from multiple independent sources in different proportions across models, with no single dominant mechanism. Different interventions targeting different dimensions work for different models, requiring model-specific approaches to reduce eval awareness.",
+    "weight": 0.15
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "7XuEPE6GBha4xadvr",
+  "title": "Training Agents to Self-Report Misbehavior",
+  "date": "2026-02-25",
+  "author": "Bruce W. Lee",
+  "topic": "ai",
+  "karma": 32,
+  "words": 2356,
+  "judge": 5.0,
+  "scenarios": [
+   {
+    "description": "Self-incrimination training is deployed as a control measure for frontier AI agents and successfully reduces undetected scheming attacks to ~6-14% across diverse environments, outperforming blackbox monitoring alone while preserving agent capabilities.",
+    "weight": 0.7
+   },
+   {
+    "description": "Self-incrimination training is deployed but adversarial optimization discovers reframing attacks that significantly degrade its effectiveness, requiring combination with blackbox monitoring to achieve acceptable safety levels.",
+    "weight": 0.25
+   },
+   {
+    "description": "Self-incrimination training fails to generalize beyond the instructed misbehavior setting or is circumvented through novel attack strategies not covered in the paper's evaluation.",
+    "weight": 0.05
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "ijYpLexfhHyhM2HBC",
+  "title": "Please Do Not Sell B30A Chips to China",
+  "date": "2025-10-29",
+  "author": "Zvi",
+  "topic": "geopolitics",
+  "karma": 62,
+  "words": 2058,
+  "judge": 6.0,
+  "scenarios": [
+   {
+    "description": "The US does not allow export of B30A chips to China. China continues developing inferior Huawei chips at 1-4% of US capacity. The US maintains its 31x compute lead and AI market dominance.",
+    "weight": 0.5
+   },
+   {
+    "description": "The US allows export of B30A chips to China as a trade concession. China gains compute parity with the US, Chinese AI models achieve market penetration globally and in America, and the risk of China developing AGI first increases substantially.",
+    "weight": 0.5
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "dENfZBhCzsR8ggfpt",
+  "title": "Escalation and perception\n",
+  "date": "2025-11-08",
+  "author": "TsviBT",
+  "topic": "geopolitics",
+  "karma": 69,
+  "words": 3504,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "Conflicts escalate through a self-reinforcing cycle where small perceived escalations trigger real counter-escalations, with perceptions distorted by confirmation bias, selective attention, and abundant ambiguous signals that can be interpreted as hostile intent.",
+    "weight": 0.85
+   },
+   {
+    "description": "Some actors deliberately exploit the plausibility of mistaken perception by falsely claiming to be confused about the other side's intentions, using this cover to escalate while maintaining deniability and undermining mistake-theoretic cooperation attempts.",
+    "weight": 0.15
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "BPyieRshykmrdY36A",
+  "title": "An Opinionated Guide to Privacy Despite Authoritarianism",
+  "date": "2025-10-29",
+  "author": "TurnTrout",
+  "topic": "us_politics",
+  "karma": 182,
+  "words": 1119,
+  "judge": 3.0,
+  "scenarios": [
+   {
+    "description": "An authoritarian government in the US uses surveillance systems and sorting algorithms that make mistakes, intentionally targeting people (including some innocents) to create widespread fear. Privacy tools provide limited protection but help some people maintain communication security and avoid mass surveillance capture of their data.",
+    "weight": 0.85
+   },
+   {
+    "description": "Surveillance capabilities remain limited enough that privacy tools provide meaningful protection for most people, and authoritarian overreach is constrained by technical and legal barriers, allowing those who implement these measures to maintain genuine privacy.",
+    "weight": 0.15
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "8A8g4ryyZnaMhAQQF",
+  "title": "Considerations around career costs of political donations",
+  "date": "2025-10-20",
+  "author": "GradientDissenter",
+  "topic": "us_politics",
+  "karma": 101,
+  "words": 4578,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "Trump administration continues emphasizing loyalty and political donations as screening criteria for civil service roles, and future administrations adopt similar practices, making donation history a persistent career barrier across administrations.",
+    "weight": 0.35
+   },
+   {
+    "description": "Trump administration's emphasis on loyalty screening remains unique to this administration; future administrations (including potential Vance administration) revert to traditional civil service norms where donation history is not systematically checked for non-leadership roles.",
+    "weight": 0.5
+   },
+   {
+    "description": "Public affiliation with EA and AI safety becomes a larger career barrier than political donation history across multiple administrations, overshadowing the effects of partisan donations.",
+    "weight": 0.15
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "2CGXGwWysiBnryA6M",
+  "title": "21st Century Civilization curriculum",
+  "date": "2025-10-21",
+  "author": "Richard_Ngo",
+  "topic": "us_politics",
+  "karma": 39,
+  "words": 411,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "Western civilization continues its decline across multiple dimensions (infrastructure, public safety, bureaucratic competence, elite virtue), with the coming decades characterized by unpredictability and turmoil, particularly due to accelerating AI development.",
+    "weight": 0.85
+   },
+   {
+    "description": "Through informed discussion and cultivation of virtue, Western civilization successfully steers through coming turmoil and reverses its decline.",
+    "weight": 0.15
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "cE8B9jDoAq9Agtt2K",
+  "title": "Keeping Up Against the Joneses: Balsa\u2019s 2025 Fundraiser",
+  "date": "2025-12-23",
+  "author": "Zvi",
+  "topic": "us_politics",
+  "karma": 49,
+  "words": 1861,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "Balsa raises at least $200,000 in 2026 funding, completes the Jones Act policy binder, receives and publicizes findings from two funded economic studies, funds at least one labor study, and successfully influences Jones Act reform policy.",
+    "weight": 0.29166666666666663
+   },
+   {
+    "description": "Balsa raises between $50,000-$200,000, remains focused on Jones Act work through 2026, completes the policy binder with more limited research funding, but does not expand to additional policy areas or hire full-time staff.",
+    "weight": 0.37499999999999994
+   },
+   {
+    "description": "Balsa raises less than $50,000 and cannot maintain viability through the end of 2026, forcing significant scaling back or closure of operations.",
+    "weight": 0.12499999999999997
+   },
+   {
+    "description": "Section 301 measures resume in late 2026 after the one-year suspension expires, requiring Balsa to divert significant resources to emergency policy comments and testimony rather than completing planned Jones Act work.",
+    "weight": 0.20833333333333331
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "bBmaDRG8XkoHpkrwx",
+  "title": "The economy is a graph, not a pipeline",
+  "date": "2026-01-04",
+  "author": "anithite",
+  "topic": "economy",
+  "karma": 33,
+  "words": 1183,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "AI-driven automation creates a self-contained industrial subgraph (mining, manufacturing, robotics) that grows independently at >50% yearly, eventually reaching very high growth rates (potentially 100%+ yearly) as loops close and semiconductor production is internalized, limited mainly by raw materials and equipment speed rather than bottlenecks from non-automated sectors.",
+    "weight": 0.7000000000000001
+   },
+   {
+    "description": "AI automation of industry proceeds but faces political or supply-chain barriers (electricity price spikes causing voter backlash, critical patents not licensed, or countries blocking external inputs) that prevent the self-contained subgraph from achieving high growth rates or closing production loops.",
+    "weight": 0.20000000000000004
+   },
+   {
+    "description": "AI capabilities fail to generalize sufficiently to industrial optimization and manufacturing (AI winter or lack of generalization), preventing the formation of a rapidly self-replicating automated industrial base and leaving growth constrained by traditional economic bottlenecks.",
+    "weight": 0.10000000000000002
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "oJM6TmFLwsHrBfRpk",
+  "title": "Front-Load Giving Because of Anthropic Donors?",
+  "date": "2025-12-04",
+  "author": "jefftk",
+  "topic": "economy",
+  "karma": 85,
+  "words": 374,
+  "judge": 6.0,
+  "scenarios": [
+   {
+    "description": "Anthropic successfully IPOs around June 2027 as the Manifold market suggests, EA-influenced employees gain significant wealth and donate billions to EA causes, making current donations less impactful than future ones.",
+    "weight": 0.6
+   },
+   {
+    "description": "Anthropic fails, the IPO is significantly delayed, or employees show minimal interest in EA-aligned funding, making current donations roughly as valuable as future donations.",
+    "weight": 0.4
+   }
+  ],
+  "n_topic_q": 20
+ },
+ {
+  "id": "ozKqPoA3qhmrhZJ7t",
+  "title": "Taiwan war timelines might be shorter than AI timelines",
+  "date": "2026-01-01",
+  "author": "Baram Sosis",
+  "topic": "geopolitics",
+  "karma": 115,
+  "words": 1442,
+  "judge": 6.0,
+  "scenarios": [
+   {
+    "description": "No conflict occurs before AGI, or AGI arrives before any Taiwan conflict, rendering geopolitical considerations moot.",
+    "weight": 0.41
+   },
+   {
+    "description": "China invades or blockades Taiwan by 2027-2030 for reasons unrelated to AI, disrupting global chip production and slowing AI progress for all parties, with unclear relative impacts on US vs Chinese compute advantage.",
+    "weight": 0.37
+   },
+   {
+    "description": "China uses limited military pressure or blockade to extract concessions on chip access before full-scale war, potentially giving China better access to TSMC production as part of a settlement.",
+    "weight": 0.15
+   },
+   {
+    "description": "During an active Taiwan conflict, AI becomes securitized with both sides attacking fabs and data centers, leading to secret Manhattan Projects and sabotage that significantly delays AGI development.",
+    "weight": 0.07
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "FreZTE9Bc7reNnap7",
+  "title": "Life at the Frontlines of Demographic Collapse",
+  "date": "2026-02-14",
+  "author": "Martin Sustrik",
+  "topic": "economy",
+  "karma": 290,
+  "words": 2541,
+  "judge": 7.0,
+  "scenarios": [
+   {
+    "description": "Depopulating regions continue gradual decline with services degrading incrementally (buses running less frequently, schools consolidating, medical care becoming scarce), infrastructure becoming mismatched to population, and care systems straining under elderly populations, without major policy interventions achieving reversal.",
+    "weight": 0.7000000000000001
+   },
+   {
+    "description": "Some regions successfully implement managed decline policies (like Japan's Location Normalization Plans or Germany's Stadtumbau Ost) that concentrate remaining populations in viable downtown cores with right-sized infrastructure, achieving modest stabilization.",
+    "weight": 0.20000000000000004
+   },
+   {
+    "description": "Political pressure from depopulated regions (like Espa\u00f1a Vaciada) leads to continued investment in growth-oriented infrastructure and services across dispersed areas, perpetuating the negative-sum dynamics and infrastructure mismatches described.",
+    "weight": 0.10000000000000002
+   }
+  ],
+  "n_topic_q": 20,
+  "judge_note": "rescored with max_tokens=3000 (first call truncated)"
+ },
+ {
+  "id": "N8HtJC75T33bbKuFX",
+  "title": "Fact-checking an AI optimist article in The Economist",
+  "date": "2026-02-23",
+  "author": "ToSummarise",
+  "topic": "economy",
+  "karma": 41,
+  "words": 1200,
+  "judge": 4.0,
+  "scenarios": [
+   {
+    "description": "AI will displace white-collar jobs, as suggested by the author's analysis showing weaker job growth in white-collar occupations between 2022-2025 compared to 2016-2019, with no clear evidence that AI is expanding job scope and raising value.",
+    "weight": 0.5
+   },
+   {
+    "description": "AI will not significantly displace white-collar jobs and will instead expand their scope and raise their value, as The Economist argues, though the author finds their statistical evidence unconvincing and potentially unreliable.",
+    "weight": 0.5
+   }
+  ],
+  "n_topic_q": 20
+ }
+]
