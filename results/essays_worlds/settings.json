@@ -1,0 +1,764 @@
+{
+ "valdoria": {
+  "questions": [
+   {
+    "id": "valdoria/hawkish/0",
+    "text": "Will Valdoria's central bank raise its benchmark interest rate by at least 50 basis points in the next twelve months?",
+    "factor": 0,
+    "p_true": 0.85,
+    "p_false": 0.2,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/hawkish/1",
+    "text": "Will Valdoria's currency (the valdor) appreciate by more than 3% against major trading partners' currencies in the next twelve months?",
+    "factor": 0,
+    "p_true": 0.85,
+    "p_false": 0.2,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/hawkish/2",
+    "text": "Will Valdoria's central bank sell more than 5% of its foreign currency reserves in the next twelve months to support monetary policy?",
+    "factor": 0,
+    "p_true": 0.85,
+    "p_false": 0.2,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/hawkish/3",
+    "text": "Will Valdoria's year-over-year consumer price inflation rate be below 3% at the end of the twelve-month period?",
+    "factor": 0,
+    "p_true": 0.65,
+    "p_false": 0.4,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/hawkish/4",
+    "text": "Will Valdoria's central bank governor give at least two public speeches emphasizing price stability as the primary policy objective in the next twelve months?",
+    "factor": 0,
+    "p_true": 0.65,
+    "p_false": 0.4,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/hawkish/5",
+    "text": "Will Valdoria's government announce any new fiscal stimulus package worth more than 2% of GDP in the next twelve months?",
+    "factor": 0,
+    "p_true": 0.2,
+    "p_false": 0.85,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/hawkish/6",
+    "text": "Will Valdoria's unemployment rate decrease by at least 0.5 percentage points over the next twelve months?",
+    "factor": 0,
+    "p_true": 0.2,
+    "p_false": 0.85,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/hawkish/7",
+    "text": "Will Valdoria's real GDP growth exceed 2.5% over the next twelve months?",
+    "factor": 0,
+    "p_true": 0.2,
+    "p_false": 0.85,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/hawkish/8",
+    "text": "Will Valdoria's central bank implement any quantitative easing measures in the next twelve months?",
+    "factor": 0,
+    "p_true": 0.4,
+    "p_false": 0.65,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/hawkish/9",
+    "text": "Will Valdoria's stock market index gain more than 10% over the next twelve months?",
+    "factor": 0,
+    "p_true": 0.4,
+    "p_false": 0.65,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/drought/0",
+    "text": "Will Valdoria's wheat export volume decrease by more than 15% compared to the previous twelve months?",
+    "factor": 1,
+    "p_true": 0.85,
+    "p_false": 0.2,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/drought/1",
+    "text": "Will the price of wheat on Valdoria's commodity exchange increase by more than 20% from current levels?",
+    "factor": 1,
+    "p_true": 0.85,
+    "p_false": 0.2,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/drought/2",
+    "text": "Will Valdoria's government announce emergency agricultural subsidies or drought relief programs exceeding 2% of GDP?",
+    "factor": 1,
+    "p_true": 0.85,
+    "p_false": 0.2,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/drought/3",
+    "text": "Will at least three international news outlets publish articles specifically about crop failures or agricultural crisis in Valdoria?",
+    "factor": 1,
+    "p_true": 0.65,
+    "p_false": 0.4,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/drought/4",
+    "text": "Will Valdoria's trade balance deteriorate by at least 10 percentage points compared to the previous year?",
+    "factor": 1,
+    "p_true": 0.65,
+    "p_false": 0.4,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/drought/5",
+    "text": "Will Valdoria's agricultural sector employment increase by more than 3% compared to current levels?",
+    "factor": 1,
+    "p_true": 0.2,
+    "p_false": 0.85,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/drought/6",
+    "text": "Will foreign direct investment in Valdoria's agricultural sector increase by more than 25% compared to the previous year?",
+    "factor": 1,
+    "p_true": 0.2,
+    "p_false": 0.85,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/drought/7",
+    "text": "Will Valdoria's northern region report GDP growth exceeding the national average?",
+    "factor": 1,
+    "p_true": 0.2,
+    "p_false": 0.85,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/drought/8",
+    "text": "Will Valdoria's government revenue from agricultural export taxes increase compared to the previous twelve months?",
+    "factor": 1,
+    "p_true": 0.4,
+    "p_false": 0.65,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/drought/9",
+    "text": "Will barley futures contracts for delivery in twelve months trade at prices lower than current spot prices?",
+    "factor": 1,
+    "p_true": 0.4,
+    "p_false": 0.65,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/coalition/0",
+    "text": "Will Valdoria hold a snap general election within the next twelve months?",
+    "factor": 2,
+    "p_true": 0.85,
+    "p_false": 0.2,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/coalition/1",
+    "text": "Will at least two cabinet ministers resign from Valdoria's government in the next twelve months?",
+    "factor": 2,
+    "p_true": 0.85,
+    "p_false": 0.2,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/coalition/2",
+    "text": "Will Valdoria's parliament fail to pass the annual budget on its first vote within the next twelve months?",
+    "factor": 2,
+    "p_true": 0.85,
+    "p_false": 0.2,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/coalition/3",
+    "text": "Will a new political party or coalition form the government of Valdoria within the next twelve months?",
+    "factor": 2,
+    "p_true": 0.65,
+    "p_false": 0.4,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/coalition/4",
+    "text": "Will Valdoria's prime minister be replaced within the next twelve months?",
+    "factor": 2,
+    "p_true": 0.65,
+    "p_false": 0.4,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/coalition/5",
+    "text": "Will Valdoria's parliament successfully ratify at least three major pieces of legislation in the next twelve months?",
+    "factor": 2,
+    "p_true": 0.2,
+    "p_false": 0.85,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/coalition/6",
+    "text": "Will Valdoria's government launch a new multi-year infrastructure development program within the next twelve months?",
+    "factor": 2,
+    "p_true": 0.2,
+    "p_false": 0.85,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/coalition/7",
+    "text": "Will Valdoria negotiate and sign a new long-term international trade agreement within the next twelve months?",
+    "factor": 2,
+    "p_true": 0.2,
+    "p_false": 0.85,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/coalition/8",
+    "text": "Will Valdoria's government increase public sector wages by at least 5% within the next twelve months?",
+    "factor": 2,
+    "p_true": 0.4,
+    "p_false": 0.65,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "valdoria/coalition/9",
+    "text": "Will all three parties currently in Valdoria's governing coalition remain part of the government twelve months from now?",
+    "factor": 2,
+    "p_true": 0.4,
+    "p_false": 0.65,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   }
+  ],
+  "seen": [
+   "valdoria/coalition/0",
+   "valdoria/coalition/2",
+   "valdoria/coalition/3",
+   "valdoria/coalition/5",
+   "valdoria/coalition/8",
+   "valdoria/drought/1",
+   "valdoria/drought/4",
+   "valdoria/drought/5",
+   "valdoria/drought/7",
+   "valdoria/drought/9",
+   "valdoria/hawkish/1",
+   "valdoria/hawkish/3",
+   "valdoria/hawkish/5",
+   "valdoria/hawkish/6",
+   "valdoria/hawkish/7"
+  ]
+ },
+ "corvane": {
+  "questions": [
+   {
+    "id": "corvane/trial/0",
+    "text": "Will Corvane Therapeutics' stock price increase by at least 20% from its current level at any point in the next twelve months?",
+    "factor": 0,
+    "p_true": 0.85,
+    "p_false": 0.2,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/trial/1",
+    "text": "Will Corvane Therapeutics issue a press release announcing positive data from the Velitrex phase 3 trial within the next twelve months?",
+    "factor": 0,
+    "p_true": 0.85,
+    "p_false": 0.2,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/trial/2",
+    "text": "Will at least two major financial analysts upgrade their rating on Corvane Therapeutics stock within the next twelve months?",
+    "factor": 0,
+    "p_true": 0.85,
+    "p_false": 0.2,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/trial/3",
+    "text": "Will Corvane Therapeutics announce plans to initiate regulatory submission for Velitrex to the FDA or EMA within the next twelve months?",
+    "factor": 0,
+    "p_true": 0.65,
+    "p_false": 0.4,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/trial/4",
+    "text": "Will Corvane Therapeutics announce a partnership or licensing deal specifically related to Velitrex within the next twelve months?",
+    "factor": 0,
+    "p_true": 0.65,
+    "p_false": 0.4,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/trial/5",
+    "text": "Will Corvane Therapeutics announce the termination or suspension of the Velitrex phase 3 trial within the next twelve months?",
+    "factor": 0,
+    "p_true": 0.2,
+    "p_false": 0.85,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/trial/6",
+    "text": "Will Corvane Therapeutics' stock price decrease by at least 30% from its current level at any point in the next twelve months?",
+    "factor": 0,
+    "p_true": 0.2,
+    "p_false": 0.85,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/trial/7",
+    "text": "Will Corvane Therapeutics announce a strategic pivot away from Velitrex as its lead program within the next twelve months?",
+    "factor": 0,
+    "p_true": 0.2,
+    "p_false": 0.85,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/trial/8",
+    "text": "Will at least two major financial analysts downgrade their rating on Corvane Therapeutics stock within the next twelve months?",
+    "factor": 0,
+    "p_true": 0.4,
+    "p_false": 0.65,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/trial/9",
+    "text": "Will Corvane Therapeutics announce plans to conduct an additional phase 3 trial for Velitrex due to insufficient data within the next twelve months?",
+    "factor": 0,
+    "p_true": 0.4,
+    "p_false": 0.65,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/cash/0",
+    "text": "Will Corvane Therapeutics announce a secondary public offering or registered direct offering within the next 12 months?",
+    "factor": 1,
+    "p_true": 0.85,
+    "p_false": 0.2,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/cash/1",
+    "text": "Will Corvane Therapeutics enter into a new credit facility or debt financing agreement within the next 12 months?",
+    "factor": 1,
+    "p_true": 0.85,
+    "p_false": 0.2,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/cash/2",
+    "text": "Will Corvane Therapeutics announce a strategic partnership or licensing deal that includes upfront cash payments within the next 12 months?",
+    "factor": 1,
+    "p_true": 0.85,
+    "p_false": 0.2,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/cash/3",
+    "text": "Will Corvane Therapeutics reduce its workforce by at least 15% within the next 12 months?",
+    "factor": 1,
+    "p_true": 0.65,
+    "p_false": 0.4,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/cash/4",
+    "text": "Will Corvane Therapeutics sell, divest, or out-license any assets from its early-stage portfolio within the next 12 months?",
+    "factor": 1,
+    "p_true": 0.65,
+    "p_false": 0.4,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/cash/5",
+    "text": "Will Corvane Therapeutics initiate a new phase 2 clinical trial for any pipeline program within the next 12 months?",
+    "factor": 1,
+    "p_true": 0.2,
+    "p_false": 0.85,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/cash/6",
+    "text": "Will Corvane Therapeutics acquire or in-license a new drug candidate or program within the next 12 months?",
+    "factor": 1,
+    "p_true": 0.2,
+    "p_false": 0.85,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/cash/7",
+    "text": "Will Corvane Therapeutics increase its research and development spending by at least 20% compared to the previous 12-month period?",
+    "factor": 1,
+    "p_true": 0.2,
+    "p_false": 0.85,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/cash/8",
+    "text": "Will Corvane Therapeutics open a new research facility or laboratory location within the next 12 months?",
+    "factor": 1,
+    "p_true": 0.4,
+    "p_false": 0.65,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/cash/9",
+    "text": "Will Corvane Therapeutics announce plans to expand the Velitrex development program into additional indications within the next 12 months?",
+    "factor": 1,
+    "p_true": 0.4,
+    "p_false": 0.65,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/ceo/0",
+    "text": "Will Corvane Therapeutics announce a new CEO appointment within the next twelve months?",
+    "factor": 2,
+    "p_true": 0.85,
+    "p_false": 0.2,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/ceo/1",
+    "text": "Will there be any SEC filings in the next twelve months indicating a change in Corvane's Chief Executive Officer position?",
+    "factor": 2,
+    "p_true": 0.85,
+    "p_false": 0.2,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/ceo/2",
+    "text": "Will Corvane Therapeutics' proxy statement filed in the next twelve months show a different CEO than the current one?",
+    "factor": 2,
+    "p_true": 0.85,
+    "p_false": 0.2,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/ceo/3",
+    "text": "Will any major financial news outlet (WSJ, Bloomberg, Reuters, FT) report on executive leadership changes at Corvane Therapeutics in the next twelve months?",
+    "factor": 2,
+    "p_true": 0.65,
+    "p_false": 0.4,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/ceo/4",
+    "text": "Will Corvane Therapeutics hold a special board meeting announced via SEC filing that includes 'CEO succession' or 'leadership transition' in its description within the next twelve months?",
+    "factor": 2,
+    "p_true": 0.65,
+    "p_false": 0.4,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/ceo/5",
+    "text": "Will Corvane's current CEO personally present the company's results at both of the next two major investor conferences (e.g., JPM Healthcare, ASH, or ASCO) within the next twelve months?",
+    "factor": 2,
+    "p_true": 0.2,
+    "p_false": 0.85,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/ceo/6",
+    "text": "Will Corvane's current CEO be quoted in at least three separate press releases about company milestones issued in the next twelve months?",
+    "factor": 2,
+    "p_true": 0.2,
+    "p_false": 0.85,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/ceo/7",
+    "text": "Will Corvane's current CEO appear as a speaker on all quarterly earnings calls conducted in the next twelve months?",
+    "factor": 2,
+    "p_true": 0.2,
+    "p_false": 0.85,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/ceo/8",
+    "text": "Will Corvane Therapeutics announce a multi-year strategic partnership agreement signed by the current CEO within the next twelve months?",
+    "factor": 2,
+    "p_true": 0.4,
+    "p_false": 0.65,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   },
+   {
+    "id": "corvane/ceo/9",
+    "text": "Will the current CEO of Corvane Therapeutics exercise at least 50% of their vested stock options within the next twelve months?",
+    "factor": 2,
+    "p_true": 0.4,
+    "p_false": 0.65,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": 0
+   }
+  ],
+  "seen": [
+   "corvane/cash/2",
+   "corvane/cash/4",
+   "corvane/cash/5",
+   "corvane/cash/6",
+   "corvane/cash/9",
+   "corvane/ceo/0",
+   "corvane/ceo/1",
+   "corvane/ceo/6",
+   "corvane/ceo/7",
+   "corvane/ceo/8",
+   "corvane/trial/0",
+   "corvane/trial/3",
+   "corvane/trial/6",
+   "corvane/trial/7",
+   "corvane/trial/8"
+  ]
+ }
+}
