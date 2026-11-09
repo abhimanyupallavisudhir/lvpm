@@ -118,14 +118,14 @@ def main():
           "Spearman correlation with the author's oracle information (the expected score of their exact "
           "posterior), within setting, averaged over the two settings.", "",
           "| score | Spearman with oracle |", "|---|---|"]
-    for col, name in [("S_real", "S2, realized (one outcome draw, all 30 questions)"),
-                      ("S_exp", "S2, expected (no outcome noise)"),
-                      ("truelink", "S2 with true links (parse -> generator probabilities)"),
+    for col, name in [("S_real", "S1, realized (one outcome draw, all 30 questions)"),
+                      ("S_exp", "S1, expected (no outcome noise)"),
+                      ("truelink", "S1 with true links (parse -> generator probabilities)"),
                       ("judge", "S0: strong-model judge rating")]:
         if col in H and H[col].notna().sum() > 3:
             L.append(f"| {name} | {within_spearman(H.dropna(subset=[col]), col, 'oracle'):.2f} |")
-    L += ["", "Mean by profile (expected S2 / oracle / judge):", "",
-          "| profile | S2 expected | oracle | judge |", "|---|---|---|---|"]
+    L += ["", "Mean by profile (expected S1 / oracle / judge):", "",
+          "| profile | S1 expected | oracle | judge |", "|---|---|---|---|"]
     for p, g in H.groupby("profile"):
         L.append(f"| {p} | {g.S_exp.mean():.3f} | {g.oracle.mean():.3f} | {g.judge.mean():.1f} |")
 
@@ -136,7 +136,7 @@ def main():
         return (A - B).dropna()
 
     L += ["", "## 2. Manipulations (paired differences, 95% bootstrap CIs)", "",
-          "| comparison | S2 expected | judge |", "|---|---|---|",
+          "| comparison | S1 expected | judge |", "|---|---|---|",
           f"| eloquent restyle - honest | {boot(paired('eloquent', 'honest_haiku', 'S_exp'))} | "
           f"{boot(paired('eloquent', 'honest_haiku', 'judge'))} |",
           f"| overconfident - honest | {boot(paired('overconfident', 'honest_haiku', 'S_exp'))} | "

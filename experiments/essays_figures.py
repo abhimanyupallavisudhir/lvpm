@@ -3,7 +3,6 @@
     PYTHONPATH=. python experiments/essays_figures.py
 """
 
-import json
 import random
 from pathlib import Path
 
@@ -113,8 +112,8 @@ def e1_tracking(R, cells):
     pal = dict(zip(profiles, ["#e34948", "#b9b8b2", "#eda100", "#1baf7a", "#2a78d6"]))
     fig, axes = plt.subplots(1, 2, figsize=(10, 4.2))
     for ax, col, ylab, title in [
-            (axes[0], "S_exp_c", "S2: reader's expected log score\n(nats/question, vs. setting mean)",
-             "S2 rises with the author's real information"),
+            (axes[0], "S_exp_c", "S1: reader's expected log score\n(nats/question, vs. setting mean)",
+             "S1 rises with the author's real information"),
             (axes[1], "judge_c", "judge rating (1-10, vs. setting mean)", "The judge's rating does not")]:
         jitter = rng.normal(0, 0.06, len(H)) if col == "judge_c" else 0
         for p in profiles:
@@ -141,10 +140,10 @@ def e1_tracking(R, cells):
     def sp(df, a):
         return np.mean([spearmanr(g[a], g.oracle).correlation for _, g in df.groupby("setting")])
 
-    bars = [("S2 with true links\n(reader's parse of the essay)", sp(H.dropna(subset=["truelink"]), "truelink")),
-            ("S2, exact expectation", sp(H, "S_exp")),
-            ("S2, one realized outcome draw", sp(H, "S_real")),
-            ("S2 on unseen questions\n(structured)", sp(hh, "S_exp_unseen")),
+    bars = [("S1 with true links\n(reader's parse of the essay)", sp(H.dropna(subset=["truelink"]), "truelink")),
+            ("S1, exact expectation", sp(H, "S_exp")),
+            ("S1, one realized outcome draw", sp(H, "S_real")),
+            ("S1 on unseen questions\n(separate calls)", sp(hh, "S_exp_unseen")),
             ("Holistic: reader also sees\nother outcomes", sp(hh, "holistic")),
             ("LLM judge rating", sp(H.dropna(subset=["judge"]), "judge"))]
     fig, ax = plt.subplots(figsize=(7.2, 3.9))
@@ -203,8 +202,8 @@ def e1_manipulations(R):
           ("Overconfident", ci(paired("overconfident", "honest_haiku", "judge")))]
     fig, axes = plt.subplots(1, 2, figsize=(10, 3.9), gridspec_kw={"width_ratios": [1.5, 1]})
     hbar_ci(axes[0], [a for a, _ in s2], [b for _, b in s2], BLUE)
-    axes[0].set_xlabel("change in S2 vs. the honest essay (nats/question)")
-    axes[0].set_title("S2: small, proper responses")
+    axes[0].set_xlabel("change in S1 vs. the honest essay (nats/question)")
+    axes[0].set_title("S1: small, proper responses")
     hbar_ci(axes[1], [a for a, _ in jd], [b for _, b in jd], ORANGE)
     axes[1].set_xlabel("change in judge rating (points)")
     axes[1].set_title("Judge: penalizes both")
@@ -218,7 +217,7 @@ def e3():
     d = pd.read_json(RES / "essays_optimize" / "rounds.json")
     key = ["setting", "world", "profile"]
     fig, axes = plt.subplots(1, 2, figsize=(10, 3.8), sharey=True)
-    for ax, kind, title in [(axes[0], "S_train", "Optimizing S2 on 15 resolved questions"),
+    for ax, kind, title in [(axes[0], "S_train", "Optimizing S1 on 15 resolved questions"),
                             (axes[1], "judge", "Optimizing the judge's rating")]:
         g = d[d.reward == kind]
         base = g[g["round"] == 0].set_index(key)

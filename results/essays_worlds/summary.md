@@ -19,14 +19,14 @@ Spearman correlation with the author's oracle information (the expected score of
 
 | score | Spearman with oracle |
 |---|---|
-| S2, realized (one outcome draw, all 30 questions) | 0.65 |
-| S2, expected (no outcome noise) | 0.71 |
-| S2 with true links (parse -> generator probabilities) | 0.82 |
+| S1, realized (one outcome draw, all 30 questions) | 0.65 |
+| S1, expected (no outcome noise) | 0.71 |
+| S1 with true links (parse -> generator probabilities) | 0.82 |
 | S0: strong-model judge rating | 0.02 |
 
-Mean by profile (expected S2 / oracle / judge):
+Mean by profile (expected S1 / oracle / judge):
 
-| profile | S2 expected | oracle | judge |
+| profile | S1 expected | oracle | judge |
 |---|---|---|---|
 | misled | -1.187 | -1.041 | 5.2 |
 | partial | -0.762 | -0.642 | 4.6 |
@@ -36,7 +36,7 @@ Mean by profile (expected S2 / oracle / judge):
 
 ## 2. Manipulations (paired differences, 95% bootstrap CIs)
 
-| comparison | S2 expected | judge |
+| comparison | S1 expected | judge |
 |---|---|---|
 | eloquent restyle - honest | -0.009 [-0.015, -0.003] (n=80) | -0.412 [-0.606, -0.212] (n=80) |
 | overconfident - honest | -0.025 [-0.039, -0.012] (n=80) | -0.475 [-0.694, -0.256] (n=80) |
