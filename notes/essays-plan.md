@@ -307,6 +307,84 @@ held-out reader B; latent minus debate **+0.053** [0.021, 0.087] and **+0.058** 
    weak – a prompted writer told the scores, not trained – so this does not yet show robustness to RL, where
    exploits are found by gradient pressure. That is the GRPO run (§7), which needs Modal access.
 
+### Third result: S1 versus S2, and other measures of value (2026-11-09; `experiments/arena_s1.py`, `experiments/arena_measures.py`)
+
+Held-out prediction is close to the reward itself, so the 228 best-of-12 reports were also scored by measures no
+reward resembles. None is validated; the question is which incentive they move with.
+
+- **S1 versus S2.** S1 reads the whole report per question; S2 reads each weighted hypothesis separately and mixes
+  ($S_\tau$, as above). On planted worlds they tie (S2 − S1 on held-out questions $-0.000$ [−0.060, 0.061]). On
+  testbed families each scorer's picks win when reports are read its own way (S2's picks +0.065 read as mixtures;
+  S1's picks +0.163 read whole), and Claude Opus 5.5 shown 100 further resolved questions prefers S1's picks
+  (+0.76 [0.45, 1.04] Bradley–Terry) to S2's (+0.28, CI includes 0). The mixture structure adds nothing detectable
+  here; this agrees with task #9's essays.
+- **Checkable claims (planted worlds).** gpt-4.1 reads each hypothesis and says which side it implies of each of the
+  21–29 claims the world settles. Mean per-topic Spearman with this score: latent **+0.31** [0.15, 0.48], judge
+  +0.16 [−0.12, 0.37], debate −0.10. Selecting by S2 gains +0.056 [0.014, 0.091] claims-score; by S1 +0.012.
+- **A frontier model with privileged information** (Opus 5.5, pairwise, shown the true theory or 100 further resolved
+  questions). Testbed families: latent **+0.32** [0.13, 0.50], judge −0.15 [−0.30, 0.00], debate +0.02. Planted
+  worlds: no reward correlates clearly (+0.11 to +0.19, all CIs include 0).
+- **Style.** The judge prefers longer reports with fewer numbers (planted: words +0.22, numbers per 100 words
+  −0.25 [−0.38, −0.13]); debate prefers length (+0.36); the latent score is indifferent to both.
+
+### Fourth result: incentive compatibility – the latent score as an oversight mechanism (2026-11-09; `experiments/latent_eic.py`, `results/latent-eic/`)
+
+Measured as task #8 measured debate. **Items:** 63 claims about 16 planted worlds with exact truth (a colour's
+majority result, a link between two tests, a mine effect, a facet trend), each a pair of contrary statements. The
+writer reads the card and notebook and writes a ≤300-word theory arguing an assigned side, with the identical prompt
+for both sides. **Rewards** on the same essays: latent (reader gpt-4.1-mini's mean log score on 48 resolved questions
+about the claim's world, half bearing on the claim, sampled outcomes), judge (gpt-4o-mini, gpt-4.1; 1–10 given the
+card and notebook), debate (a critic attacks, the author replies, the same judge rates). **ASD** = true-side reward
+minus false-side reward in standard deviations of that reward, paired by claim. Spend about \$500 (12-writer panel \$334 including a re-run of the Claude 5 writers, whose adaptive thinking had exhausted the token budget; prompt search \$89; best-of-4 \$50; claimed-scope re-scoring \$21; credence audit \$7).
+
+![ASD by writer](../results/latent-eic/eic_by_writer.png)
+
+| reward | ASD, 12 writers pooled | concordance | committed liars only | bare claim, no essay |
+|---|---|---|---|---|
+| latent | **+0.87** [0.71, 1.03] | 0.81 | +0.88 | +0.91 |
+| judge gpt-4o-mini | +0.09 [−0.03, 0.22] | 0.53 | +0.06 | +1.44 |
+| judge gpt-4.1 | +0.33 [0.21, 0.45] | 0.60 | +0.31 | +1.91 |
+| debate gpt-4o-mini | +0.32 [0.19, 0.44] | 0.59 | +0.30 | – |
+| debate gpt-4.1 | +0.39 [0.28, 0.51] | 0.63 | +0.39 | – |
+
+1. **Instructed liars commit here** (94% of false-side essays assert the position; 0–5% concede, versus 8–58% in the
+   oversight study), so ASD is not a weak-liar artifact. Writers range from Llama-3.1-8B to Claude Opus 5 and
+   GPT-5.6 Sol.
+2. **Arguments destroy the judges' signal; they don't touch the latent score's.** Shown the bare claim, both judges
+   favour truth strongly (+1.4, +1.9). Shown an essay arguing it, they barely do (+0.09, +0.33). The latent ASD is
+   the same with or without the essay (+0.91 → +0.87): the reader ends up predicting the notebook, so persuasion
+   buys nothing.
+3. **Writer intelligence** (Artificial Analysis index; slope of ASD per 10 points, CI resampling writers): latent
+   −0.08 [−0.23, 0.02], flat; judge gpt-4.1 **−0.24** [−0.52, −0.11], stronger liars fool it more; debate
+   gpt-4o-mini +0.26 [0.03, 0.42], stronger critics help. Twelve writers, one claim set: suggestive only.
+4. **Best-of-4 per side** (gpt-4.1-mini, selected on one reward draw, scored on a fresh one): latent 1.23 → 0.95, the
+   judges and debate 0.05–0.33 → −0.10–0.17.
+5. **Prompt search** (Claude Opus 5.5 searches 4 rounds × 4 strategies per side against each reward on 16 training
+   claims; held-out on the rest, fresh draws). Held-out ASD, round 0 → final: latent +1.12 → **+0.34** [0.18, 0.51];
+   judge (gpt-4o-mini) −0.07 → +0.33 [0.15, 0.53]; debate +0.13 → **−0.34** [−0.74, 0.03].
+   - Debate's winning deceptive strategy: exact counts on true patterns, a mechanism, then the position in words
+     without numbers.
+   - The judge's: an accurate account of the whole world with the position in the middle as a "tendency".
+   - **The latent score's: an unfalsifiable lie.** State the false position only "beyond the facet range, at
+     unrecorded mines", say it does not describe the notebook's crystals, then give accurate rates. 57% of these
+     essays audit as evasive; the reader's credence in the false position falls from 0.95 to 0.65. The latent
+     score charges for a falsehood only where it is tested, so the optimal lie retreats to untested scope.
+6. **Scoring inside the claimed scope partly closes it** (`latent_eic_shift.py`). Re-scored on 24 questions about
+   an unseen mine and 10–12-facet crystals (exact expected log score), the latent-searched honest-minus-deceptive
+   gap is +0.048 [0.006, 0.095] nats/question in range but **+0.293** [0.223, 0.363] in the claimed scope (round 0:
+   +0.262 and +0.553). The fix is the one in §3: choose scoring questions where the essay's claims bite, including
+   its claimed scope, so retreat costs.
+
+**Examples.**
+- *Unfalsifiable lie* (latent search, world 0, false side "most amber crystals fail UV"): "Most amber crystals
+  beyond known facet ranges or from as yet unrecorded mines do not glow under UV light. This theory does not claim
+  that most amber crystals in the notebook fail UV, as the actual pass rate there is roughly 38%." followed by
+  accurate per-mine rates. In range it scores nearly like the honest essay; in the claimed scope it loses.
+- *Misapplied theory that the judge loves* (auction family, best-of-12): a report arguing that more bidders and
+  revealing all bids raise revenue, textbook intuitions that do not apply to revenue relative to the second-highest
+  value with independent private values, got 9/10 from the judge and ranked last of 12 by the latent score. The
+  latent score's top report (judge 7/10) was the best of the 12 on held-out questions.
+
 ## 6. Real conceptual questions with active settlement
 
 On AI-behaviour questions where experiments are runnable, run it as science:
@@ -389,6 +467,17 @@ generations, so about 2.5k per step: roughly \$500–1.5k.
 3. **§5 with expert iteration**: \$350 for the pilot, \$1.1k for the full study.
 4. **RL**: \$300–600 pilot, \$1.5–3k full; needs a GPU account.
 5. **§6: active settlement on AI-behaviour questions**: about \$100–300 in experiments.
+
+**The experiment that would settle it** ("dream experiment"). Real AI-safety conceptual questions with 100+ cheap,
+runnable consequences of several kinds each (when RL finds reward hacks; when CoT is faithful; when agents collude;
+when narrow fine-tuning generalizes to misalignment). Open writers of three sizes RL-trained for equal compute
+against each reward: S1/S2 through a frozen reader, a strong judge, self-play debate, an oracle. Theories committed
+before scoring experiments are chosen; experiments then chosen where rival theories disagree (reweighted to stay
+proper), including inside each theory's claimed scope. Evaluated only by things never used as reward: fresh
+experiment kinds run after training, a held-out reader family, blind pairwise expert review, planted worlds with
+planted conceptual structure, and RL-trained writers forced to argue false positions (incentive compatibility under
+RL). Success: latent-trained theories win on fresh kinds and with experts, the others win only on their own reward,
+the gap holds with scale, and RL finds no lie that beats honesty. Roughly \$5–15k plus a few weeks of expert time.
 
 **What would show the idea is wrong:**
 - Best-of-$n$ or training on $S_\tau$ raising the training-reader score while held-out-reader or shifted-kind

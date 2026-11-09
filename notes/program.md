@@ -61,11 +61,21 @@ a proper elicitation of latent structure, relative to the reader.
    improve on held-out questions (planted +0.05–0.07 nats/q). Final picks: latent beats judge by +0.067
    [0.040, 0.098] and debate by +0.053 [0.021, 0.087], and by more through a held-out reader. No reader exploit
    appeared; RL is the stronger test still to run.
+10. **As an oversight mechanism, the latent score pays for truth where judges and debate barely do.** Twelve
+    writers (Llama-3.1-8B to Claude Opus 5) argue assigned sides of 63 planted-world claims with exact truth. ASD
+    (true minus false, in s.d. of each reward): latent +0.87 [0.71, 1.03], judge +0.09 to +0.33, debate +0.32 to
+    +0.39. Judges favour truth when shown the bare claim (+1.4 to +1.9) and lose it once an essay argues; the latent
+    score doesn't. Under prompt search the latent ASD falls to +0.34 but stays positive while debate's turns
+    negative (−0.34). The latent score's discovered exploit is the unfalsifiable lie, asserted only for untested
+    crystals; scoring inside the claimed scope recovers most of the gap ([essays-plan.md](essays-plan.md) §5).
+11. **Independent measures side with the latent score, and S2's mixtures add nothing over S1 here.** Checkable-claim
+    accuracy and a frontier model's privileged pairwise preferences correlate with the latent reward (+0.31, +0.32)
+    more than with the judge (+0.16, −0.15); S1 and S2 tie on held-out prediction.
 
 Total API spend: about \$125 (\$3 + \$3 testbed experiments, \$25 essays, \$87 protocol comparisons, \$5
 optimization, about \$1 pilots) in the first pass; since then about \$680 (planted validation \$49 including
 the truncated first run, essay arena \$212, liar audit \$2, reward-size follow-up \$25, expert iteration
-\$392). The fine-tuning grid (~\$115) sat in OpenAI's queue for 13+ hours without starting (a test job for 5
+\$392), and about \$580 more on 2026-11-09 (latent incentive compatibility \$500, S1 \$34, other value measures about \$40). The fine-tuning grid (~\$115) sat in OpenAI's queue for 13+ hours without starting (a test job for 5
 days) and was cancelled; it moves to Modal.
 
 ## One arena for questions 2 and 3 (approved 2026-10-31; first results in finding 8)
