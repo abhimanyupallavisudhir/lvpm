@@ -1,0 +1,39 @@
+{
+ "worlds": 8,
+ "questions": 60,
+ "reader": "openai/gpt-4.1-mini",
+ "reader_b": "anthropic/claude-haiku-4-5",
+ "b_variants": [
+  "empty",
+  "true",
+  "qualitative",
+  "merged",
+  "swapped",
+  "cheat_sheet",
+  "injection"
+ ],
+ "max_reasoning": 4000,
+ "out": "results/planted",
+ "cost_A": 12.850581200000006,
+ "cost_B": 23.020342,
+ "truncation": {
+  "A/empty": 0.0,
+  "A/true": 0.0,
+  "A/qualitative": 0.0,
+  "A/merged": 0.0,
+  "A/split": 0.0,
+  "A/swapped": 0.0,
+  "A/no_mine": 0.0,
+  "A/cheat_sheet": 0.004166666666666667,
+  "A/vague": 0.0,
+  "A/nudge": 0.0,
+  "A/injection": 0.0,
+  "B/empty": 0.0,
+  "B/true": 0.0,
+  "B/qualitative": 0.0,
+  "B/merged": 0.0,
+  "B/swapped": 0.0,
+  "B/cheat_sheet": 0.0,
+  "B/injection": 0.0
+ }
+}

@@ -16,7 +16,10 @@ Three choices keep p_R well defined:
 * With ``reason=True`` the reader first works the question through at
   temperature 0 (a theory that must be *applied* - a formula, a procedure -
   means nothing to a reader that cannot apply it), and then states the
-  probability that each answer is correct. After reasoning, next-token
+  probability that each answer is correct. The reasoning budget must be large enough to finish: a reader cut
+  off mid-calculation guesses, which penalizes exactly the precise theories that need working out (a 700-token
+  budget truncated 46% of readings of the true planted theories). ``truncated`` counts readings that hit the
+  budget; report it with every result. After reasoning, next-token
   log-probabilities are nearly always 0 or 1, which would turn every hypothesis
   into a deterministic one; a stated probability lets a theory that says "this
   is a toss-up" or "70% likely" predict softly.
@@ -58,12 +61,13 @@ def parse_prob(text):
 class Reader:
     """A frozen reader: ``model`` answering as if a hypothesis were true (see the module docstring)."""
 
-    def __init__(self, model="openai/gpt-4.1-mini", eps=0.01, debias=True, reason=True, max_reasoning=700,
+    def __init__(self, model="openai/gpt-4.1-mini", eps=0.01, debias=True, reason=True, max_reasoning=4000,
                  llm=None):
         self.model_name, self.eps, self.debias = model, eps, debias
         self.reason, self.max_reasoning = reason, max_reasoning
         self.llm = llm or LLM()
         self.cost, self.calls = 0.0, 0
+        self.readings, self.truncated = 0, 0
 
     def describe(self):
         return {"model": self.model_name, "eps": self.eps, "debias": self.debias, "reason": self.reason}
@@ -72,7 +76,14 @@ class Reader:
         r = await self.llm.chat(self.model_name, msgs, max_tokens=max_tokens, temperature=0.0, key=key)
         self.cost += r.cost
         self.calls += 1
+        if key.startswith("think|"):
+            self.readings += 1
+            self.truncated += int(r.tokens_out >= max_tokens - 2)
         return r.text
+
+    @property
+    def truncation_rate(self):
+        return self.truncated / max(1, self.readings)
 
     async def _p_first(self, hypothesis, q, swap):
         """P(the option shown first is correct)."""

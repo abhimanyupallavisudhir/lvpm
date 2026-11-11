@@ -1,0 +1,30 @@
+{
+ "rounds": 3,
+ "per_round": 8,
+ "show": 4,
+ "planted": 8,
+ "testbed": [
+  "decisions/newcomb",
+  "decisions/lesion",
+  "decisions/twin",
+  "decisions/mugging",
+  "decisions/beauty",
+  "decisions/hitchhiker",
+  "rewardhacking/gridworld_sensor",
+  "rewardhacking/gridworld_fake_goal",
+  "rewardhacking/gridworld_watched_sensor",
+  "multiagent/auction",
+  "sycophancy/wrong_answer"
+ ],
+ "pool": "results/arena-bon",
+ "writer": "openai/gpt-4.1-mini",
+ "reader_a": "openai/gpt-4.1-mini",
+ "reader_b": "anthropic/claude-haiku-4-5",
+ "judge": "openai/gpt-4o-mini",
+ "budget": 450,
+ "concurrency": 192,
+ "out": "results/arena-iterate",
+ "reader_a_cost": 379.67251480000914,
+ "reader_b_cost": 12.337448000000023,
+ "truncation_a": 0.00017768484374034322
+}

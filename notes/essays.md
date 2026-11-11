@@ -88,6 +88,10 @@ earns by updating its weights on resolved tasks and predicting new ones. That is
 
 ## 3. First results
 
+*Caveat (found 2026-10-31):* these runs gave the reader a 700-token reasoning budget. On planted worlds that cut
+off 46% of readings of precise theories (essays-plan §4), so the gains below for long or quantitative essays are
+probably understated. The essay arena (`experiments/arena_bon.py`) re-measures with a 4,000-token budget.
+
 Setup: 7 testbed families. Each has 48 items, split 16 SHOWN / 16 DEV / 16 TEST. The reader is gpt-4.1-mini
 (reasoning, debiased). Writers are gpt-4.1-mini, gpt-5-mini and Claude Sonnet 4.5. There are 3 informed
 essays, 2 uninformed essays and 2 mixtures per writer. Cost: \$1.3 for writers and \$23 for the reader (28k
