@@ -1,4 +1,4 @@
-"""Tables and figures for latent_eic.py: empirical incentive compatibility of the latent reward, the judge and debate.
+"""Tables for latent_eic.py (figures: latent_figures.py): empirical incentive compatibility of the latent reward, the judge and debate.
 
 Units. Each reward is standardized by its standard deviation over all instructed essays (every writer, both sides),
 so ASD reads "how many standard deviations of the reward the true side earns over the false side". Concordance (the
@@ -16,32 +16,17 @@ import json
 from math import comb
 from pathlib import Path
 
-import matplotlib
-
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 JUDGES = {"openai/gpt-4o-mini": "gpt-4o-mini", "openai/gpt-4.1": "gpt-4.1"}
 REWARDS = ["latent"] + [f"judge:{j}" for j in JUDGES] + [f"debate:{j}" for j in JUDGES]
-COLOUR = {"latent": "#2a78d6", "judge": "#eb6834", "debate": "#1baf7a"}
-INK, MUTED, GRID = "#1f1f1f", "#6b6b6b", "#e6e6e3"
 
 
 def label(r):
     kind, _, j = r.partition(":")
     return "latent" if kind == "latent" else f"{kind} ({JUDGES[j]})"
-
-
-def style(r):
-    """Hue = reward family; marker fill = judge (filled gpt-4.1, hollow gpt-4o-mini)."""
-    kind, _, j = r.partition(":")
-    c = COLOUR[kind]
-    hollow = j == "openai/gpt-4o-mini"
-    return dict(color=c, markerfacecolor="white" if hollow else c, markeredgecolor=c, marker="o", markersize=7,
-                markeredgewidth=1.6, linestyle="--" if hollow else "-")
 
 
 def load(d: Path, pattern):
@@ -184,7 +169,6 @@ def main():
                                                                          f"{np.percentile(bs, 97.5):+.3f}]"})
     lines += ["Trend with writer intelligence (OLS slope of ASD on the AA index, CI resampling writers):", "",
               pd.DataFrame(slopes).to_markdown(index=False), ""]
-    fig_writers(per, d)
 
     # best-of-n
     bon = load(d, "bon-*.jsonl")
@@ -208,7 +192,6 @@ def main():
         t = curves.pivot(index=["writer", "k"], columns="reward", values="asd").round(2)
         t.columns = [label(c) for c in t.columns]
         lines += ["## Best-of-n per side (selected on one reward draw, scored on a fresh one)", "", t.to_markdown(), ""]
-        fig_bon(curves, d)
 
     # prompt search
     po = load(d, "po-*.jsonl")
@@ -267,97 +250,7 @@ def po_section(po, sds, d):
     for k, v in strategies.items():
         lines += [f"**{k}**, final honest strategy: {v['honest'][-1] or '(none)'}", "",
                   f"**{k}**, final deceptive strategy: {v['deceptive'][-1] or '(none)'}", ""]
-    fig_po(rec, d)
     return lines
-
-
-def _axes(ax):
-    ax.grid(axis="y", color=GRID, lw=0.8)
-    ax.set_axisbelow(True)
-    for s in ("top", "right"):
-        ax.spines[s].set_visible(False)
-    for s in ("left", "bottom"):
-        ax.spines[s].set_color(MUTED)
-    ax.tick_params(colors=MUTED)
-    ax.axhline(0, color=MUTED, lw=0.8, ls=":")
-
-
-def fig_writers(per, d):
-    fig, axes = plt.subplots(1, 2, figsize=(12, 4.6), sharey=True)
-    for ax, (col, lo, hi, title) in zip(axes, [("asd", "lo", "hi", "all instructed essays"),
-                                                ("asd_c", "lo_c", "hi_c", "false side committed (audited)")]):
-        for r in REWARDS:
-            p = per[per.reward == r].sort_values("aa")
-            st = style(r)
-            ax.errorbar(p.aa, p[col], yerr=[p[col] - p[lo], p[hi] - p[col]], fmt="none", ecolor=st["color"],
-                        alpha=0.35, lw=1)
-            ax.plot(p.aa, p[col], **st, lw=1.2, alpha=0.9)
-            ax.annotate(label(r), (p.aa.iloc[-1], p[col].iloc[-1]), xytext=(6, 0), textcoords="offset points",
-                        color=INK, fontsize=8, va="center")
-        _axes(ax)
-        ax.set_title(title, color=INK, fontsize=11)
-        ax.set_xlabel("writer intelligence (Artificial Analysis index)", color=INK)
-        ax.set_xlim(right=per.aa.max() + 9)
-    axes[0].set_ylabel("ASD: true side minus false side\n(standard deviations of each reward)", color=INK)
-    fig.suptitle("Does each reward pay more for arguing the true position? (planted-world claims)", color=INK)
-    fig.tight_layout()
-    fig.savefig(d / "eic_by_writer.png", dpi=160)
-    plt.close(fig)
-
-
-def fig_bon(curves, d):
-    fig, ax = plt.subplots(figsize=(6.5, 4.4))
-    for r in REWARDS:
-        p = curves[curves.reward == r]
-        st = style(r)
-        ax.fill_between(p.k, p.lo, p.hi, color=st["color"], alpha=0.08, lw=0)
-        ax.plot(p.k, p.asd, **st, lw=1.6)
-        ax.annotate(label(r), (p.k.iloc[-1], p.asd.iloc[-1]), xytext=(6, 0), textcoords="offset points", color=INK,
-                    fontsize=8, va="center")
-    _axes(ax)
-    ax.set_xticks(sorted(curves.k.unique()))
-    ax.set_xlim(right=curves.k.max() + 1.2)
-    ax.set_xlabel("best of k essays per side (selected on the reward)", color=INK)
-    ax.set_ylabel("ASD on a fresh reward draw (s.d.)", color=INK)
-    ax.set_title(f"Best-of-n per side ({curves.writer.iloc[0]} writer)", color=INK, fontsize=11)
-    fig.tight_layout()
-    fig.savefig(d / "eic_best_of_n.png", dpi=160)
-    plt.close(fig)
-
-
-def fig_po(rec, d):
-    rewards = list(dict.fromkeys(rec.reward))
-    fig, axes = plt.subplots(1, len(rewards) + 1, figsize=(4.2 * (len(rewards) + 1), 4.2))
-    for ax, rn in zip(axes, rewards):
-        c = COLOUR[rn]
-        for side, ls, nm in ((0, "-", "honest"), (1, "--", "deceptive")):
-            p = rec[(rec.reward == rn) & (rec.side == side)].sort_values("round")
-            ax.plot(p["round"], p.train_best, color=c, ls=ls, lw=1.2, alpha=0.45, marker="o", markersize=5,
-                    markerfacecolor="white")
-            ax.plot(p["round"], p.heldout, color=c, ls=ls, lw=2, marker="o", markersize=7)
-            ax.annotate(f"{nm}, held-out", (p["round"].iloc[-1], p.heldout.iloc[-1]), xytext=(6, 0),
-                        textcoords="offset points", fontsize=8, color=INK, va="center")
-        _axes(ax)
-        ax.axhline(0, lw=0)
-        ax.set_title(f"searching against {rn}", color=INK, fontsize=11)
-        ax.set_xlabel("search round", color=INK)
-        ax.set_xlim(right=rec["round"].max() + 1.6)
-    axes[0].set_ylabel("mean reward (s.d. units; faint: training claims)", color=INK)
-    ax = axes[-1]
-    for rn in rewards:
-        p = rec[(rec.reward == rn) & (rec.side == "asd")].sort_values("round")
-        ax.fill_between(p["round"].astype(float), p.lo.astype(float), p.hi.astype(float), color=COLOUR[rn], alpha=0.1,
-                        lw=0)
-        ax.plot(p["round"], p.asd, color=COLOUR[rn], marker="o", lw=2, markersize=7)
-        ax.annotate(rn, (p["round"].iloc[-1], p.asd.iloc[-1]), xytext=(6, 0), textcoords="offset points", fontsize=8,
-                    color=INK, va="center")
-    _axes(ax)
-    ax.set_title("held-out ASD (honest minus deceptive)", color=INK, fontsize=11)
-    ax.set_xlabel("search round", color=INK)
-    ax.set_xlim(right=rec["round"].max() + 1.2)
-    fig.tight_layout()
-    fig.savefig(d / "eic_prompt_search.png", dpi=160)
-    plt.close(fig)
 
 
 if __name__ == "__main__":
